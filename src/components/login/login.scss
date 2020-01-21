@@ -1,5 +1,7 @@
+@import "../../utils/colors";
+
 .login-component {
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: $highlightColor;
   position: relative;
   display: inline-block;
   box-sizing: border-box;
@@ -12,26 +14,26 @@
 
   input {
     display: block;
-    background-color: #121212;
+    background-color: $backgroundColor;
     border: 0;
     padding: 10px 10px;
     border-radius: 0;
     min-width: 200px;
     margin-bottom: 10px;
-    color: #efefef;
+    color: $textColor;
     width: 100%;
     box-sizing: border-box;
     font-size: 14px;
 
     &:focus {
-      outline-color: #efefef;
+      outline-color: $textColor;
     }
   }
 
   .login-btn {
     margin-top: 10px;
-    background-color: #121212;
-    color: #25aac5;
+    background-color: $backgroundColor;
+    color: $accentColor;
     font-weight: bold;
     display: inline-block;
     padding: 10px 20px;

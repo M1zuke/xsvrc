@@ -1,11 +1,13 @@
 import React from 'react';
 import './App.css';
 import { electronFetch } from './services/utils.service';
-import { store } from './index';
-import { Route } from 'react-router';
-import { BrowserRouter } from 'react-router-dom';
-import { Login } from './components/login/login.component';
+import { Route, Router, Switch } from 'react-router';
+import { Login } from './components/login/login';
 import { updateApiConfig } from './store/apiConfig/actions';
+import { store } from './store/store';
+import { history } from './utils/history';
+import { SaveGuard } from './components/saveGuard/saveGuard';
+import { Overview } from './components/overview/overview';
 
 const App: React.FC = () => {
 
@@ -18,13 +20,18 @@ const App: React.FC = () => {
   });
 
   return (
-      <BrowserRouter>
-        <switch>
-          <Route path="/">
-            <Login/>
+      <Router history={ history }>
+        <Switch>
+          <Route exact path="/">
+            <Login />
           </Route>
-        </switch>
-      </BrowserRouter>
+          <SaveGuard>
+            <Route path="/overview">
+              <Overview />
+            </Route>
+          </SaveGuard>
+        </Switch>
+      </Router>
   );
 };
 

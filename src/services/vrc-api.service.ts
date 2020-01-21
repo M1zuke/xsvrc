@@ -1,5 +1,5 @@
 import { electronFetch, RequestConfig } from './utils.service';
-import { store } from '../index';
+import { store } from '../store/store';
 
 
 export const apiFetch = <T>(config: RequestConfig): Promise<T> => {
@@ -18,7 +18,7 @@ export const ensureApiKey = (config: RequestConfig): RequestConfig => {
   return config;
 };
 
-export const login = (username: string, password: string): Promise<UserInfo> => {
+export const loginUser = (username: string, password: string): Promise<UserInfo> => {
   return apiFetch<UserInfo>({
     url: 'https://api.vrchat.cloud/api/1/auth/user',
     method: 'GET',

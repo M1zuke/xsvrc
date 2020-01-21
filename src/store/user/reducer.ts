@@ -1,4 +1,4 @@
-import { LOG_IN, LOG_OUT, LogInAction, LogOutAction, UPDATE_USER_INFO, UpdateUserInfoAction, UserActionTypes } from './types';
+import { LOG_IN, LOG_OUT, LogInAction, LogOutAction, UserActionTypes } from './types';
 import { isAction } from '../../costumTypes/typeUtils';
 
 export interface UserState {
@@ -14,15 +14,11 @@ const initialState: UserState = {
 export function userReducer(state: UserState = initialState, action: UserActionTypes): UserState {
 
   if (isAction<LogInAction>(action, LOG_IN)) {
-    return {...state, loggedIn: true, userInfo: {...action.payload.userInfo}};
+    return { ...state, loggedIn: true, userInfo: { ...action.payload } };
   }
 
   if (isAction<LogOutAction>(action, LOG_OUT)) {
     return initialState;
-  }
-
-  if (isAction<UpdateUserInfoAction>(action, UPDATE_USER_INFO)) {
-    return {...state, userInfo: {...state.userInfo, ...action.payload}};
   }
 
   return state;

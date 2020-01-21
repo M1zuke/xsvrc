@@ -6,18 +6,17 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const isDev = require('electron-is-dev');
 
-const tough = require('tough-cookie');
-
 let mainWindow;
 
 const cookiejar = request.jar();
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 900, height: 680,
+    width: 1280, height: 800,
     webPreferences: {
       nodeIntegration: true
-    }
+    },
+    resizable: false
   });
   mainWindow.loadURL(
       isDev ? 'http://localhost:3000' : `file://${path.join(__dirname,
