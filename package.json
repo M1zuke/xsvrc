@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@types/react-redux": "^7.1.6",
+    "@types/redux-persist": "^4.3.1",
     "concurrently": "^5.0.2",
     "electron": "^7.1.9",
     "electron-builder": "^22.2.0",

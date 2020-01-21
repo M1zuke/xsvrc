@@ -1,0 +1,96 @@
+@import "../../../utils/colors";
+
+.overview-all-component {
+  display: grid;
+  grid-template-areas: "Title Title Title" "LeftColumn MiddleColumn RightColumn" "LeftColumn BottomColumn BottomColumn";
+  grid-template-rows: 50px auto auto;
+  grid-template-columns: 300px auto auto;
+  position: absolute;
+  top: calc(100vh - calc(180vh / 2));
+  left: calc(100vw - calc(180vw / 2));
+  height: 80vh;
+  width: 80vw;
+  box-sizing: border-box;
+  grid-gap: 15px;
+  padding: 15px;
+
+
+  .overview-title {
+    text-align: left;
+
+    h2, h3 {
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+  }
+
+  .button {
+    cursor: pointer;
+    user-select: none;
+    opacity: .6;
+    transition: opacity 200ms linear;
+    overflow: hidden;
+    position: relative;
+
+    &:hover {
+      opacity: 1;
+
+      .description {
+        left: 0;
+        opacity: 1;
+      }
+
+      .shadow {
+        opacity: 1;
+      }
+    }
+
+    .shadow {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 70px;
+      width: 100%;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.8) 100%);
+      opacity: 0;
+      transition: opacity 400ms ease-in-out;
+    }
+
+    .description {
+      text-align: left;
+      padding: 15px;
+      box-sizing: border-box;
+      position: absolute;
+      transition: opacity 400ms ease-in-out, left 400ms ease-in-out;
+      opacity: 0;
+      left: 50px;
+      width: 100%;
+      bottom: 0;
+    }
+  }
+
+  .manage-friends {
+    grid-area: LeftColumn;
+    background-color: $highlightColor;
+  }
+
+  .manage-favorites {
+    grid-area: MiddleColumn;
+    background-color: $highlightColor;
+  }
+
+  .manage-avatars {
+    grid-area: RightColumn;
+    background-color: $highlightColor;
+  }
+
+  .manage-profile {
+    grid-area: BottomColumn;
+    background-color: $highlightColor;
+  }
+
+}
