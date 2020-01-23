@@ -7,6 +7,8 @@ import { logInUser } from '../../store/user/actions';
 import { selectLoggedIn } from '../../store/user/selectors';
 import { Loading } from '../loading/loading';
 import { useHistory } from 'react-router';
+import { Button } from '../utils/buttons/button';
+import { TextInput } from '../utils/inputs/textInput';
 
 interface LoginState {
   loggingIn: boolean;
@@ -45,10 +47,12 @@ export const Login: FC = () => {
 
   return (
       <div className="login-component">
-        <input className="login-input" type="text" placeholder="Username" onChange={ onUsernameChange }/>
-        <input className="password-input" type="password" placeholder="password" onChange={ onPasswordChange }/>
-        { state.loggingIn ? <Loading/> : <div className="login-btn" onClick={ onLoginClick }>Login</div> }
-
+        <div className="login-image" />
+        <div className="login-container">
+          <TextInput onchange={ onUsernameChange } placeholder="Username" />
+          <TextInput type="password" onchange={ onPasswordChange } placeholder="Password" />
+          { state.loggingIn ? <Loading /> : <Button theme="dark" onclick={ onLoginClick }>Login</Button> }
+        </div>
       </div>
   );
 };

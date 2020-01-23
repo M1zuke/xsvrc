@@ -8,16 +8,21 @@ import { store } from './store/store';
 import { history } from './utils/history';
 import { SaveGuard } from './components/saveGuard/saveGuard';
 import { Overview } from './components/overview/overview';
+import { useSelector } from 'react-redux';
+import { selectApiKey } from './store/apiConfig/selectors';
 
 const App: React.FC = () => {
 
-  electronFetch<ApiConfig>({
-    url: 'https://api.vrchat.cloud/api/1/config',
-  })
-  .then((result: ApiConfig) => {
-    store.dispatch(updateApiConfig(result));
-    console.log(store.getState());
-  });
+  const apiKey = useSelector(selectApiKey);
+  if (!apiKey) {
+    electronFetch<ApiConfig>({
+      url: 'https://api.vrchat.cloud/api/1/config',
+    })
+    .then((result: ApiConfig) => {
+      store.dispatch(updateApiConfig(result));
+      console.log(store.getState());
+    });
+  }
 
   return (
       <Router history={ history }>

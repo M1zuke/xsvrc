@@ -1,0 +1,63 @@
+@import "../../../utils/colors";
+
+
+.table-component {
+  table {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+
+    td {
+      padding: 0;
+      text-align: left;
+      background-color: $backgroundColor;
+
+      .align-items {
+        display: flex;
+        width: 100%;
+        box-sizing: border-box;
+
+        .text-input-component {
+          flex: 1;
+        }
+
+        .table-button-component {
+          flex: 36px 0;
+        }
+      }
+
+      &:first-child {
+        text-align: center;
+        padding: 0 5px;
+      }
+
+      &.row-name {
+        padding: 10px 10px;
+        text-align: right;
+        font-weight: bold;
+      }
+    }
+
+    .separate-row {
+      border: 0;
+
+      td {
+        height: 10px;
+        background-color: $highlightColor;
+
+      }
+    }
+
+    thead.headerEmpty {
+      tr {
+        border: 0;
+        padding: 0;
+        margin: 0;
+      }
+    }
+
+    tr {
+      border-bottom: 1px solid $backgroundColor;
+    }
+  }
+}

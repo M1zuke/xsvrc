@@ -54,3 +54,33 @@ interface SteamDetails {
 interface TwoFactorAuth {
   twoFactorAuth: boolean;
 }
+
+interface AvatarInfo {
+  id?: string;
+  name?: string;
+  description?: string;
+  authorId?: string;
+  authorName?: string;
+  tags?: string[];
+  assetUrl?: string;
+  imageUrl?: string;
+  thumbnailImageUrl?: string;
+  releaseStatus?: ReleaseStatus;
+  version?: number;
+  featured?: boolean;
+  unityPackages?: UnityPackage[];
+  unityPackageUpdated?: boolean;
+  unityPackageURL?: string;
+}
+
+interface UnityPackage {
+  id?: string;
+  assetUrl?: string;
+  unityVersion?: string;
+  unitySortNumber?: number;
+  assetVersion?: number;
+  platform?: string;
+  created_at?: string;
+}
+
+type ReleaseStatus = 'public' | 'private' | 'hidden';

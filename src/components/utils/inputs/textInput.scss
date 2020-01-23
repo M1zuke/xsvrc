@@ -1,0 +1,26 @@
+@import "../../../utils/colors";
+
+.text-input-component {
+  input {
+    display: block;
+    background-color: $backgroundColor;
+    border: 0;
+    padding: 10px 10px;
+    border-radius: 0;
+    min-width: 30px;
+    color: $textColor;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+
+    &:focus {
+      outline-color: $textColor;
+    }
+
+    &.readonly {
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

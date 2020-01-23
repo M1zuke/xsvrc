@@ -35,7 +35,7 @@ function createWindow() {
     }).then(result => {
       if (result.headers['set-cookies']) {
         result.headers['set-cookies'].forEach(cookie => {
-          cookiejar.setCookie(cookie, 'https://vrchat.com');
+          cookiejar.setCookie(cookie, 'https://api.vrchat.cloud');
         });
       }
       return JSON.parse(result.body);

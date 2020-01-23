@@ -7,4 +7,4 @@ export interface UpdateApiConfigAction {
 
 
 export type ApiConfigActionTypes =
-  | UpdateApiConfigAction;
+    | UpdateApiConfigAction;
