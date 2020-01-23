@@ -5,43 +5,30 @@
   position: relative;
   display: inline-block;
   box-sizing: border-box;
-  padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 3px 1px #000000;
   width: 300px;
   margin: 0 auto;
   top: 30%;
 
-  input {
-    display: block;
-    background-color: $backgroundColor;
-    border: 0;
-    padding: 10px 10px;
-    border-radius: 0;
-    min-width: 200px;
-    margin-bottom: 10px;
-    color: $textColor;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 14px;
-
-    &:focus {
-      outline-color: $textColor;
-    }
+  .login-container {
+    padding: 15px;
   }
 
-  .login-btn {
-    margin-top: 10px;
-    background-color: $backgroundColor;
-    color: $accentColor;
-    font-weight: bold;
-    display: inline-block;
-    padding: 10px 20px;
-    cursor: pointer;
-    user-select: none;
+  .login-image {
+    height: 145px;
+    width: 100%;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
   }
 
   .normal-text {
     margin-bottom: 5px;
+  }
+
+  input {
+    margin-bottom: 10px;
   }
 }

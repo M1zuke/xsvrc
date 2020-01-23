@@ -1,14 +1,16 @@
+@import "utils/colors";
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-color: #121212;
+  background-color: $backgroundColor;
   font-size: 14px;
-  color: #efefef;
+  color: $textColor;
   height: 100vh;
   width: 100vw;
   text-align: center;
@@ -21,5 +23,9 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
+}
+
+h2, h3 {
+  user-select: none;
 }
