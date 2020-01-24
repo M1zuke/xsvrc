@@ -2,7 +2,8 @@ import React, { FC } from 'react';
 
 import './table.scss';
 import { TextInput } from '../inputs/textInput';
-import { TableButton } from '../buttons/tableButton';
+import { IconButton } from '../buttons/iconButton';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 interface TableProps {
   config: TableConfig;
@@ -14,7 +15,7 @@ export interface TableConfig {
 }
 
 interface TableAction {
-  value: any;
+  value: IconProp;
   onclick: () => void;
 }
 
@@ -46,7 +47,7 @@ export const Table: FC<TableProps> = (props: TableProps) => {
   const renderTableActions = (actions: TableAction[]) => {
     return actions.map((action: TableAction, i: number) => {
       return (
-          <TableButton key={ i + 'tableButton' } value={ action.value } onclick={ action.onclick } />
+          <IconButton key={ i + 'tableButton' } value={ action.value } onclick={ action.onclick } />
       );
     });
   };

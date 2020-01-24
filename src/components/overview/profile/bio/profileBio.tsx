@@ -5,7 +5,6 @@ import { selectUserInfo } from '../../../../store/user/selectors';
 
 import './profileBio.scss';
 import { Table, TableConfig } from '../../../utils/table/table';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons/faEye';
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons/faEyeSlash';
 
@@ -46,7 +45,7 @@ export const ProfileBio: FC = () => {
         value: state.emailObfuscated ? obfuscatedEmail : email,
         actions: [{
           onclick: onEmailAction,
-          value: <FontAwesomeIcon icon={ state.emailObfuscated ? faEye : faEyeSlash } size="lg" />,
+          value: state.emailObfuscated ? faEye : faEyeSlash,
         }],
       },
     ],

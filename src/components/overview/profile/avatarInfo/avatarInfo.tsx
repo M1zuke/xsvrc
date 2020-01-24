@@ -1,40 +1,39 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import './avatarInfo.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectAvatarThumbnailImageUrl, selectUserInfo } from '../../../../store/user/selectors';
+import { selectAvatarThumbnailImageUrl, selectCurrentAvatar } from '../../../../store/user/selectors';
 import { Table, TableConfig } from '../../../utils/table/table';
-import { selectAvatarId, selectAvatarInfo } from '../../../../store/avatar/selectors';
-import { getAvatarInfo } from '../../../../services/vrc-api.service';
-import { updateAvatarInfo } from '../../../../store/avatar/actions';
+import { selectAvatarInfo, selectAvatarState } from '../../../../store/avatar/selectors';
+import { setAvatarFetching, setAvatarNotFoundError, updateAvatarInfo } from '../../../../store/avatar/actions';
 import { Loading } from '../../../loading/loading';
-
-interface AvatarInfoState {
-  avatarInfoFetched: boolean;
-}
+import { faSyncAlt } from '@fortawesome/free-solid-svg-icons/faSyncAlt';
+import { IconButton } from '../../../utils/buttons/iconButton';
+import { getAvatarInfo } from '../../../../services/vrc-api.service';
 
 
 export const AvatarInfo: FC = () => {
 
-  const { currentAvatar } = useSelector(selectUserInfo);
-  const avatarId = useSelector(selectAvatarId);
-
-  const [state, setState] = useState<AvatarInfoState>({
-    avatarInfoFetched: currentAvatar === avatarId,
-  });
-  const backgroundUrl: string | undefined = useSelector(selectAvatarThumbnailImageUrl);
-
-  const dispatch = useDispatch();
+  const currentAvatar: string = useSelector(selectCurrentAvatar);
+  const { avatarId, avatarInfoFetching, avatarNotFoundError } = useSelector(selectAvatarState);
   const { authorName, name, description, version, releaseStatus } = useSelector(selectAvatarInfo);
+  const backgroundUrl: string | undefined = useSelector(selectAvatarThumbnailImageUrl);
+  const dispatch = useDispatch();
 
-  console.log(avatarId);
+  console.log('avatarInfoFetching', avatarInfoFetching);
 
-  if (currentAvatar && avatarId !== currentAvatar) {
+  const fetchInfo = useCallback(() => {
+    console.log('fetching');
+    dispatch(setAvatarFetching());
     getAvatarInfo(currentAvatar).then((avatarInfo: AvatarInfo) => {
       dispatch(updateAvatarInfo(avatarInfo));
-      console.log(avatarInfo);
-      setState({ avatarInfoFetched: true });
+    }).catch(() => {
+      dispatch(setAvatarNotFoundError(currentAvatar));
     });
+  }, [dispatch, currentAvatar]);
+
+  if (currentAvatar && (avatarId !== currentAvatar) && !avatarInfoFetching) {
+    fetchInfo();
   }
 
   const tableConfig: TableConfig = {
@@ -75,14 +74,22 @@ export const AvatarInfo: FC = () => {
     ],
   };
 
+
   return (
       <div className="avatar-info-component">
-        <h2 className="avatar-info-title">Avatar Info</h2>
+        <div className="avatar-info-title">
+          <h2>Avatar Info</h2>
+          <IconButton value={ faSyncAlt } onclick={ fetchInfo } rounded />
+        </div>
         <div className="avatar-image" style={ { backgroundImage: `url('${ backgroundUrl }')` } } />
         <div className="avatar-info">
-          <div className={ `loading-overlay ${ state.avatarInfoFetched ? 'hidden' : '' }` }>
+          <div className={ `loading-overlay ${ !avatarInfoFetching ? 'hidden' : '' }` }>
             <Loading />
             Fetching avatar info..
+          </div>
+          <div className={ `loading-overlay not-found-overlay ${ !avatarNotFoundError ? 'hidden' : '' }` }>
+            <h3>The selected avatar was not found.</h3>
+            The avatar probably got deleted from the owner.
           </div>
           <Table config={ tableConfig } />
         </div>

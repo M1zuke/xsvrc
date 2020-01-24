@@ -39,6 +39,8 @@ function createWindow() {
         });
       }
       return JSON.parse(result.body);
+    }).catch(e => {
+      return Promise.reject(e);
     });
   });
 }

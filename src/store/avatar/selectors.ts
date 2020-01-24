@@ -1,4 +1,4 @@
 import { RootState } from '../rootReducer';
 
-export const selectAvatarId = (state: RootState) => state.avatar.avatarId;
+export const selectAvatarState = (state: RootState) => state.avatar;
 export const selectAvatarInfo = (state: RootState) => state.avatar.avatarInfo;
