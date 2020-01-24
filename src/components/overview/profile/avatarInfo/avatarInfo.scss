@@ -10,7 +10,15 @@
   .avatar-info-title {
     grid-area: AvatarInfoTitle;
     margin: 0;
-    padding: 15px;
+    padding: 10px 3px 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h2 {
+      margin: 0;
+      padding: 0;
+    }
   }
 
   .avatar-image {
@@ -38,6 +46,13 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 15px;
+      box-sizing: border-box;
+      text-align: center;
+
+      &.not-found-overlay {
+        flex-direction: column;
+      }
 
       &.hidden {
         display: none;

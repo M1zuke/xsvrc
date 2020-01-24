@@ -1,6 +1,6 @@
 @import "../../../utils/colors";
 
-.table-button-component {
+.icon-button-component {
   height: 36px;
   width: 36px;
   display: flex;
@@ -11,5 +11,9 @@
 
   &:hover {
     background-color: $buttonHighlightColorHover;
+  }
+
+  &.rounded {
+    border-radius: 50%;
   }
 }
