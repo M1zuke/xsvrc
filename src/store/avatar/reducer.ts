@@ -1,5 +1,13 @@
-import { AvatarActionTypes, SET_AVATAR_FETCHING, SET_AVATAR_NOT_FOUND_ERROR, SetAvatarFetchingAction, SetAvatarNotFoundErrorAction, UPDATE_AVATAR_INFO, UpdateAvatarInfoAction } from './types';
 import { isAction } from '../../costumTypes/typeUtils';
+import {
+  AvatarActionTypes,
+  SET_AVATAR_FETCHING,
+  SET_AVATAR_NOT_FOUND_ERROR,
+  SetAvatarFetchingAction,
+  SetAvatarNotFoundErrorAction,
+  UPDATE_AVATAR_INFO,
+  UpdateAvatarInfoAction,
+} from './types';
 
 export interface AvatarState {
   avatarId: string;
@@ -13,7 +21,7 @@ const initialState: AvatarState = {
   avatarId: '',
   avatarInfoFetched: false,
   avatarNotFoundError: false,
-  avatarInfoFetching: true,
+  avatarInfoFetching: false,
   avatarInfo: {
     id: '',
     name: '',
@@ -38,7 +46,7 @@ export function avatarReducer(state: AvatarState = initialState, action: AvatarA
     return {
       ...state,
       avatarId: action.payload.id!,
-      avatarInfo: { ...action.payload },
+      avatarInfo: {...action.payload},
       avatarInfoFetching: false,
       avatarInfoFetched: true,
     };

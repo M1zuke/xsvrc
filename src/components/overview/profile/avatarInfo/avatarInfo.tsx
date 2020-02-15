@@ -20,10 +20,7 @@ export const AvatarInfo: FC = () => {
   const backgroundUrl: string | undefined = useSelector(selectAvatarThumbnailImageUrl);
   const dispatch = useDispatch();
 
-  console.log('avatarInfoFetching', avatarInfoFetching);
-
   const fetchInfo = useCallback(() => {
-    console.log('fetching');
     dispatch(setAvatarFetching());
     getAvatarInfo(currentAvatar).then((avatarInfo: AvatarInfo) => {
       dispatch(updateAvatarInfo(avatarInfo));

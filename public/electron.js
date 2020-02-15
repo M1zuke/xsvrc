@@ -19,12 +19,19 @@ function createWindow() {
     resizable: false
   });
   mainWindow.loadURL(
-      isDev ? 'http://localhost:3000' : `file://${path.join(__dirname,
-          '../build/index.html')}`);
+    isDev ? 'http://localhost:3000' : `file://${path.join(__dirname,
+      '../build/index.html')}`);
   mainWindow.on('closed', () => mainWindow = null);
 
   electron.ipcMain.handle('fetch', async (event, args) => {
     console.log(args);
+
+    if (args.storedCookies) {
+      args.storedCookies.forEach((cookie) => {
+        cookiejar.setCookie(cookie.value, cookie.url);
+      });
+    }
+
     return await request({
       url: args.url,
       method: args.method,
@@ -38,7 +45,7 @@ function createWindow() {
           cookiejar.setCookie(cookie, 'https://api.vrchat.cloud');
         });
       }
-      return JSON.parse(result.body);
+      return result;
     }).catch(e => {
       return Promise.reject(e);
     });

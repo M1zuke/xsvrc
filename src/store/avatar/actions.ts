@@ -1,4 +1,11 @@
-import { SET_AVATAR_FETCHING, SET_AVATAR_NOT_FOUND_ERROR, SetAvatarNotFoundErrorAction, UPDATE_AVATAR_INFO, UpdateAvatarInfoAction } from './types';
+import {
+  SET_AVATAR_FETCHING,
+  SET_AVATAR_NOT_FOUND_ERROR,
+  SetAvatarFetchingAction,
+  SetAvatarNotFoundErrorAction,
+  UPDATE_AVATAR_INFO,
+  UpdateAvatarInfoAction,
+} from './types';
 
 export function updateAvatarInfo(avatarInfo: AvatarInfo): UpdateAvatarInfoAction {
   return {
@@ -14,7 +21,7 @@ export function setAvatarNotFoundError(avatarId: string): SetAvatarNotFoundError
   };
 }
 
-export function setAvatarFetching() {
+export function setAvatarFetching(): SetAvatarFetchingAction {
   return {
     type: SET_AVATAR_FETCHING,
   };

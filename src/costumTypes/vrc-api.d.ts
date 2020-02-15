@@ -84,3 +84,20 @@ interface UnityPackage {
 }
 
 type ReleaseStatus = 'public' | 'private' | 'hidden';
+
+interface FriendInfo {
+  currentAvatarImageUrl: string;
+  currentAvatarThumbnailImageUrl: string;
+  developerType: string;
+  displayName: string;
+  friendKey: string;
+  id: string;
+  isFriend: boolean;
+  last_login: string; // Datestring
+  last_platform: string;
+  location: string;
+  status: string;
+  statusDescription: string;
+  tags: string[];
+  username: string;
+}
