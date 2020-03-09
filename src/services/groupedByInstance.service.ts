@@ -1,12 +1,13 @@
-interface AnalysedLocation {
-  ownerId: string;
-  worldId: string;
-  worldInstanceId: string;
-  nonce: string; // unclear what it is
+export interface AnalysedLocation {
+  ownerId?: string;
+  worldId?: string;
+  worldInstanceId?: string;
+  nonce?: string; // unclear what it is
+  fullLocationString: string;
 }
 
 export interface GroupedInstance {
-  location: string;
+  analysedLocation: AnalysedLocation;
   owner: FriendInfo | undefined;
   others: FriendInfo[];
 }
@@ -20,6 +21,14 @@ export class GroupedByInstanceService {
 
   constructor(friendInfo: FriendInfo[]) {
     this.processFriendList(friendInfo);
+  }
+
+  public static filterOutPrivatePeople(friendInfo: FriendInfo[]): FriendInfo[] {
+    return friendInfo.filter((friendInfo: FriendInfo) => friendInfo.location !== 'private');
+  }
+
+  public get(): GroupedInstance[] {
+    return this.groupedArray;
   }
 
   private init(): void {
@@ -56,6 +65,7 @@ export class GroupedByInstanceService {
 
 
     return {
+      fullLocationString: location,
       worldId,
       worldInstanceId,
       ownerId,
@@ -67,12 +77,12 @@ export class GroupedByInstanceService {
     this.init();
     const noReferenceFriendsInfo: FriendInfo[] = [...friendInfos];
 
-    const filterOutPrivateLocations = noReferenceFriendsInfo.filter((friendInfo: FriendInfo) => friendInfo.location !== 'private');
+    const filterOutPrivateLocations = GroupedByInstanceService.filterOutPrivatePeople(noReferenceFriendsInfo);
 
     this.groupByInstance(filterOutPrivateLocations, () => {
       this.groupedArray.forEach((groupedInstance: GroupedInstance) => {
-        const analysedLocation: AnalysedLocation = this.analyseLocation(groupedInstance.location);
-        groupedInstance.owner = this.getOwnerInfoFromCache(analysedLocation.ownerId, friendInfos);
+        groupedInstance.analysedLocation = this.analyseLocation(groupedInstance.analysedLocation.fullLocationString);
+        groupedInstance.owner = this.getOwnerInfoFromCache(groupedInstance.analysedLocation.ownerId, friendInfos);
       });
       console.log('groupedArray', this.groupedArray);
     });
@@ -82,15 +92,18 @@ export class GroupedByInstanceService {
     const currentUser = friendInfos.shift();
     if (currentUser) {
       const tempGroupedInstance: GroupedInstance = {
-        location: currentUser.location,
+        analysedLocation: {fullLocationString: currentUser.location},
         owner: undefined,
         others: [],
       };
       const playerInSameInstance = friendInfos.filter((friendInfo: FriendInfo) => {
         return friendInfo.location === currentUser.location;
       });
+      friendInfos = friendInfos.filter((friendInfos: FriendInfo) => {
+        return friendInfos.location !== currentUser.location;
+      });
       if (playerInSameInstance.length > 0) {
-        tempGroupedInstance.others = playerInSameInstance;
+        tempGroupedInstance.others = [currentUser, ...playerInSameInstance];
         this.groupedArray.push(tempGroupedInstance);
       }
       this.groupByInstance(friendInfos, groupingFinished);
@@ -99,7 +112,7 @@ export class GroupedByInstanceService {
     }
   }
 
-  private getOwnerInfoFromCache(userId: string, friendInfos: FriendInfo[]): FriendInfo | undefined {
+  private getOwnerInfoFromCache(userId: string | undefined, friendInfos: FriendInfo[]): FriendInfo | undefined {
     return friendInfos.find((item) => item.id === userId);
   }
 }

@@ -101,3 +101,71 @@ interface FriendInfo {
   tags: string[];
   username: string;
 }
+
+interface InstanceInfo {
+  active: boolean;
+  canRequestInvite: boolean;
+  capacity: number;
+  clientNumber: string; // ???
+  full: boolean;
+  id: string;
+  instanceId: string;
+  location: string; // id + instanceId
+  n_users: number; // current Users in instance
+  name: string;
+  ownerId: string | null;
+  permanent: boolean;
+  photonRegion: string; // WTF is that?
+  platforms: UserPlatforms;
+  shortName: string;
+  tags: string[];
+  type: string;
+  worldId: string;
+}
+
+type WorldTags =
+  | 'hidden' //Friends of Guests
+  | 'friends' // Friends only
+  | 'private' // Invite Only
+  | 'canRequestInvite' // Combined with `private` is Invite Plus
+
+interface UserPlatforms {
+  android: number;
+  standalonewindows: number;
+}
+
+interface WorldInfo {
+  assetUrl: string;
+  assetUrlObject: {};
+  authorId: string;
+  authorName: string;
+  capacity: number;
+  created_at: string; // Date string
+  description: string;
+  favorites: number;
+  heat: number;
+  id: string;
+  imageUrl: string;
+  instances: Array[][];
+  labsPublicationDate: string; // Date string | none
+  name: string;
+  namespace: string;
+  occupants: number;
+  organization: string;
+  pluginUrl: string;
+  pluginUrlObject: {};
+  popularity: number;
+  previewYoutubeId: string | null;
+  privateOccupants: number;
+  publicOccupants: number;
+  publicationDate: string; // Date string
+  releaseStatus: string;
+  tags: string[];
+  thumbnailImageUrl: string;
+  unityPackageUrl: string;
+  unityPackageUrlObject: {};
+  unityPackages: any[];
+  updated_at: string; // Date string
+  version: number;
+  visits: number;
+}
