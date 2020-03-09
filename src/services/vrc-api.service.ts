@@ -1,5 +1,6 @@
 import { store } from '../store/store';
 import { StoredCookie } from '../store/user/reducer';
+import { AnalysedLocation } from './groupedByInstance.service';
 import { electronFetch, RequestConfig } from './utils.service';
 
 
@@ -55,8 +56,21 @@ const fetchOnlineFriends = async (offset: number = 0) => {
       {key: 'offset', value: offset.toString()},
       {key: 'n', value: '100'},
     ],
-    url: 'https://api.vrchat.cloud/api/1/auth/user/friends/',
+    url: 'https://api.vrchat.cloud/api/1/auth/user/friends',
     method: 'GET',
   });
 };
 
+export const fetchWorldInstance = async (analysedLocation: AnalysedLocation) => {
+  return await apiFetch<InstanceInfo>({
+    method: 'GET',
+    url: `https://api.vrchat.cloud/api/1/worlds/${analysedLocation.worldId}/${analysedLocation.worldInstanceId}`,
+  });
+};
+
+export const fetchWorldInfo = async (worldId: string) => {
+  return await apiFetch<WorldInfo>({
+    method: 'GET',
+    url: `https://api.vrchat.cloud/api/1/worlds/${worldId}`,
+  });
+};
