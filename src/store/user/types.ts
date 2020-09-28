@@ -1,26 +1,12 @@
-import { StoredCookie } from './reducer';
+import { Action } from 'redux';
+import { VRCUserState } from './state';
 
-export const LOG_IN: string = 'LOG_IN';
-export const LOG_OUT: string = 'LOG_OUT';
-export const SET_AUTH_TOKEN: string = 'SET_AUTH_TOKEN';
+export type UserActionType = 'user/set-vrc-user-info';
 
+export type UserAction<T extends UserActionType> = Action<T>;
 
-export interface LogInAction {
-  type: typeof LOG_IN;
-  payload: UserInfo;
-}
+export type SetVRCUserState = UserAction<'user/set-vrc-user-info'> & {
+  userState: VRCUserState;
+};
 
-export interface LogOutAction {
-  type: typeof LOG_OUT;
-  payload: undefined;
-}
-
-export interface SetStoredCookiesAction {
-  type: typeof SET_AUTH_TOKEN;
-  payload: StoredCookie[];
-}
-
-export type UserActionTypes =
-  | LogInAction
-  | LogOutAction
-  | SetStoredCookiesAction;
+export type UserActions = SetVRCUserState;

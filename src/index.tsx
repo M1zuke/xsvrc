@@ -1,21 +1,26 @@
+import { IpcRenderer } from 'electron';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
-import { persistor, store } from './store/store';
-import { PersistGate } from 'redux-persist/integration/react';
+import { HashRouter } from 'react-router-dom';
+import App from './App';
+import './index.scss';
+import { createAppStore } from './store/store';
+
+type IWindow = Window & {
+  ipcRenderer: IpcRenderer;
+};
+
+export const IpcRenderer = ((window as unknown) as IWindow).ipcRenderer;
+const store = createAppStore();
 
 ReactDOM.render(
-    <Provider store={ store }>
-      <PersistGate persistor={ persistor }>
+  <HashRouter>
+    <Provider store={store}>
+      <React.StrictMode>
         <App />
-      </PersistGate>
-    </Provider>,
-    document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+      </React.StrictMode>
+    </Provider>
+  </HashRouter>,
+  document.getElementById('root'),
+);
