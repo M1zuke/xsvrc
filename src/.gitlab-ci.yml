@@ -1,0 +1,37 @@
+image: node:12.16.1
+
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - node_modules
+    - .yarn/cache
+
+before_script:
+  - yarn config set httpProxy $HTTP_PROXY
+  - yarn config set httpsProxy $HTTPS_PROXY
+  - yarn install
+
+stages:
+  - check
+  - test
+  - build
+
+lint:
+  stage: check
+  script:
+    - yarn lint
+
+type-check:
+  stage: check
+  script:
+    - yarn type-check
+
+coverage:
+  stage: test
+  script:
+    - yarn test --watchAll=false #--coverage (not yet)
+
+build:
+  stage: build
+  script:
+    - yarn run build
