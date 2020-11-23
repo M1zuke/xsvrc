@@ -4,10 +4,12 @@ import { ifLoaded } from '../../../api/prepare';
 import { useApi } from '../../../api/use-api';
 import { Button } from '../../../components/button/Button';
 import { Checkbox } from '../../../components/checkbox/Checkbox';
+import { Content } from '../../../components/content/Content';
 import { FriendOverview } from '../../../components/friend-overview/FriendOverview';
 import { Grid } from '../../../components/grid/Grid';
 import { LoadableContent } from '../../../components/loadable-content/LoadableContent';
 import { ScrollableContent } from '../../../components/scrollable-content/ScrollableContent';
+import { messages } from '../../../i18n/en';
 import { friendInfo } from '../../../store/friends/selectors';
 import styles from './Friends.module.scss';
 
@@ -90,7 +92,7 @@ export function Friends(): ReactElement {
         (o) => !CharacterFilters.includes(o.displayName[0].toUpperCase() as CharacterFilter),
       );
     }
-    return friendInfoWithOrWithoutPrivate.filter((fi) => fi.displayName.startsWith(filter));
+    return friendInfoWithOrWithoutPrivate.filter((fi) => fi.displayName[0].toUpperCase() === filter);
   }, [filter, friendInfoWithOrWithoutPrivate]);
 
   const filterButtons = useMemo(() => {
@@ -121,14 +123,26 @@ export function Friends(): ReactElement {
     };
   }, [friends]);
 
+  const [filteredFriendsCount, friendsCount] = useMemo(() => {
+    if (ifLoaded(friendsInfos) && ifLoaded(filteredFriendInfo)) {
+      return [filteredFriendInfo.length, friendsInfos.length];
+    }
+    return [0, 0];
+  }, [filteredFriendInfo, friendsInfos]);
+
   return (
     <div className={styles.Component}>
-      <div className={styles.FilterButtons}>
+      <Content className={styles.FriendsCountWrapper}>
+        <div className={styles.AllOnlineFriendsCount}>{friendsCount}</div>
+        <div className={styles.FilteredFriendsCount}>{filteredFriendsCount}</div>
+        {messages.Views.Friends.FriendsOnline}
+      </Content>
+      <Content className={styles.FilterButtons}>
         <div className={styles.NormalFilter}>{filterButtons}</div>
         <div className={styles.SpecialFilter}>
           <Checkbox label="Show Private" onClick={setShowPrivate} value={showPrivate} />
         </div>
-      </div>
+      </Content>
       <ScrollableContent>
         <LoadableContent data={filteredFriendInfo}>
           {(data) => (

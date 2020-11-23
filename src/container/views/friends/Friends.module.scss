@@ -4,10 +4,34 @@
 
 .Component {
   display: grid;
-  grid-template-rows: autoSize() auto;
+  grid-template-rows: repeat(2, autoSize()) auto;
   grid-gap: $outerSpacing;
   height: 100%;
   overflow: hidden;
+
+  .FriendsCountWrapper {
+    display: grid;
+    grid-template-columns: repeat(3, autoSize());
+    align-items: center;
+
+    .AllOnlineFriendsCount {
+      padding: $tinySpacing $smallSpacing;
+      background-color: $colorBlue;
+      color: black;
+      font-weight: bold;
+      border-top-left-radius: $standardBorderRadius;
+      border-bottom-left-radius: $standardBorderRadius;
+    }
+
+    .FilteredFriendsCount {
+      padding: $tinySpacing $smallSpacing;
+      background-color: $color3;
+      font-weight: bold;
+      border-top-right-radius: $standardBorderRadius;
+      border-bottom-right-radius: $standardBorderRadius;
+      margin-right: $innerSpacing;
+    }
+  }
 
   .FilterButtons {
     background-color: $color1;
@@ -36,5 +60,15 @@
     overflow: auto;
     height: 100%;
     width: 100%;
+  }
+}
+
+@media only screen and (max-width: 1510px) {
+  .Component {
+    .FilterButtons {
+      .NormalFilter {
+        grid-template-columns: repeat(14, autoSize());
+      }
+    }
   }
 }

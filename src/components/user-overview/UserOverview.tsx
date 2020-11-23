@@ -6,6 +6,7 @@ import { routes } from '../../common/routes';
 import { useMessages } from '../../i18n';
 import { vrcUserInfo } from '../../store/user/selectors';
 import { Button } from '../button/Button';
+import { Content } from '../content/Content';
 import styles from './UserOverview.module.scss';
 
 export function UserOverview(): ReactElement {
@@ -35,7 +36,7 @@ export function UserOverview(): ReactElement {
   }
 
   return (
-    <div className={styles.Component}>
+    <Content className={styles.Component}>
       <div style={backgroundStyle} className={styles.UserImage}>
         <div className={styles.UserName}>{userInfo.displayName}</div>
       </div>
@@ -55,6 +56,6 @@ export function UserOverview(): ReactElement {
           {messages.Views.Overview.Navigation.Friends.Title}
         </Button>
       </div>
-    </div>
+    </Content>
   );
 }
