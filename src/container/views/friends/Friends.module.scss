@@ -48,6 +48,8 @@
 
     .SpecialFilter {
       display: grid;
+      grid-template-columns: repeat(2, autoSize());
+      grid-gap: $innerSpacing;
       justify-content: flex-end;
     }
   }
@@ -63,7 +65,7 @@
   }
 }
 
-@media only screen and (max-width: 1510px) {
+@media only screen and (max-width: 1610px) {
   .Component {
     .FilterButtons {
       .NormalFilter {

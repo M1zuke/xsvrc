@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 export type API = {
   info(): Promise<void>;
   login(username: string, password: string): Promise<void>;
-  friends(): Promise<void>;
+  friends(offline?: boolean): Promise<void>;
 };
 
 export function useApi(): API {
@@ -23,8 +23,8 @@ export function useApi(): API {
       login: async (username: string, password: string) => {
         return dispatch(login(username, password, history));
       },
-      friends: async () => {
-        return dispatch(friends());
+      friends: async (offline?: boolean) => {
+        return dispatch(friends(offline));
       },
     }),
     [dispatch, history],

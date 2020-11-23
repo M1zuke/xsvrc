@@ -10,16 +10,16 @@ export function friends(offline?: boolean, friendsInfo: FriendInfo[] = [], offse
   return async function (dispatch, getState) {
     const state = getState();
 
-    if (state.friends === null || (offline && state.friends !== 'loading')) {
+    if (state.friends === null) {
       dispatch(setFriendInfo('loading'));
     }
 
     const response = await prepare<FriendInfo[]>(state, dispatch, {
       url: api('auth/user/friends'),
       params: [
+        { key: 'offset', value: offset },
         { key: 'n', value: limit },
         { key: 'offline', value: (!!offline).toString() },
-        { key: 'offset', value: offset },
       ],
     });
 
