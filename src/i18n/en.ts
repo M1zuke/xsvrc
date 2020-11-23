@@ -20,6 +20,10 @@ export const messages = {
     },
     Friends: {
       Title: 'Friends',
+      FriendsOnline: 'Friends online',
+    },
+    FriendsProfile: {
+      NotFound: 'User not Found',
     },
   },
 };

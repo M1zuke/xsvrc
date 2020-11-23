@@ -1,6 +1,6 @@
 {
-  "name": "vrc",
-  "version": "0.1.0",
+  "name": "e-vrc",
+  "version": "0.1.2",
   "private": true,
   "main": "public/electron.js",
   "homepage": ".",

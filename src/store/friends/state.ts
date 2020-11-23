@@ -1,7 +1,7 @@
 import { Loadable } from '../reducer';
 
 type DeveloperType = 'none';
-type FriendStatus = 'ask me' | 'private' | 'active' | 'join me';
+type FriendStatus = 'ask me' | 'active' | 'join me' | 'busy';
 export type FriendInfo = {
   bio: string;
   currentAvatarImageUrl: string;

@@ -32,7 +32,6 @@ function createWindow() {
   mainWindow.on('closed', () => (mainWindow = null));
 
   electron.ipcMain.handle('fetch', async (event, args) => {
-    console.log(args);
     unhandled();
     const cookiejar = request.jar();
 
@@ -42,8 +41,15 @@ function createWindow() {
       });
     }
 
+    const url = new URL(args.url);
+    if (args.params) {
+      args.params.forEach((o) => url.searchParams.set(o.key, o.value));
+    }
+
+    console.log(url.toString());
+
     return request({
-      url: args.url,
+      url: url.toString(),
       method: args.method,
       body: args.body,
       headers: args.headers,
