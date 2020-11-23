@@ -1,12 +1,13 @@
 import { Action } from 'redux';
-import { VRCUserState } from './state';
+import { Loadable } from '../reducer';
+import { VRCUserInfo } from './state';
 
-export type UserActionType = 'user/set-vrc-user-info';
+export type UserActionType = 'user/set-vrc-user-info' | 'user/set-cookies' | 'user/reset-cookies';
 
 export type UserAction<T extends UserActionType> = Action<T>;
 
-export type SetVRCUserState = UserAction<'user/set-vrc-user-info'> & {
-  userState: VRCUserState;
+export type SetVRCUserInfo = UserAction<'user/set-vrc-user-info'> & {
+  userInfo: Loadable<VRCUserInfo>;
 };
 
-export type UserActions = SetVRCUserState;
+export type UserActions = SetVRCUserInfo;

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UserOverview /> renders correctly with userInfo 1`] = `
+"<div class=\\"Component\\">
+  <div style=\\"background-image: url(testUrl);\\" class=\\"UserImage\\">
+    <div class=\\"UserName\\">TestUser</div>
+  </div>
+  <div class=\\"UserName\\">TestUser</div>
+  <div class=\\"UserName\\"><button aria-label=\\"navigate to friends\\" class=\\"Component\\"><span class=\\"StyleElement\\">Friends</span></button></div>
+</div>"
+`;
+
+exports[`<UserOverview /> renders empty on empty storage 1`] = `""`;

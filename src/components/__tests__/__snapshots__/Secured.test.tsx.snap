@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Secured /> Component renders Login if not logged in 1`] = `
+"<div class=\\"Component\\">
+  <div class=\\"LoginBox\\">
+    <div class=\\"LoginImage\\"></div><input class=\\"Component\\" type=\\"text\\" placeholder=\\"Username\\" value=\\"\\"><input class=\\"Component\\" type=\\"password\\" placeholder=\\"Password\\" value=\\"\\"><button class=\\"Component\\"><span class=\\"StyleElement\\">Login</span></button>
+  </div>
+</div>"
+`;
+
+exports[`<Secured /> Component renders children if logged in 1`] = `"<div data-testid=\\"test-content\\"></div>"`;

@@ -1,0 +1,14 @@
+@import '../../common/_spacing';
+@import '../../common/_colors';
+
+.Component {
+  border: 0;
+  margin: 0;
+  padding: $textInputPadding;
+  background-color: $textInputBackgroundColor;
+  color: $textInputFontColor;
+
+  &:focus {
+    outline: none;
+  }
+}

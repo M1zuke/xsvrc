@@ -1,0 +1,50 @@
+@import '../../common/_spacing';
+@import '../../common/_colors';
+
+.Component {
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+
+  .StyleElement {
+    background-color: $buttonBackgroundColor;
+    padding: $buttonPadding;
+    color: $buttonFontColor;
+    cursor: pointer;
+    transition: background-color 100ms linear;
+    user-select: none;
+
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    border-radius: $buttonBorderRadius;
+
+
+    &:hover {
+      background-color: $buttonBackgroundColorOnHover;
+    }
+
+    &.Disabled {
+      cursor: no-drop;
+      opacity: 0.3;
+    }
+
+    &.Active {
+      background-color: $buttonActiveBackgroundColor;
+      color: $buttonActiveFontColor;
+
+      &:hover {
+        background-color: $buttonActiveBackgroundColorOnHover;
+      }
+    }
+  }
+
+  &.FullWidth {
+    width: 100%;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,0 +1,31 @@
+// Spacings
+$outerSpacing: 20px;
+$innerSpacing: 11px;
+$smallSpacing: 7px;
+$tinySpacing: 3px;
+
+$smallBorderRadius: 3px;
+$standardBorderRadius: 6px;
+
+// Button
+$buttonPadding: $smallSpacing $innerSpacing;
+$buttonBorderRadius: $smallBorderRadius;
+
+// Login
+$loginGridGap: $innerSpacing;
+$loginPadding: $outerSpacing;
+
+// TextInput
+$textInputPadding: $smallSpacing $smallSpacing;
+
+// App
+$appPadding: $outerSpacing;
+
+// Home
+$homeGridGap: $innerSpacing;
+
+// UserOverview
+$userOverviewPadding: $outerSpacing;
+$userOverviewGridGap: $innerSpacing;
+$userOverviewHighlightPadding: $tinySpacing $smallSpacing;
+

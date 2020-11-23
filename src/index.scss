@@ -1,3 +1,5 @@
+@import "src/common/_colors";
+@import "src/common/_spacing";
 
 body {
   margin: 0;
@@ -10,7 +12,8 @@ body {
   font-size: 14px;
   height: 100vh;
   width: 100vw;
-  text-align: center;
+  background-color: $indexBackgroundColor;
+  color: $indexFontColor;
 }
 
 #root {
@@ -21,4 +24,6 @@ body {
 * {
   box-sizing: border-box;
 }
+
+
 

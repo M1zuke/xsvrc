@@ -1,0 +1,40 @@
+@import "../../../common/_mixins";
+@import "../../../common/_spacing";
+@import "../../../common/_colors";
+
+.Component {
+  display: grid;
+  grid-template-rows: autoSize() auto;
+  grid-gap: $outerSpacing;
+  height: 100%;
+  overflow: hidden;
+
+  .FilterButtons {
+    background-color: $color1;
+    padding: $innerSpacing;
+    border-radius: $standardBorderRadius;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+
+    .NormalFilter {
+      display: grid;
+      grid-template-columns: repeat(28, autoSize());
+      grid-gap: $smallSpacing;
+    }
+
+    .SpecialFilter {
+      display: grid;
+      justify-content: flex-end;
+    }
+  }
+
+  .ScrollableContent {
+    background-color: $color1;
+    padding: $innerSpacing;
+    border-radius: $buttonBorderRadius;
+
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+  }
+}
