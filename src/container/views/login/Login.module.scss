@@ -1,0 +1,22 @@
+@import "../../../common/_colors";
+@import "../../../common/_spacing";
+
+.Component {
+  text-align: center;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  .LoginBox {
+    background-color: $loginBackgroundColor;
+    padding: $loginPadding;
+    width: 250px;
+    display: grid;
+    grid-gap: $loginGridGap;
+
+    .LoginImage {
+      height: 100px;
+    }
+  }
+}

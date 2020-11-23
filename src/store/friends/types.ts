@@ -1,9 +1,13 @@
-export const UPDATE_FRIEND_INFOS = "UPDATE_FRIEND_INFOS";
+import { Action } from 'redux';
+import { Loadable } from '../reducer';
+import { FriendInfo } from './state';
 
-export interface UpdateFriendInfosAction {
-  type: typeof UPDATE_FRIEND_INFOS;
-  payload: FriendInfo[];
-}
+export type FriendsActionType = 'friend/setFriendInfo';
 
-export type FriendActionTypes =
-  | UpdateFriendInfosAction
+export type FriendAction<T extends FriendsActionType> = Action<T>;
+
+export type SetFriendInfo = FriendAction<'friend/setFriendInfo'> & {
+  friendInfo: Loadable<FriendInfo[]>;
+};
+
+export type FriendActions = SetFriendInfo;

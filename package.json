@@ -1,38 +1,49 @@
 {
-  "name": "vrc-account-manager",
+  "name": "vrc",
   "version": "0.1.0",
   "private": true,
   "main": "public/electron.js",
+  "homepage": ".",
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.26",
-    "@fortawesome/free-brands-svg-icons": "^5.12.0",
-    "@fortawesome/free-solid-svg-icons": "^5.12.0",
-    "@fortawesome/react-fontawesome": "^0.1.8",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.4.0",
-    "@testing-library/user-event": "^7.2.1",
-    "electron-fetch": "^1.4.0",
-    "electron-is-dev": "^1.1.0",
-    "lodash": "^4.17.15",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-redux": "^7.1.3",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.3.0",
-    "redux": "^4.0.5",
-    "redux-logger": "^3.0.6",
-    "redux-persist": "^6.0.0",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.8",
-    "tough-cookie": "^3.0.1",
-    "typescript": "^3.7.4"
+    "@material-ui/core": "4.11.0",
+    "@material-ui/icons": "4.9.1",
+    "classnames": "2.2.6",
+    "electron-fetch": "1.7.1",
+    "electron-is-dev": "1.2.0",
+    "electron-unhandled": "3.0.2",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-redux": "7.2.1",
+    "react-router-dom": "5.2.0",
+    "react-scripts": "3.4.3",
+    "redux": "4.0.5",
+    "redux-logger": "3.0.6",
+    "redux-persist": "6.0.0",
+    "redux-thunk": "2.3.0",
+    "request": "2.88.2",
+    "request-promise-native": "1.0.9",
+    "tough-cookie": "4.0.0"
+  },
+  "resolutions": {
+    "@types/react": "16.9.49"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "cross-env EXTEND_ESLINT=true REACT_APP_STORE_LOG=true react-scripts start",
+    "build": "cross-env EXTEND_ESLINT=true react-scripts build",
+    "test": "react-scripts test --env=jsdom-fourteen --watchAll=false",
+    "coverage": "react-scripts test --env=jsdom-fourteen --watchAll=false --coverage",
     "eject": "react-scripts eject",
-    "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\""
+    "upgrade": "yarn upgrade-interactive",
+    "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
+    "package": "yarn build && electron-builder build --win -c.extraMetadata.main=build/electron.js --publish never"
+  },
+  "build": {
+    "appId": "com.example.electron-boilerplate",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -50,19 +61,48 @@
     ]
   },
   "devDependencies": {
-    "@types/jest": "^24.9.0",
-    "@types/lodash": "^4.14.149",
-    "@types/node": "^12.12.24",
-    "@types/react": "^16.9.17",
-    "@types/react-dom": "^16.9.4",
-    "@types/react-redux": "^7.1.6",
-    "@types/react-router-dom": "^5.1.3",
-    "@types/redux-logger": "^3.0.7",
-    "@types/redux-persist": "^4.3.1",
-    "concurrently": "^5.0.2",
-    "electron": "^7.1.9",
-    "electron-builder": "^22.2.0",
-    "node-sass": "^4.13.0",
-    "wait-on": "^3.3.0"
+    "@testing-library/dom": "7.24.3",
+    "@testing-library/jest-dom": "5.11.4",
+    "@testing-library/react": "11.0.4",
+    "@testing-library/react-hooks": "3.4.2",
+    "@testing-library/user-event": "12.1.6",
+    "@types/classnames": "2.2.10",
+    "@types/eslint-config-prettier": "^6",
+    "@types/eslint-plugin-prettier": "^3",
+    "@types/jest": "26.0.14",
+    "@types/lodash.merge": "^4",
+    "@types/node": "12.12.62",
+    "@types/prettier": "^2",
+    "@types/pretty": "^2",
+    "@types/react": "16.9.49",
+    "@types/react-dom": "16.9.8",
+    "@types/react-redux": "7.1.9",
+    "@types/react-router-dom": "5.1.5",
+    "@types/redux-logger": "3.0.8",
+    "concurrently": "5.3.0",
+    "cross-env": "7.0.2",
+    "electron": "10.1.2",
+    "electron-builder": "22.8.1",
+    "electron-packager": "15.1.0",
+    "electron-renderer": "2.0.4",
+    "eslint-config-prettier": "6.12.0",
+    "eslint-plugin-prettier": "3.1.4",
+    "lodash.merge": "4.6.2",
+    "node-sass": "4.14.1",
+    "prettier": "2.1.2",
+    "pretty": "2.0.0",
+    "typescript": "3.9.7",
+    "wait-on": "5.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }

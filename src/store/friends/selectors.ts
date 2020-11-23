@@ -1,5 +1,5 @@
-import { RootState } from '../rootReducer';
+import { AppState } from '../index';
+import { Loadable } from '../reducer';
+import { FriendInfo } from './state';
 
-export const selectFriendInfo = (state: RootState) => state.friends.friendInfos;
-export const selectFriendInfoFetched = (state: RootState) => state.friends.friendsFetched;
-export const selectFriendInfoLastFetched = (state: RootState) => new Date(state.friends.lastFetched);
+export const friendInfo = (appState: AppState): Loadable<FriendInfo[]> => appState.friends;

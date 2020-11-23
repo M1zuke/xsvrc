@@ -1,0 +1,40 @@
+@import "../../common/_spacing";
+@import "../../common/_colors";
+
+.Component {
+  height: 100%;
+  overflow: hidden;
+  background-color: $color1;
+  padding: $outerSpacing;
+  padding-right: $smallSpacing;
+  border-radius: $standardBorderRadius;
+
+  .ScrollableContent {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    padding-right: $innerSpacing;
+
+    /* width */
+    &::-webkit-scrollbar {
+      width: $innerSpacing;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: $color1;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: $color0;
+      border-radius: $standardBorderRadius;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: $color2;
+    }
+
+  }
+}
