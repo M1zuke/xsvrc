@@ -19,6 +19,8 @@ export const messages = {
       },
     },
     Friends: {
+      ShowPrivate: 'Show Private',
+      ShowOffline: 'Show Offline',
       Title: 'Friends',
       FriendsOnline: 'Friends online',
     },

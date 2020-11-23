@@ -10,7 +10,9 @@ import { Grid } from '../../../components/grid/Grid';
 import { LoadableContent } from '../../../components/loadable-content/LoadableContent';
 import { ScrollableContent } from '../../../components/scrollable-content/ScrollableContent';
 import { messages } from '../../../i18n/en';
+import { setFriendInfo } from '../../../store/friends/action';
 import { friendInfo } from '../../../store/friends/selectors';
+import { useAppDispatch } from '../../../thunk/dispatch';
 import styles from './Friends.module.scss';
 
 export const CharacterFilters = [
@@ -46,10 +48,20 @@ export const CharacterFilters = [
 export type CharacterFilter = typeof CharacterFilters[number];
 
 export function Friends(): ReactElement {
+  const dispatch = useAppDispatch();
   const { friends } = useApi();
   const friendsInfos = useSelector(friendInfo);
   const [filter, setFilter] = useState<CharacterFilter>('ALL');
   const [showPrivate, setShowPrivate] = useState(true);
+  const [showOffline, setShowOffline] = useState(false);
+
+  const setOfflineFriends = useCallback(
+    (value: boolean) => {
+      dispatch(setFriendInfo('loading'));
+      setShowOffline(value);
+    },
+    [dispatch],
+  );
 
   const friendInfoWithOrWithoutPrivate = useMemo(() => {
     if (ifLoaded(friendsInfos) && !showPrivate) {
@@ -112,16 +124,16 @@ export function Friends(): ReactElement {
   }, [disableFilterButton, filter]);
 
   useEffect(() => {
-    friends().finally();
+    friends(showOffline).finally();
 
     const interval = setInterval(() => {
-      friends().finally();
+      friends(showOffline).finally();
     }, 25000);
 
     return () => {
       clearInterval(interval);
     };
-  }, [friends]);
+  }, [friends, showOffline]);
 
   const [filteredFriendsCount, friendsCount] = useMemo(() => {
     if (ifLoaded(friendsInfos) && ifLoaded(filteredFriendInfo)) {
@@ -140,7 +152,8 @@ export function Friends(): ReactElement {
       <Content className={styles.FilterButtons}>
         <div className={styles.NormalFilter}>{filterButtons}</div>
         <div className={styles.SpecialFilter}>
-          <Checkbox label="Show Private" onClick={setShowPrivate} value={showPrivate} />
+          <Checkbox label={messages.Views.Friends.ShowOffline} onClick={setOfflineFriends} value={showOffline} />
+          <Checkbox label={messages.Views.Friends.ShowPrivate} onClick={setShowPrivate} value={showPrivate} />
         </div>
       </Content>
       <ScrollableContent>
