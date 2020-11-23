@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Friends /> Component fetches friends 1`] = `"<div>Friends</div>"`;
+
+exports[`<Friends /> Component receives an error 1`] = `"<div>Friends</div>"`;

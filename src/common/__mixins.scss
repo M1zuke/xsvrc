@@ -1,0 +1,19 @@
+/**
+ * should be used for grid columns or rows that size with percentage. changing the outer elements size will affect
+ * these elements and with this the element will only size down till it reaches the minimum possible size. Without
+ * it will size down till 0px but the inner content will overlap the wrapping element.
+ *
+ * @param {number} size - the scaling size of the element in percentage.
+ */
+@function holdMinAspect($size) {
+  @return minmax(min-content, $size);
+}
+
+/**
+ * Lets the element size adjust to its real size. It will not be stretched by outer elements but calculates size
+ * over the inner elements sizes. The element can still resize by wrapping of inner components, but only till the
+ * min-content size is reached. This is bidirectional depending on usage for width (column) or height (row).
+ */
+@function autoSize() {
+  @return minmax(min-content, max-content);
+}

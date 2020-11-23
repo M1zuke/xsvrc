@@ -1,3 +1,5 @@
+import { Loadable } from '../reducer';
+
 type VRCState = 'online' | 'active' | 'offline';
 type VRCUserStatus = 'active' | 'join me' | 'ask me' | 'busy' | 'offline';
 type VRCDeveloperType = 'none' | 'trusted' | 'internal' | 'moderator';
@@ -6,7 +8,11 @@ type VRCPastDisplayNames = {
   updated_at: string;
 };
 
-export type VRCUserState = {
+type VRCUserFeature = {
+  twoFactorAuth: boolean;
+};
+
+export type VRCUserInfo = {
   username: string;
   displayName: string;
   pastDisplayNames: VRCPastDisplayNames[];
@@ -20,7 +26,7 @@ export type VRCUserState = {
   obfuscatedEmail: string;
   obfuscatedPendingEmail: string;
   steamId: string;
-  steamDetails: unknown[];
+  steamDetails: {};
   oculusId: string;
   acceptedTOSVersion: number;
   hasBirthday: boolean;
@@ -45,55 +51,12 @@ export type VRCUserState = {
   accountDeletionDate: string | null;
   unsubscribe: boolean;
   tags: string[];
-  feature: unknown[];
+  feature: VRCUserFeature;
   developerType: VRCDeveloperType;
   isFriend: boolean;
   friendKey: string;
 };
 
-export const INITIAL_USER_STATE: VRCUserState = {
-  username: '',
-  displayName: '',
-  pastDisplayNames: [],
-  id: '',
-  bio: '',
-  bioLinks: [],
-  email: '',
-  emailVerified: false,
-  hasEmail: false,
-  hasPendingEmail: false,
-  obfuscatedEmail: '',
-  obfuscatedPendingEmail: '',
-  steamId: '',
-  steamDetails: [],
-  oculusId: '',
-  acceptedTOSVersion: -1,
-  hasBirthday: false,
-  friends: [],
-  onlineFriends: [],
-  activeFriends: [],
-  offlineFriends: [],
-  friendGroupNames: [],
-  state: 'offline',
-  status: 'offline',
-  statusDescription: '',
-  currentAvatar: '',
-  currentAvatarAssetUrl: '',
-  currentAvatarImageUrl: '',
-  currentAvatarThumbnailImageUrl: '',
-  homeLocation: '',
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  last_login: '',
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  last_platform: '',
-  hasLoggedInFromClient: false,
-  twoFactorAuthEnabled: false,
-  allowAvatarCopying: false,
-  accountDeletionDate: '',
-  unsubscribe: false,
-  tags: [],
-  feature: [],
-  developerType: 'none',
-  isFriend: false,
-  friendKey: '',
-};
+export type VRCUserState = Loadable<VRCUserInfo>;
+
+export const INITIAL_USER_STATE: VRCUserState = null;

@@ -1,0 +1,11 @@
+@import "../../common/_mixins";
+@import "../../common/_spacing";
+
+.Component {
+  display: grid;
+  grid-template-columns: repeat(2, autoSize());
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  grid-gap: $smallSpacing;
+}

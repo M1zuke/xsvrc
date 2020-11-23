@@ -1,0 +1,27 @@
+@import "../../common/_spacing";
+@import "../../common/_mixins";
+
+.Component {
+  height: 100%;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: auto autoSize();
+  padding: $outerSpacing;
+  grid-gap: $outerSpacing;
+
+  .PageContent {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .FloatingPath {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border-top-left-radius: 6px;
+  }
+}

@@ -1,0 +1,59 @@
+@import "../../common/_spacing";
+@import "../../common/_colors";
+
+.Component {
+  .AvatarThumbnail {
+    overflow: hidden;
+    border-radius: $standardBorderRadius;
+    box-shadow: black 1px 1px 5px;
+    position: relative;
+    padding-bottom: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    .Status {
+      position: absolute;
+      top: $smallSpacing;
+      right: $smallSpacing;
+      background-color: $color2;
+      padding: $tinySpacing;
+      width: 20px;
+      height: 20px;
+      box-shadow: black 0 0 2px;
+      border-radius: 50%;
+
+      &.Active:not(.Private) {
+        display: none;
+      }
+
+      &.AskMe {
+        background-color: orange;
+      }
+
+      &.Private {
+        background-color: red;
+      }
+
+      &.JoinMe {
+        background-color: #25AAC5;
+      }
+    }
+
+    .DisplayName {
+      position: absolute;
+      background-color: transparentize($color0, 0.05);
+      padding: $tinySpacing;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border-radius: 0 0 $standardBorderRadius $standardBorderRadius;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
+
+
+}
