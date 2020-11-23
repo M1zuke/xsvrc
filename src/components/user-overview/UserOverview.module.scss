@@ -3,12 +3,9 @@
 @import "../../common/_colors";
 
 .Component {
-  padding: $userOverviewPadding;
-  background-color: $userOverviewBackgroundColor;
   display: grid;
   grid-gap: $userOverviewGridGap;
   grid-template-rows: repeat(4, autoSize());
-  border-radius: $standardBorderRadius;
 
   .UserImage {
     width: 200px;

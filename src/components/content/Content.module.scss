@@ -1,0 +1,8 @@
+@import "../../common/_spacing";
+@import "../../common/_colors";
+
+.Component {
+  background-color: $color1;
+  padding: $innerSpacing;
+  border-radius: $standardBorderRadius;
+}

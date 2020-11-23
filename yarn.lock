@@ -6168,6 +6168,63 @@ __metadata:
   languageName: node
   linkType: hard
 
+"e-vrc@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "e-vrc@workspace:."
+  dependencies:
+    "@material-ui/core": 4.11.0
+    "@material-ui/icons": 4.9.1
+    "@testing-library/dom": 7.24.3
+    "@testing-library/jest-dom": 5.11.4
+    "@testing-library/react": 11.0.4
+    "@testing-library/react-hooks": 3.4.2
+    "@testing-library/user-event": 12.1.6
+    "@types/classnames": 2.2.10
+    "@types/eslint-config-prettier": ^6
+    "@types/eslint-plugin-prettier": ^3
+    "@types/jest": 26.0.14
+    "@types/lodash.merge": ^4
+    "@types/node": 12.12.62
+    "@types/prettier": ^2
+    "@types/pretty": ^2
+    "@types/react": 16.9.49
+    "@types/react-dom": 16.9.8
+    "@types/react-redux": 7.1.9
+    "@types/react-router-dom": 5.1.5
+    "@types/redux-logger": 3.0.8
+    classnames: 2.2.6
+    concurrently: 5.3.0
+    cross-env: 7.0.2
+    electron: 10.1.2
+    electron-builder: 22.8.1
+    electron-fetch: 1.7.1
+    electron-is-dev: 1.2.0
+    electron-packager: 15.1.0
+    electron-renderer: 2.0.4
+    electron-unhandled: 3.0.2
+    eslint-config-prettier: 6.12.0
+    eslint-plugin-prettier: 3.1.4
+    lodash.merge: 4.6.2
+    node-sass: 4.14.1
+    prettier: 2.1.2
+    pretty: 2.0.0
+    react: 16.13.1
+    react-dom: 16.13.1
+    react-redux: 7.2.1
+    react-router-dom: 5.2.0
+    react-scripts: 3.4.3
+    redux: 4.0.5
+    redux-logger: 3.0.6
+    redux-persist: 6.0.0
+    redux-thunk: 2.3.0
+    request: 2.88.2
+    request-promise-native: 1.0.9
+    tough-cookie: 4.0.0
+    typescript: 3.9.7
+    wait-on: 5.2.0
+  languageName: unknown
+  linkType: soft
+
 "ecc-jsbn@npm:~0.1.1":
   version: 0.1.2
   resolution: "ecc-jsbn@npm:0.1.2"
@@ -16810,63 +16867,6 @@ typescript@3.9.7:
   checksum: fc571a62d2cf797ae8773ebb3cb0d2bea50ed02059e128dd9087975929fce4c80a6485ce1aaf7d44ef69db99dfdcde50b6be5d5eb73b296660d761c32fb544fe
   languageName: node
   linkType: hard
-
-"vrc@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "vrc@workspace:."
-  dependencies:
-    "@material-ui/core": 4.11.0
-    "@material-ui/icons": 4.9.1
-    "@testing-library/dom": 7.24.3
-    "@testing-library/jest-dom": 5.11.4
-    "@testing-library/react": 11.0.4
-    "@testing-library/react-hooks": 3.4.2
-    "@testing-library/user-event": 12.1.6
-    "@types/classnames": 2.2.10
-    "@types/eslint-config-prettier": ^6
-    "@types/eslint-plugin-prettier": ^3
-    "@types/jest": 26.0.14
-    "@types/lodash.merge": ^4
-    "@types/node": 12.12.62
-    "@types/prettier": ^2
-    "@types/pretty": ^2
-    "@types/react": 16.9.49
-    "@types/react-dom": 16.9.8
-    "@types/react-redux": 7.1.9
-    "@types/react-router-dom": 5.1.5
-    "@types/redux-logger": 3.0.8
-    classnames: 2.2.6
-    concurrently: 5.3.0
-    cross-env: 7.0.2
-    electron: 10.1.2
-    electron-builder: 22.8.1
-    electron-fetch: 1.7.1
-    electron-is-dev: 1.2.0
-    electron-packager: 15.1.0
-    electron-renderer: 2.0.4
-    electron-unhandled: 3.0.2
-    eslint-config-prettier: 6.12.0
-    eslint-plugin-prettier: 3.1.4
-    lodash.merge: 4.6.2
-    node-sass: 4.14.1
-    prettier: 2.1.2
-    pretty: 2.0.0
-    react: 16.13.1
-    react-dom: 16.13.1
-    react-redux: 7.2.1
-    react-router-dom: 5.2.0
-    react-scripts: 3.4.3
-    redux: 4.0.5
-    redux-logger: 3.0.6
-    redux-persist: 6.0.0
-    redux-thunk: 2.3.0
-    request: 2.88.2
-    request-promise-native: 1.0.9
-    tough-cookie: 4.0.0
-    typescript: 3.9.7
-    wait-on: 5.2.0
-  languageName: unknown
-  linkType: soft
 
 "w3c-hr-time@npm:^1.0.1":
   version: 1.0.2

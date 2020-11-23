@@ -3,7 +3,7 @@ import { StoredCookie } from '../store/cookies/state';
 
 export interface RequestParams {
   key: string;
-  value: string;
+  value: string | number;
 }
 
 export interface RequestConfig {

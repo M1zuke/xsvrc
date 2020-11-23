@@ -2,6 +2,8 @@
 @import "../../common/_colors";
 
 .Component {
+  cursor: pointer;
+
   .AvatarThumbnail {
     overflow: hidden;
     border-radius: $standardBorderRadius;
@@ -11,6 +13,18 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+
+    .PrivateIcon {
+      position: absolute;
+      top: $smallSpacing;
+      left: $smallSpacing;
+      background-color: $color2;
+      padding: $tinySpacing;
+      border-radius: $standardBorderRadius;
+      display: grid;
+      justify-content: center;
+      align-items: center;
+    }
 
     .Status {
       position: absolute;
@@ -24,14 +38,14 @@
       border-radius: 50%;
 
       &.Active:not(.Private) {
-        display: none;
+        background-color: lawngreen;
       }
 
       &.AskMe {
         background-color: orange;
       }
 
-      &.Private {
+      &.Busy {
         background-color: red;
       }
 
@@ -47,7 +61,6 @@
       bottom: 0;
       left: 0;
       right: 0;
-      border-radius: 0 0 $standardBorderRadius $standardBorderRadius;
       text-align: center;
       text-overflow: ellipsis;
       white-space: nowrap;

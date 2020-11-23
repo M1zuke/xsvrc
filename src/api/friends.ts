@@ -4,21 +4,31 @@ import { FriendInfo } from '../store/friends/state';
 import { AppThunkAction } from '../thunk';
 import { api, prepare } from './prepare';
 
-export function friends(): AppThunkAction<Promise<void>> {
+const limit = 100;
+
+export function friends(offline?: boolean, friendsInfo: FriendInfo[] = [], offset = 0): AppThunkAction<Promise<void>> {
   return async function (dispatch, getState) {
     const state = getState();
 
-    if (state.friends === null) {
+    if (state.friends === null || (offline && state.friends !== 'loading')) {
       dispatch(setFriendInfo('loading'));
     }
 
-    const result = await prepare<FriendInfo[]>(state, dispatch, {
+    const response = await prepare<FriendInfo[]>(state, dispatch, {
       url: api('auth/user/friends'),
-      params: [{ key: 'offline', value: 'false' }],
+      params: [
+        { key: 'n', value: limit },
+        { key: 'offline', value: (!!offline).toString() },
+        { key: 'offset', value: offset },
+      ],
     });
 
-    if (result.type === 'entity') {
-      dispatch(setFriendInfo(result.result));
+    if (response.type === 'entity') {
+      const newFriendInfo = [...friendsInfo, ...response.result];
+      if (response.result.length === limit) {
+        return dispatch(friends(offline, newFriendInfo, offset + limit));
+      }
+      dispatch(setFriendInfo(newFriendInfo));
     } else {
       dispatch(resetStoredCookies());
     }

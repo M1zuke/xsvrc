@@ -9,6 +9,9 @@ import styles from './App.module.scss';
 
 const HomeComponent = lazy(() => import('../views/home/Home').then(({ Home }) => ({ default: Home })));
 const FriendComponent = lazy(() => import('../views/friends/Friends').then(({ Friends }) => ({ default: Friends })));
+const FriendProfile = lazy(() =>
+  import('../views/friends/friend-profile/FriendProfile').then(({ FriendProfile }) => ({ default: FriendProfile })),
+);
 
 const App: React.FC = () => {
   const history = useHistory();
@@ -33,8 +36,9 @@ const App: React.FC = () => {
         <div className={styles.PageContent}>
           <Suspense fallback={<Loading />}>
             <Switch>
-              <Route {...routes.home} component={HomeComponent} />
-              <Route {...routes.friends} component={FriendComponent} />
+              <Route {...routes.home.config} component={HomeComponent} />
+              <Route {...routes.friends.config} component={FriendComponent} />
+              <Route {...routes.friendsProfile.config} component={FriendProfile} />
             </Switch>
           </Suspense>
         </div>
