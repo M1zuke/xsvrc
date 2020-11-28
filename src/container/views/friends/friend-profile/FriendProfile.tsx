@@ -11,8 +11,11 @@ import { messages } from '../../../../i18n/en';
 import { selectCachedUser } from '../../../../store/friends/selectors';
 import styles from './FriendsProfile.module.scss';
 
+type FriendProfileParams = {
+  id: string;
+};
 export function FriendProfile(): ReactElement {
-  const { id } = useParams();
+  const { id } = useParams<FriendProfileParams>();
   const cachedUser = useSelector(selectCachedUser(id));
   const { getUser } = useApi();
   const noOp = useCallback(() => undefined, []);

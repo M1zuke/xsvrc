@@ -61,5 +61,6 @@
   "friendKey": "testFriendKey",
   "onlineFriends": [],
   "activeFriends": [],
-  "offlineFriends": []
+  "offlineFriends": [],
+  "userIcon": ""
 }

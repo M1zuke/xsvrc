@@ -70,7 +70,7 @@ type SpyObject<T, F extends FunctionPropertyNames<T>> = Pick<T, Exclude<keyof T,
       >;
   };
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export type HistorySpy = SpyObject<MemoryHistory<Record<string, unknown>>, 'push' | 'replace' | 'goBack'>;
 
@@ -104,7 +104,7 @@ export function spyObject<T, F extends FunctionPropertyNames<T>>(object: T, func
   Object.keys(object).forEach((prop) => {
     const field = prop as F;
     if (functions.includes(field)) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
       jest.spyOn(object, field);
     }
@@ -115,11 +115,11 @@ export function spyObject<T, F extends FunctionPropertyNames<T>>(object: T, func
 
 export function createTestHistory<S>(location?: LocationOverrides<S>): HistorySpy {
   const $location = merge({}, initialLocation, location) as Location<S>;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const history = spyObject(createMemoryHistory(), ['push', 'replace', 'goBack']);
   history.replace($location); // move into test code?
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return history;
 }
