@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { isLoaded } from '../../api/prepare';
 import { routes } from '../../common/routes';
 import { useMessages } from '../../i18n';
+import { selectCachedUser } from '../../store/friends/selectors';
 import { vrcUserInfo } from '../../store/user/selectors';
 import { Button } from '../button/Button';
 import { Content } from '../content/Content';
@@ -11,9 +12,10 @@ import { FriendOverview } from '../friend-overview/FriendOverview';
 import styles from './UserOverview.module.scss';
 
 export function UserOverview(): ReactElement {
-  const userInfo = useSelector(vrcUserInfo);
+  const authenticatedUser = useSelector(vrcUserInfo);
   const messages = useMessages();
   const history = useHistory();
+  const cachedUser = useSelector(selectCachedUser(isLoaded(authenticatedUser) ? authenticatedUser.id : 'none'));
 
   const navigateTo = useCallback(
     (url: string) => {
@@ -26,13 +28,13 @@ export function UserOverview(): ReactElement {
     history.location.pathname,
   ]);
 
-  if (!isLoaded(userInfo)) {
+  if (!isLoaded(cachedUser)) {
     return <></>;
   }
 
   return (
     <Content className={styles.Component}>
-      <FriendOverview friendInfo={userInfo} />
+      <FriendOverview friendInfo={cachedUser} />
       <div className={styles.Navigation}>
         <Button
           aria-label="navigate to home"

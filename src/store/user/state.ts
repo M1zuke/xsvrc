@@ -14,7 +14,7 @@ type VRCUserFeature = {
   twoFactorAuth: boolean;
 };
 
-type AuthenticatedUserInfo = {
+export type AuthenticatedUserInfo = {
   username: string;
   displayName: string;
   pastDisplayNames: VRCPastDisplayNames[];
@@ -28,7 +28,7 @@ type AuthenticatedUserInfo = {
   obfuscatedEmail: string;
   obfuscatedPendingEmail: string;
   steamId: string;
-  steamDetails: {};
+  steamDetails: unknown;
   oculusId: string;
   acceptedTOSVersion: number;
   hasBirthday: boolean;
