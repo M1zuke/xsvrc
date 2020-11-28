@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
-import { ifLoaded } from '../../../api/prepare';
+import { isLoaded } from '../../../api/prepare';
 import { Loading } from '../../../components/loading/Loading';
 import { vrcUserInfo } from '../../../store/user/selectors';
 import styles from './Home.module.scss';
@@ -13,7 +13,7 @@ export function Home(): ReactElement {
     return <Loading />;
   }
 
-  if (!ifLoaded(userInfo)) {
+  if (!isLoaded(userInfo)) {
     return <div>No Content</div>;
   }
 

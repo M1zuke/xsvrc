@@ -1,5 +1,5 @@
 import { AppState } from '../index';
 import { Loadable } from '../reducer';
-import { VRCUserInfo } from './state';
+import { AuthenticatedUserInfo } from './state';
 
-export const vrcUserInfo = (state: AppState): Loadable<VRCUserInfo> => state.userInfo;
+export const vrcUserInfo = (state: AppState): Loadable<AuthenticatedUserInfo> => state.userInfo;

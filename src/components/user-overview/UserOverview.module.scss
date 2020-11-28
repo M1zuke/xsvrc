@@ -6,28 +6,7 @@
   display: grid;
   grid-gap: $userOverviewGridGap;
   grid-template-rows: repeat(4, autoSize());
-
-  .UserImage {
-    width: 200px;
-    height: 200px;
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    border-radius: 50%;
-    position: relative;
-    overflow: hidden;
-    border: 5px solid orange;
-
-    .UserName {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      height: 40px;
-      background-color: transparentize($userOverviewHighlight, 0.1);
-      text-align: center;
-    }
-  }
+  width: 220px;
 
   .Navigation {
     display: grid;

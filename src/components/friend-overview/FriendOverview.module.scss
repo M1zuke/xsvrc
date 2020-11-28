@@ -1,6 +1,8 @@
 @import "../../common/_spacing";
 @import "../../common/_colors";
 
+$trustedRankBorder: $tinySpacing;
+
 .Component {
   cursor: pointer;
 
@@ -14,10 +16,34 @@
     background-repeat: no-repeat;
     background-position: center center;
 
+    &.Visitor {
+      border: $trustedRankBorder solid #D6D6D6;
+    }
+
+    &.NewUser {
+      border: $trustedRankBorder solid #5083DB;
+    }
+
+    &.User {
+      border: $trustedRankBorder solid #5DF848;
+    }
+
+    &.KnownUser {
+      border: $trustedRankBorder solid #FF6600;
+    }
+
+    &.TrustedUser {
+      border: $trustedRankBorder solid #8000FF;
+    }
+
+    &.LegendaryUser {
+      border: $trustedRankBorder solid #FFDA00;
+    }
+
     .PrivateIcon {
       position: absolute;
       top: $smallSpacing;
-      left: $smallSpacing;
+      right: 35px;
       background-color: $color2;
       padding: $tinySpacing;
       border-radius: $standardBorderRadius;
@@ -26,14 +52,23 @@
       align-items: center;
     }
 
+    .Icon {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+    }
+
     .Status {
       position: absolute;
       top: $smallSpacing;
       right: $smallSpacing;
       background-color: $color2;
       padding: $tinySpacing;
-      width: 20px;
-      height: 20px;
+      width: 23px;
+      height: 23px;
       box-shadow: black 0 0 2px;
       border-radius: 50%;
 
@@ -67,6 +102,4 @@
       overflow: hidden;
     }
   }
-
-
 }
