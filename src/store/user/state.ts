@@ -1,7 +1,9 @@
+import { TrustTag } from '../../common/trust-system';
+import { UserInfo } from '../friends/state';
 import { Loadable } from '../reducer';
 
-type VRCState = 'online' | 'active' | 'offline';
-type VRCUserStatus = 'active' | 'join me' | 'ask me' | 'busy' | 'offline';
+export type VRCState = 'online' | 'active' | 'offline';
+export type VRCUserStatus = 'active' | 'join me' | 'ask me' | 'busy' | 'offline';
 type VRCDeveloperType = 'none' | 'trusted' | 'internal' | 'moderator';
 type VRCPastDisplayNames = {
   displayName: string;
@@ -12,7 +14,7 @@ type VRCUserFeature = {
   twoFactorAuth: boolean;
 };
 
-export type VRCUserInfo = {
+type AuthenticatedUserInfo = {
   username: string;
   displayName: string;
   pastDisplayNames: VRCPastDisplayNames[];
@@ -50,13 +52,16 @@ export type VRCUserInfo = {
   allowAvatarCopying: boolean;
   accountDeletionDate: string | null;
   unsubscribe: boolean;
-  tags: string[];
+  tags: TrustTag[];
   feature: VRCUserFeature;
   developerType: VRCDeveloperType;
   isFriend: boolean;
   friendKey: string;
+  userIcon: string;
 };
 
-export type VRCUserState = Loadable<VRCUserInfo>;
+export type EnrichedAuthenticatedUserInfo = AuthenticatedUserInfo & UserInfo;
+
+export type VRCUserState = Loadable<EnrichedAuthenticatedUserInfo>;
 
 export const INITIAL_USER_STATE: VRCUserState = null;

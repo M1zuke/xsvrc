@@ -54,14 +54,10 @@
     }
   }
 
-  .ScrollableContent {
-    background-color: $color1;
-    padding: $innerSpacing;
-    border-radius: $buttonBorderRadius;
-
-    overflow: auto;
-    height: 100%;
-    width: 100%;
+  .FriendsList {
+    display: grid;
+    grid-gap: $innerSpacing;
+    grid-template-columns: repeat(8, 1fr);
   }
 }
 
@@ -71,6 +67,10 @@
       .NormalFilter {
         grid-template-columns: repeat(14, autoSize());
       }
+    }
+
+    .FriendsList {
+      grid-template-columns: repeat(6, 1fr);
     }
   }
 }

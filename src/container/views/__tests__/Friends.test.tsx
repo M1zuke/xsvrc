@@ -4,7 +4,7 @@ import React from 'react';
 import { api } from '../../../api/prepare';
 import * as ElectronFetchModule from '../../../common/electron-fetch';
 import { ElectronResult } from '../../../common/electron-fetch';
-import { VRCUserInfo } from '../../../store/user/state';
+import { AuthenticatedUserInfo } from '../../../store/user/state';
 import { render, withAuthentication } from '../../../test-utils';
 import { Friends } from '../friends/Friends';
 import USER_INFO_FETCH_RESULTS from '../../app/__tests__/user-info-fetch-results.json';
@@ -19,11 +19,11 @@ describe('<Friends /> Component', () => {
 
   it('fetches friends', async () => {
     FetchMock.mockReturnValueOnce(
-      new Promise<ElectronResult<VRCUserInfo>>((resolve) => {
+      new Promise<ElectronResult<AuthenticatedUserInfo>>((resolve) => {
         resolve({
           type: 'entity',
           cookies: [],
-          result: USER_INFO_FETCH_RESULTS as VRCUserInfo,
+          result: USER_INFO_FETCH_RESULTS as AuthenticatedUserInfo,
         });
       }),
     );
@@ -51,7 +51,7 @@ describe('<Friends /> Component', () => {
 
   it('receives an error', async () => {
     FetchMock.mockReturnValueOnce(
-      new Promise<ElectronResult<VRCUserInfo>>((resolve) => {
+      new Promise<ElectronResult<AuthenticatedUserInfo>>((resolve) => {
         resolve({
           // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
           // @ts-ignore

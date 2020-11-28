@@ -14,7 +14,7 @@ import { createMemoryHistory, Location, MemoryHistory } from 'history';
 import merge from 'lodash.merge';
 import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import { messages as en } from './i18n/en';
-import { INITIAL_USER_STATE, VRCUserInfo } from './store/user/state';
+import { INITIAL_USER_STATE, AuthenticatedUserInfo } from './store/user/state';
 
 import USER_INFO_FETCH_RESULT from './container/app/__tests__/user-info-fetch-results.json';
 
@@ -96,7 +96,7 @@ export function withAuthentication(state?: DeepPartial<AppState>): DeepPartial<A
   return merge({}, state || {}, {
     apiInfo: { clientApiKey: 'testApiKey' },
     cookies: [{ key: 'auth', value: 'testAuthToken', url: 'testUrl' }],
-    userInfo: USER_INFO_FETCH_RESULT as VRCUserInfo,
+    userInfo: USER_INFO_FETCH_RESULT as AuthenticatedUserInfo,
   });
 }
 

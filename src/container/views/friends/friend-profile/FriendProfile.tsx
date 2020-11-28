@@ -1,29 +1,45 @@
-import React, { ReactElement, useMemo } from 'react';
+import { Home } from '@material-ui/icons';
+import React, { ReactElement, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { ifLoaded } from '../../../../api/prepare';
+import { isLoaded } from '../../../../api/prepare';
+import { useApi } from '../../../../api/use-api';
+import { Button } from '../../../../components/button/Button';
 import { Content } from '../../../../components/content/Content';
+import { FriendOverview } from '../../../../components/friend-overview/FriendOverview';
 import { messages } from '../../../../i18n/en';
-import { friendInfo } from '../../../../store/friends/selectors';
+import { selectCachedUser } from '../../../../store/friends/selectors';
 import styles from './FriendsProfile.module.scss';
 
 export function FriendProfile(): ReactElement {
   const { id } = useParams();
-  const friendInfos = useSelector(friendInfo);
+  const cachedUser = useSelector(selectCachedUser(id));
+  const { getUser } = useApi();
+  const noOp = useCallback(() => undefined, []);
 
-  const profile = useMemo(() => {
-    if (ifLoaded(friendInfos)) {
-      return friendInfos.find((o) => o.id === id);
-    }
-    return;
-  }, [friendInfos, id]);
+  useEffect(() => {
+    getUser(id).finally();
+  }, [getUser, id]);
 
-  if (!profile) {
+  if (!isLoaded(cachedUser)) {
     return <div className={styles.NotFound}>{messages.Views.FriendsProfile.NotFound}</div>;
   }
+
   return (
     <div className={styles.Component}>
-      <Content></Content>
+      <Content className={styles.AvatarImage}>
+        <FriendOverview friendInfo={cachedUser} />
+      </Content>
+
+      <Content className={styles.ShortInfo}>
+        <div>{cachedUser.id}</div>
+      </Content>
+      <Content>
+        <Button aria-label="test" onClick={noOp}>
+          <Home />
+        </Button>
+      </Content>
+      <Content className={styles.FullView} />
     </div>
   );
 }

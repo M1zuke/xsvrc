@@ -10,7 +10,7 @@ export function api(path: string): string {
   return `https://api.vrchat.cloud/api/1/${path}`;
 }
 
-export function ifLoaded<T>(object: Loadable<T>): object is T {
+export function isLoaded<T>(object: Loadable<T>): object is T {
   return !(object === null || object === 'loading' || isErrorType(object));
 }
 
@@ -33,7 +33,7 @@ export async function prepare<T>(
     const apiKey = state.apiInfo;
     const storedCookies = state.cookies;
 
-    if (ifLoaded(apiKey)) {
+    if (isLoaded(apiKey)) {
       config = ensureApiKey(config, apiKey.clientApiKey);
     }
 

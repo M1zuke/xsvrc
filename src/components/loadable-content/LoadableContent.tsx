@@ -1,5 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react';
-import { ifLoaded } from '../../api/prepare';
+import { isLoaded } from '../../api/prepare';
 import { Loadable } from '../../store/reducer';
 import { Loading } from '../loading/Loading';
 
@@ -9,7 +9,7 @@ type LoadableContentProps<T> = {
 };
 
 export function LoadableContent<T>({ data, children }: LoadableContentProps<T>): ReactElement {
-  if (!ifLoaded(data)) {
+  if (!isLoaded(data)) {
     return <Loading />;
   }
   return <>{children(data)}</>;

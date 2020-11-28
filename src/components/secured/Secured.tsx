@@ -5,9 +5,9 @@ import { savedCookies } from '../../store/cookies/selectors';
 import { StoredCookie } from '../../store/cookies/state';
 import { isErrorType, Loadable } from '../../store/reducer';
 import { vrcUserInfo } from '../../store/user/selectors';
-import { VRCUserInfo } from '../../store/user/state';
+import { AuthenticatedUserInfo } from '../../store/user/state';
 
-export function isLoggedIn(cookies: StoredCookie[], userInfo: Loadable<VRCUserInfo>): boolean {
+export function isLoggedIn(cookies: StoredCookie[], userInfo: Loadable<AuthenticatedUserInfo>): boolean {
   const cookie = isProbablyAuthenticated(cookies);
   const userInfoNull = userInfo === null;
   const userInfoIsErrorType = isErrorType(userInfo);

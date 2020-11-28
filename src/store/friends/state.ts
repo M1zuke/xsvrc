@@ -1,7 +1,8 @@
+import { TrustTag } from '../../common/trust-system';
 import { Loadable } from '../reducer';
+import { VRCState, VRCUserStatus } from '../user/state';
 
 type DeveloperType = 'none';
-type FriendStatus = 'ask me' | 'active' | 'join me' | 'busy';
 export type FriendInfo = {
   bio: string;
   currentAvatarImageUrl: string;
@@ -14,14 +15,52 @@ export type FriendInfo = {
   isFriend: boolean;
   last_login: string; // 2020-11-20T21:36:11.762Z
   last_platform: string;
-  status: FriendStatus;
+  status: VRCUserStatus;
   location: string;
   statusDescription: string;
-  tags: string[];
+  tags: TrustTag[];
   userIcon: string;
   username: string;
 };
 
-export type FriendInfoState = Loadable<FriendInfo[]>;
+export type UserInfo = {
+  username: string;
+  displayName: string;
+  id: string;
+  bio: string;
+  bioLinks: string[];
+  state: VRCState;
+  status: VRCUserStatus;
+  statusDescription: string;
+  currentAvatarImageUrl: string;
+  currentAvatarThumbnailImageUrl: string;
+  last_login: string;
+  last_platform: string;
+  allowAvatarCopying: boolean;
+  tags: TrustTag[];
+  developerType: DeveloperType;
+  isFriend: boolean;
+  friendKey: string;
+  location: string;
+  worldId: string;
+  instanceId: string;
+  userIcon: string;
+};
 
-export const INITIAL_FRIEND_INFO_STATE: FriendInfoState = null;
+export type FriendsState = {
+  active: Loadable<FriendInfo[]>;
+  offline: Loadable<FriendInfo[]>;
+};
+
+export type FriendInfoState = {
+  friends: FriendsState;
+  cachedUsers: Record<string, Loadable<UserInfo>>;
+};
+
+export const INITIAL_FRIEND_INFO_STATE: FriendInfoState = {
+  friends: {
+    active: null,
+    offline: null,
+  },
+  cachedUsers: {},
+};
