@@ -47,20 +47,14 @@ export type UserInfo = {
   userIcon: string;
 };
 
-export type FriendsState = {
+export type FriendInfoState = {
   active: Loadable<FriendInfo[]>;
   offline: Loadable<FriendInfo[]>;
-};
-
-export type FriendInfoState = {
-  friends: FriendsState;
   cachedUsers: Record<string, Loadable<UserInfo>>;
 };
 
 export const INITIAL_FRIEND_INFO_STATE: FriendInfoState = {
-  friends: {
-    active: null,
-    offline: null,
-  },
+  active: null,
+  offline: null,
   cachedUsers: {},
 };

@@ -1,9 +1,15 @@
-import React, { PropsWithChildren, ReactElement } from 'react';
+import React, { PropsWithChildren, ReactElement, useMemo } from 'react';
 import styles from './ScrollableContent.module.scss';
+import classNames from 'classnames';
 
-export function ScrollableContent({ children }: PropsWithChildren<unknown>): ReactElement {
+type ScrollableContentProps = {
+  className?: string;
+};
+
+export function ScrollableContent({ children, className }: PropsWithChildren<ScrollableContentProps>): ReactElement {
+  const classes = useMemo(() => classNames(styles.Component, className), [className]);
   return (
-    <div className={styles.Component}>
+    <div className={classes}>
       <div className={styles.ScrollableContent}>{children}</div>
     </div>
   );

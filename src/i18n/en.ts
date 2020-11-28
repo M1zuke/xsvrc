@@ -1,5 +1,8 @@
 export const messages = {
   Views: {
+    Error: {
+      NoData: 'No Entry Found',
+    },
     Login: {
       Title: 'Login',
       View: {
@@ -26,6 +29,14 @@ export const messages = {
     },
     FriendsProfile: {
       NotFound: 'User not Found',
+      ShortInfo: {
+        UserId: 'User ID:',
+        LastLogin: 'Last Login:',
+      },
+      Actions: {
+        AddFriend: 'Add Friend',
+        Unfriend: 'Unfriend',
+      },
     },
   },
 };

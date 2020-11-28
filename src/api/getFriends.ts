@@ -14,7 +14,9 @@ export function getFriends(
   return async function (dispatch, getState) {
     const state = getState();
 
-    if (state.friends === null) {
+    if (!offline && state.friends.active === null) {
+      dispatch(setFriendInfo('loading', offline));
+    } else if (offline && state.friends.offline === null) {
       dispatch(setFriendInfo('loading', offline));
     }
 
