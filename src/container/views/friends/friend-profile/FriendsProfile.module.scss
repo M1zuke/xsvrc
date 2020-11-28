@@ -13,8 +13,24 @@
   }
 
   .ShortInfo {
+    display: grid;
+    grid-template-columns: repeat(2, autoSize());
+    grid-template-rows: autoSize();
+    grid-gap: $innerSpacing;
     grid-column-end: span 2;
-    grid-row-end: span 2;
+    grid-row-end: span 1;
+
+    .Bold {
+      font-weight: bold;
+    }
+  }
+
+  .Actions {
+    grid-column-end: span 2;
+  }
+
+  .Links {
+    grid-column-end: span 1;
   }
 
   .FullView {

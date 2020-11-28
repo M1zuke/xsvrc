@@ -7,18 +7,12 @@ export function reducer(state: FriendInfoState = INITIAL_FRIEND_INFO_STATE, acti
       if (!action.offline) {
         return {
           ...state,
-          friends: {
-            ...state.friends,
-            active: action.friendInfo,
-          },
+          active: action.friendInfo,
         };
       }
       return {
         ...state,
-        friends: {
-          ...state.friends,
-          offline: action.friendInfo,
-        },
+        offline: action.friendInfo,
       };
     }
     case 'friend/setCachedUser': {

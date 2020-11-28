@@ -1,7 +1,8 @@
-import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { isLoaded } from '../../../api/prepare';
 import { useApi } from '../../../api/use-api';
+import { useSubscribe } from '../../../common/use-subscribe';
 import { Button } from '../../../components/button/Button';
 import { Checkbox } from '../../../components/checkbox/Checkbox';
 import { Content } from '../../../components/content/Content';
@@ -50,6 +51,7 @@ export function Friends(): ReactElement {
   const [filter, setFilter] = useState<CharacterFilter>('ALL');
   const [showPrivate, setShowPrivate] = useState(true);
   const [showOffline, setShowOffline] = useState(false);
+  useSubscribe(friends, showOffline);
 
   const friendsInfos = useMemo(() => (showOffline ? offline : active), [active, offline, showOffline]);
 
@@ -112,18 +114,6 @@ export function Friends(): ReactElement {
       );
     });
   }, [disableFilterButton, filter]);
-
-  useEffect(() => {
-    friends(showOffline).finally();
-
-    const interval = setInterval(() => {
-      friends(showOffline).finally();
-    }, 25000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [friends, showOffline]);
 
   const [filteredFriendsCount, friendsCount] = useMemo(() => {
     if (isLoaded(friendsInfos) && isLoaded(filteredFriendInfo)) {

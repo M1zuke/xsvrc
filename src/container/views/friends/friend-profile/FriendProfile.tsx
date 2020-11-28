@@ -1,48 +1,61 @@
 import { Home } from '@material-ui/icons';
-import React, { ReactElement, useCallback, useEffect } from 'react';
+import React, { ReactElement, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { isLoaded } from '../../../../api/prepare';
 import { useApi } from '../../../../api/use-api';
+import { useSubscribe } from '../../../../common/use-subscribe';
 import { Button } from '../../../../components/button/Button';
 import { Content } from '../../../../components/content/Content';
 import { FriendOverview } from '../../../../components/friend-overview/FriendOverview';
-import { messages } from '../../../../i18n/en';
+import { LoadableContent } from '../../../../components/loadable-content/LoadableContent';
+import { RenderJSON } from '../../../../components/render-json/RenderJSON';
+import { ScrollableContent } from '../../../../components/scrollable-content/ScrollableContent';
+import { useMessages } from '../../../../i18n';
 import { selectCachedUser } from '../../../../store/friends/selectors';
 import styles from './FriendsProfile.module.scss';
 
 type FriendProfileParams = {
   id: string;
 };
+
 export function FriendProfile(): ReactElement {
+  const { ShortInfo, Actions } = useMessages().Views.FriendsProfile;
   const { id } = useParams<FriendProfileParams>();
   const cachedUser = useSelector(selectCachedUser(id));
   const { getUser } = useApi();
   const noOp = useCallback(() => undefined, []);
-
-  useEffect(() => {
-    getUser(id).finally();
-  }, [getUser, id]);
-
-  if (!isLoaded(cachedUser)) {
-    return <div className={styles.NotFound}>{messages.Views.FriendsProfile.NotFound}</div>;
-  }
+  useSubscribe(getUser, id);
 
   return (
     <div className={styles.Component}>
-      <Content className={styles.AvatarImage}>
-        <FriendOverview friendInfo={cachedUser} />
-      </Content>
-
-      <Content className={styles.ShortInfo}>
-        <div>{cachedUser.id}</div>
-      </Content>
-      <Content>
-        <Button aria-label="test" onClick={noOp}>
-          <Home />
-        </Button>
-      </Content>
-      <Content className={styles.FullView} />
+      <LoadableContent data={cachedUser} columns={3} rows={3}>
+        {(user) => (
+          <>
+            <Content className={styles.AvatarImage}>
+              <FriendOverview friendInfo={user} />
+            </Content>
+            <Content className={styles.ShortInfo}>
+              <div className={styles.Bold}>{ShortInfo.UserId}</div>
+              <div>{user.id}</div>
+              <div className={styles.Bold}>{ShortInfo.LastLogin}</div>
+              <div>{user.last_login}</div>
+            </Content>
+            <Content className={styles.Links}>
+              <Button aria-label="test" onClick={noOp}>
+                <Home />
+              </Button>
+            </Content>
+            <Content className={styles.Actions}>
+              <Button onClick={noOp} aria-label="friend user">
+                {user.isFriend ? Actions.Unfriend : Actions.AddFriend}
+              </Button>
+            </Content>
+            <ScrollableContent className={styles.FullView}>
+              <RenderJSON json={user} />
+            </ScrollableContent>
+          </>
+        )}
+      </LoadableContent>
     </div>
   );
 }
