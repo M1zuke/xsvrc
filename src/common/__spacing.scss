@@ -1,5 +1,4 @@
 // Spacings
-$outerSpacing: 20px;
 $innerSpacing: 11px;
 $smallSpacing: 7px;
 $tinySpacing: 3px;
@@ -13,19 +12,8 @@ $buttonBorderRadius: $smallBorderRadius;
 
 // Login
 $loginGridGap: $innerSpacing;
-$loginPadding: $outerSpacing;
+$loginPadding: $innerSpacing;
 
 // TextInput
 $textInputPadding: $smallSpacing $smallSpacing;
-
-// App
-$appPadding: $outerSpacing;
-
-// Home
-$homeGridGap: $innerSpacing;
-
-// UserOverview
-$userOverviewPadding: $outerSpacing;
-$userOverviewGridGap: $innerSpacing;
-$userOverviewHighlightPadding: $tinySpacing $smallSpacing;
 

@@ -1,5 +1,6 @@
+import { AuthenticatedUserInfo, NotificationDTO } from '../../api/types';
 import { AppState } from '../index';
 import { Loadable } from '../reducer';
-import { AuthenticatedUserInfo } from './state';
 
-export const vrcUserInfo = (state: AppState): Loadable<AuthenticatedUserInfo> => state.userInfo;
+export const selectUserInfo = (state: AppState): Loadable<AuthenticatedUserInfo> => state.user.userInfo;
+export const selectNotifications = (state: AppState): Loadable<NotificationDTO[]> => state.user.notifications;

@@ -5,7 +5,7 @@
 .Component {
   display: grid;
   grid-template-rows: repeat(2, autoSize()) auto;
-  grid-gap: $outerSpacing;
+  grid-gap: $innerSpacing;
   height: 100%;
   overflow: hidden;
 

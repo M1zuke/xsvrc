@@ -1,0 +1,102 @@
+@import "../../../common/_mixins";
+@import "../../../common/_spacing";
+@import "../../../common/_colors";
+
+
+@keyframes slideInFromLeft {
+  0% {
+    max-height: 0;
+    padding: 0;
+  }
+  10% {
+    padding: $smallSpacing;
+  }
+  100% {
+    max-height: 500px;
+  }
+}
+
+
+.Component {
+  height: 100%;
+  display: grid;
+  grid-gap: $innerSpacing;
+  width: 100%;
+  overflow-y: auto;
+
+  .UserEvent {
+    background-color: $color2;
+    padding: $smallSpacing;
+    border-radius: $standardBorderRadius;
+    display: grid;
+    grid-template-columns: repeat(1, autoSize());
+    grid-gap: $smallSpacing;
+    align-items: center;
+    animation: slideInFromLeft 500ms linear;
+    overflow: hidden;
+
+    .InfoBox {
+      display: grid;
+      grid-template-columns: repeat(3, autoSize());
+
+      .Timestamp {
+        border-radius: $standardBorderRadius 0 0 $standardBorderRadius;
+        background-color: $color1;
+        padding: $smallSpacing;
+      }
+
+      .DisplayName {
+        background-color: $colorBlue;
+        padding: $smallSpacing;
+        font-weight: bold;
+        white-space: nowrap;
+      }
+
+      .Key {
+        background-color: $colorBlack;
+        padding: $smallSpacing $innerSpacing;
+        border-radius: 0 $standardBorderRadius $standardBorderRadius 0;
+        white-space: nowrap;
+      }
+    }
+
+    .ChangeInfo {
+      display: grid;
+      grid-template-columns: repeat(3, autoSize());
+      align-items: center;
+      grid-gap: $smallSpacing;
+
+      .UserEventDetail {
+        background-color: $color1;
+        padding: $smallSpacing;
+        border-radius: $standardBorderRadius;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 350px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+
+        &.Thumbnail {
+          height: 125px;
+          width: 200px;
+          position: relative;
+
+          .WorldName {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: transparentize($color0, 0.4);
+            width: 100%;
+            padding: $tinySpacing $smallSpacing;
+            text-align: center;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
+}

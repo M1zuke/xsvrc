@@ -25,13 +25,14 @@ function ensureApiKey(config: RequestConfig, key: string): RequestConfig {
 }
 
 export async function prepare<T>(
-  state: AppState,
+  state: (() => AppState) | AppState,
   dispatch: AppDispatch,
   config: RequestConfig,
 ): Promise<FetchResult<T> | ErrorType> {
   try {
-    const apiKey = state.apiInfo;
-    const storedCookies = state.cookies;
+    const $state = typeof state === 'function' ? state() : state;
+    const apiKey = $state.apiInfo;
+    const storedCookies = $state.cookies;
 
     if (isLoaded(apiKey)) {
       config = ensureApiKey(config, apiKey.clientApiKey);
@@ -40,7 +41,9 @@ export async function prepare<T>(
     const result = await electronFetch<T>({ ...config, storedCookies: storedCookies });
 
     if (result.type === 'entity') {
-      dispatch(setStoredCookies(result.cookies));
+      if (result.cookies.length !== 0) {
+        dispatch(setStoredCookies(result.cookies));
+      }
       return Promise.resolve({
         result: result.result,
         type: 'entity',

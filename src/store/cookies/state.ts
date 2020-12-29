@@ -2,6 +2,7 @@ export type StoredCookie = {
   key: string;
   value: string;
   url: string;
+  cleanValue: string;
 };
 
 export type CookieState = StoredCookie[];

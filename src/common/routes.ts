@@ -12,6 +12,8 @@ export type Routes = {
   login: RouteDefinition;
   friends: RouteDefinition;
   friendsProfile: RouteDefinition;
+  eventList: RouteDefinition;
+  notifications: RouteDefinition;
 };
 
 export const routes: Routes = {
@@ -19,4 +21,6 @@ export const routes: Routes = {
   login: { path: '/login', config: { path: '/login', exact: true } },
   friends: { path: '/friends', config: { path: '/friends', exact: true } },
   friendsProfile: { path: '/friends-profile/', config: { path: '/friends-profile/:id', exact: true } },
+  eventList: { path: '/user-event-list', config: { path: '/user-event-list', exact: true } },
+  notifications: { path: '/notifications', config: { path: '/notifications', exact: true } },
 };

@@ -1,10 +1,23 @@
+import { AuthenticatedUserInfo, NotificationDTO } from '../../api/types';
 import { Loadable } from '../reducer';
-import { EnrichedAuthenticatedUserInfo } from './state';
-import { SetVRCUserInfo } from './types';
+import { AddNotification, SetNotifications, SetUserInfo } from './types';
 
-export function setUserState(vrcUserInfo: Loadable<EnrichedAuthenticatedUserInfo>): SetVRCUserInfo {
+export function setUserInfo(vrcUserInfo: Loadable<AuthenticatedUserInfo>): SetUserInfo {
   return {
-    type: 'user/set-vrc-user-info',
+    type: 'user/set-user-info',
     userInfo: vrcUserInfo,
+  };
+}
+
+export function setNotifications(notifications: Loadable<NotificationDTO[]>): SetNotifications {
+  return {
+    type: 'user/set-notifications',
+    notifications,
+  };
+}
+export function addNotification(notification: NotificationDTO): AddNotification {
+  return {
+    type: 'user/add-notification',
+    notification,
   };
 }

@@ -7,13 +7,13 @@ import { Loading } from '../../../components/loading/Loading';
 import { isProbablyAuthenticated } from '../../../components/secured/Secured';
 import { useMessages } from '../../../i18n';
 import { savedCookies } from '../../../store/cookies/selectors';
-import { vrcUserInfo } from '../../../store/user/selectors';
+import { selectUserInfo } from '../../../store/user/selectors';
 import styles from './Login.module.scss';
 
 export function Login(): ReactElement {
   const messages = useMessages();
   const cookies = useSelector(savedCookies);
-  const userInfo = useSelector(vrcUserInfo);
+  const userInfo = useSelector(selectUserInfo);
   const { login } = useApi();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

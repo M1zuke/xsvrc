@@ -5,7 +5,7 @@
   display: grid;
   grid-template-columns: autoSize() repeat(2, 1fr);
   grid-template-rows: autoSize() autoSize() auto;
-  grid-gap: $outerSpacing;
+  grid-gap: $innerSpacing;
   height: 100%;
 
   .AvatarImage {

@@ -5,6 +5,19 @@
   border: 0;
   padding: 0;
   background-color: transparent;
+  position: relative;
+  -webkit-app-region: no-drag;
+
+  .Badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    padding: $tinySpacing;
+    background-color: red;
+    font-weight: bold;
+    color: $colorWhite;
+    border-radius: 50%;
+  }
 
   .StyleElement {
     background-color: $buttonBackgroundColor;
@@ -20,7 +33,6 @@
     justify-content: center;
     border-radius: $buttonBorderRadius;
 
-
     &:hover {
       background-color: $buttonBackgroundColorOnHover;
     }
@@ -28,6 +40,20 @@
     &.Disabled {
       cursor: no-drop;
       opacity: 0.3;
+    }
+
+    &.HeaderIcon, &.Icon {
+      width: 30px;
+      height: 30px;
+
+      *:nth-child(2) {
+        margin-left: -15px;
+      }
+    }
+
+    &.HeaderIcon {
+      width: 36px;
+      height: 36px;
     }
 
     &.Active {

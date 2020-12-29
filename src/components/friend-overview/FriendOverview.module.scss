@@ -3,103 +3,116 @@
 
 $trustedRankBorder: $tinySpacing;
 
+
 .Component {
+  overflow: hidden;
+  border-radius: $standardBorderRadius;
+  box-shadow: black 1px 1px 5px;
+  position: relative;
+  padding-bottom: calc(100% - 6px);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
   cursor: pointer;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-app-region: no-drag;
 
-  .AvatarThumbnail {
-    overflow: hidden;
+
+  &.Visitor {
+    border: $trustedRankBorder solid #D6D6D6;
+  }
+
+  &.NewUser {
+    border: $trustedRankBorder solid #5083DB;
+  }
+
+  &.User {
+    border: $trustedRankBorder solid #5DF848;
+  }
+
+  &.KnownUser {
+    border: $trustedRankBorder solid #FF6600;
+  }
+
+  &.TrustedUser {
+    border: $trustedRankBorder solid #8000FF;
+  }
+
+  &.LegendaryUser {
+    border: $trustedRankBorder solid #FFDA00;
+  }
+
+  .PrivateIcon {
+    position: absolute;
+    top: $smallSpacing;
+    right: 35px;
+    background-color: $color2;
+    padding: $tinySpacing;
     border-radius: $standardBorderRadius;
-    box-shadow: black 1px 1px 5px;
-    position: relative;
-    padding-bottom: 100%;
-    background-size: cover;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .Icon {
+    position: absolute;
+    width: 40px;
+    height: 40px;
     background-repeat: no-repeat;
+    background-size: cover;
     background-position: center center;
+  }
 
-    &.Visitor {
-      border: $trustedRankBorder solid #D6D6D6;
+  .Status {
+    position: absolute;
+    top: $smallSpacing;
+    right: $smallSpacing;
+    background-color: $color2;
+    padding: $tinySpacing;
+    width: 23px;
+    height: 23px;
+    box-shadow: black 0 0 2px;
+    border-radius: 50%;
+
+    &.Active:not(.Private) {
+      background-color: lawngreen;
     }
 
-    &.NewUser {
-      border: $trustedRankBorder solid #5083DB;
+    &.AskMe {
+      background-color: orange;
     }
 
-    &.User {
-      border: $trustedRankBorder solid #5DF848;
+    &.Busy {
+      background-color: red;
     }
 
-    &.KnownUser {
-      border: $trustedRankBorder solid #FF6600;
+    &.JoinMe {
+      background-color: #25AAC5;
     }
+  }
 
-    &.TrustedUser {
-      border: $trustedRankBorder solid #8000FF;
-    }
+  .DisplayName {
+    position: absolute;
+    background-color: transparentize($color0, 0.05);
+    padding: $tinySpacing;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 
-    &.LegendaryUser {
-      border: $trustedRankBorder solid #FFDA00;
-    }
+  &.Small {
+    height: 36px;
+    width: 36px;
 
-    .PrivateIcon {
-      position: absolute;
-      top: $smallSpacing;
-      right: 35px;
-      background-color: $color2;
-      padding: $tinySpacing;
-      border-radius: $standardBorderRadius;
-      display: grid;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .Icon {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center center;
-    }
-
-    .Status {
-      position: absolute;
-      top: $smallSpacing;
-      right: $smallSpacing;
-      background-color: $color2;
-      padding: $tinySpacing;
-      width: 23px;
-      height: 23px;
-      box-shadow: black 0 0 2px;
-      border-radius: 50%;
-
-      &.Active:not(.Private) {
-        background-color: lawngreen;
-      }
-
-      &.AskMe {
-        background-color: orange;
-      }
-
-      &.Busy {
-        background-color: red;
-      }
-
-      &.JoinMe {
-        background-color: #25AAC5;
-      }
-    }
-
-    .DisplayName {
-      position: absolute;
-      background-color: transparentize($color0, 0.05);
-      padding: $tinySpacing;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      text-align: center;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
+    div {
+      display: none;
     }
   }
 }
+
+

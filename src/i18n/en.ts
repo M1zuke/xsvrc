@@ -1,5 +1,23 @@
 export const messages = {
   Views: {
+    Notifications: {
+      Filter: {
+        All: 'All',
+        Invites: 'Invites',
+        FriendRequests: 'Friend requests',
+        RequestInvites: 'Requested invites',
+      },
+    },
+    Dashboard: {
+      Friends: {
+        Online: 'Friends online',
+        FriendRequests: 'Friend requests',
+        invites: 'Invites',
+      },
+    },
+    Pagination: {
+      Of: 'Of',
+    },
     Error: {
       NoData: 'No Entry Found',
     },
@@ -9,16 +27,6 @@ export const messages = {
         Login: 'Login',
         Username: 'Username',
         Password: 'Password',
-      },
-    },
-    Overview: {
-      Navigation: {
-        Friends: {
-          Title: 'Friends',
-        },
-        Home: {
-          Title: 'Home',
-        },
       },
     },
     Friends: {

@@ -26,10 +26,17 @@ function createWindow() {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
     },
+    // webSecurity: false,
     resizable: true,
+    frame: false,
+    backgroundColor: '#000000',
   });
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
   mainWindow.on('closed', () => (mainWindow = null));
+
+  electron.ipcMain.handle('close', () => {
+    mainWindow.close();
+  });
 
   electron.ipcMain.handle('fetch', async (event, args) => {
     unhandled();

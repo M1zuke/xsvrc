@@ -46,13 +46,19 @@ export async function electronFetch<T>(config: RequestConfig): Promise<ElectronR
     const storedCookies: StoredCookie[] = [];
 
     setCookies.forEach((cookie: string) => {
-      const key = cookie.match(/\w*/g);
+      const equalIndex = cookie.indexOf('=');
+      const semiIndex = cookie.indexOf(';');
+
+      const key = cookie.slice(0, equalIndex);
+      const value = cookie.slice(equalIndex + 1, semiIndex);
+
       /* istanbul ignore else: Can't Happen */
-      if (key && key[0]) {
+      if (key && value) {
         storedCookies.push({
-          key: key[0],
+          key: key,
           value: cookie,
           url: 'https://api.vrchat.cloud',
+          cleanValue: value,
         });
       }
     });

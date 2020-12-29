@@ -3,15 +3,8 @@
 
 .Component {
   display: grid;
-  grid-template-rows: autoSize() repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: autoSize();
   height: 100%;
-  grid-gap: $homeGridGap;
-
-  .FriendsOverview {
-    display: grid;
-  }
-
-  .ReFetchInfo {
-
-  }
+  grid-gap: $innerSpacing;
 }

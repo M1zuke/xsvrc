@@ -1,8 +1,6 @@
 import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { isLoaded } from '../../../api/prepare';
-import { useApi } from '../../../api/use-api';
-import { useSubscribe } from '../../../common/use-subscribe';
 import { Button } from '../../../components/button/Button';
 import { Checkbox } from '../../../components/checkbox/Checkbox';
 import { Content } from '../../../components/content/Content';
@@ -46,17 +44,23 @@ export const CharacterFilters = [
 export type CharacterFilter = typeof CharacterFilters[number];
 
 export function Friends(): ReactElement {
-  const { friends } = useApi();
-  const { active, offline } = useSelector(selectFriendInfo);
+  const friends = useSelector(selectFriendInfo);
   const [filter, setFilter] = useState<CharacterFilter>('ALL');
   const [showPrivate, setShowPrivate] = useState(true);
   const [showOffline, setShowOffline] = useState(false);
-  useSubscribe(friends, showOffline);
 
-  const friendsInfos = useMemo(() => (showOffline ? offline : active), [active, offline, showOffline]);
+  const friendsInfos = useMemo(() => {
+    if (isLoaded(friends)) {
+      const friendInfo = Object.values(friends);
+      return showOffline
+        ? friendInfo.filter((fi) => fi.status === 'offline')
+        : friendInfo.filter((fi) => fi.status !== 'offline');
+    }
+    return [];
+  }, [friends, showOffline]);
 
   const friendInfoWithOrWithoutPrivate = useMemo(() => {
-    if (isLoaded(friendsInfos) && !showPrivate) {
+    if (friendsInfos && !showPrivate) {
       return friendsInfos.filter((fi) => fi.location !== 'private');
     }
     return friendsInfos;
@@ -64,18 +68,14 @@ export function Friends(): ReactElement {
 
   const disableFilterButton = useCallback(
     (key: CharacterFilter) => {
-      if (!isLoaded(friendInfoWithOrWithoutPrivate)) {
-        return true;
-      }
-
       if (key === 'ALL') {
         return false;
       }
 
       if (key === '#') {
-        const filteredFriendInfo = friendInfoWithOrWithoutPrivate.filter(
-          (o) => !CharacterFilters.includes(o.displayName[0].toUpperCase() as CharacterFilter),
-        );
+        const filteredFriendInfo = friendInfoWithOrWithoutPrivate.filter((o) => {
+          return !CharacterFilters.includes(o.displayName[0].toUpperCase() as CharacterFilter);
+        });
         return filteredFriendInfo.length === 0;
       }
 
@@ -88,7 +88,7 @@ export function Friends(): ReactElement {
   );
 
   const filteredFriendInfo = useMemo(() => {
-    if (!isLoaded(friendInfoWithOrWithoutPrivate) || filter === 'ALL') {
+    if (filter === 'ALL') {
       return friendInfoWithOrWithoutPrivate;
     }
     if (filter === '#') {
@@ -116,10 +116,7 @@ export function Friends(): ReactElement {
   }, [disableFilterButton, filter]);
 
   const [filteredFriendsCount, friendsCount] = useMemo(() => {
-    if (isLoaded(friendsInfos) && isLoaded(filteredFriendInfo)) {
-      return [filteredFriendInfo.length, friendsInfos.length];
-    }
-    return [0, 0];
+    return [filteredFriendInfo.length, friendsInfos.length];
   }, [filteredFriendInfo, friendsInfos]);
 
   return (
