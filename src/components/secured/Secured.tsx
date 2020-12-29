@@ -1,11 +1,11 @@
 import React, { PropsWithChildren, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { AuthenticatedUserInfo } from '../../api/types';
 import { Login } from '../../container/views/login/Login';
 import { savedCookies } from '../../store/cookies/selectors';
 import { StoredCookie } from '../../store/cookies/state';
 import { isErrorType, Loadable } from '../../store/reducer';
-import { vrcUserInfo } from '../../store/user/selectors';
-import { AuthenticatedUserInfo } from '../../store/user/state';
+import { selectUserInfo } from '../../store/user/selectors';
 
 export function isLoggedIn(cookies: StoredCookie[], userInfo: Loadable<AuthenticatedUserInfo>): boolean {
   const cookie = isProbablyAuthenticated(cookies);
@@ -24,7 +24,7 @@ export function Secured({
   /* TODO: Add Child Only Props */
 }>): ReactElement {
   const cookies = useSelector(savedCookies);
-  const userInfo = useSelector(vrcUserInfo);
+  const userInfo = useSelector(selectUserInfo);
 
   const isNotAuthenticated = useMemo(() => !isLoggedIn(cookies, userInfo), [cookies, userInfo]);
 

@@ -1,15 +1,31 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { isLoaded } from '../../../api/prepare';
 import { Loading } from '../../../components/loading/Loading';
-import { vrcUserInfo } from '../../../store/user/selectors';
+import { useMessages } from '../../../i18n';
+import { selectFriendInfo } from '../../../store/friends/selectors';
+import { selectNotifications, selectUserInfo } from '../../../store/user/selectors';
 import styles from './Home.module.scss';
-import { Refresh } from '@material-ui/icons';
+import { TitleBox } from './TitleBox';
 
 export function Home(): ReactElement {
-  const userInfo = useSelector(vrcUserInfo);
+  const userInfo = useSelector(selectUserInfo);
+  const friendInfo = useSelector(selectFriendInfo);
+  const allNotifications = useSelector(selectNotifications);
+  const messages = useMessages();
 
-  if (userInfo === 'loading') {
+  const onlineFriends = useMemo(
+    () => (isLoaded(friendInfo) ? Object.values(friendInfo) : []).filter((fi) => fi.status !== 'offline').length,
+    [friendInfo],
+  );
+
+  const notifications = useMemo(() => (isLoaded(allNotifications) ? allNotifications : []), [allNotifications]);
+  const friendRequests = useMemo(() => notifications.filter((not) => not.type === 'friendRequest').length, [
+    notifications,
+  ]);
+  const invites = useMemo(() => notifications.filter((not) => not.type === 'invite').length, [notifications]);
+
+  if (userInfo === 'loading' || friendInfo === 'loading') {
     return <Loading />;
   }
 
@@ -19,11 +35,9 @@ export function Home(): ReactElement {
 
   return (
     <div className={styles.Component}>
-      <div className={styles.FriendsOverview}>
-        <div className={styles.ReFetchInfo}>
-          <Refresh />
-        </div>
-      </div>
+      <TitleBox title={messages.Views.Dashboard.Friends.Online}>{onlineFriends}</TitleBox>
+      <TitleBox title={messages.Views.Dashboard.Friends.FriendRequests}>{friendRequests}</TitleBox>
+      <TitleBox title={messages.Views.Dashboard.Friends.invites}>{invites}</TitleBox>
     </div>
   );
 }

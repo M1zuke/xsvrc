@@ -1,12 +1,13 @@
+import { isLoaded } from '../../api/prepare';
+import { UserInfo } from '../../api/types';
 import { AppState } from '../index';
 import { Loadable } from '../reducer';
-import { FriendInfoState, UserInfo } from './state';
+import { FriendInfoState } from './state';
 
 export const selectFriendInfo = (appState: AppState): FriendInfoState => appState.friends;
-export const selectCachedUser = (id: string) => (appState: AppState): Loadable<UserInfo> => {
-  const user = appState.friends.cachedUsers[id];
-  if (user === 'loading') {
-    return 'loading';
+export const selectFriendInfoById = (id: string) => (appState: AppState): Loadable<UserInfo> => {
+  if (isLoaded(appState.friends)) {
+    return appState.friends[id] ?? null;
   }
-  return user ?? null;
+  return appState.friends === 'loading' ? 'loading' : null;
 };

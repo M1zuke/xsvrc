@@ -1,18 +1,16 @@
 import { useMemo } from 'react';
-import { UserInfo } from '../store/friends/state';
-import { Loadable } from '../store/reducer';
+import { useHistory } from 'react-router-dom';
 import { useAppDispatch } from '../thunk/dispatch';
-import { getFriends } from './getFriends';
 import { getUser } from './getUser';
+import { getWorld } from './getWorld';
 import { info } from './info';
 import { login } from './login';
-import { useHistory } from 'react-router-dom';
 
 export type API = {
   info(): Promise<void>;
-  login(username: string, password: string): Promise<void>;
-  friends(offline?: boolean): Promise<void>;
-  getUser(id: string): Promise<Loadable<UserInfo>>;
+  login(username?: string, password?: string): Promise<void>;
+  getWorld(worldId: string): Promise<void>;
+  getUser(userId: string): Promise<void>;
 };
 
 export function useApi(): API {
@@ -24,14 +22,14 @@ export function useApi(): API {
       info: async (): Promise<void> => {
         return dispatch(info());
       },
-      login: async (username: string, password: string) => {
-        return dispatch(login(username, password, history));
+      login: async (username?: string, password?: string) => {
+        return dispatch(login(username, password, username && password ? history : undefined));
       },
-      friends: async (offline?: boolean) => {
-        return dispatch(getFriends(offline));
+      getWorld: async (worldId: string) => {
+        return dispatch(getWorld(worldId));
       },
-      getUser: async (id: string) => {
-        return dispatch(getUser(id));
+      getUser: async (userId: string) => {
+        return dispatch(getUser(userId));
       },
     }),
     [dispatch, history],

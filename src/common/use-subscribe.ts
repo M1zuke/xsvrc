@@ -1,11 +1,15 @@
-import { useEffect, useMemo } from 'react';
+import { useLayoutEffect } from 'react';
 
-export function useSubscribe<T>(func: (params: T) => void, params: T, time = 25000): void {
-  useMemo(() => {
-    func(params);
-  }, [func, params]);
-  useEffect(() => {
-    const interval = setInterval(() => func(params), time);
+export function useSubscribe<T>(func: (params: T) => void, params: T | null, time = 30000): void {
+  useLayoutEffect(() => {
+    if (params !== null) {
+      func(params);
+    }
+    const interval = setInterval(() => {
+      if (params !== null) {
+        func(params);
+      }
+    }, time);
     return () => {
       clearInterval(interval);
     };

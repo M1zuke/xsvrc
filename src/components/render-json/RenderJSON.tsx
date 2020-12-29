@@ -1,28 +1,17 @@
 import React, { ReactElement, useMemo } from 'react';
-import styles from './RenderJSON.module.scss';
+import ReactJson from 'react-json-view';
 
-type RenderJSONProps<T> = {
+type PossibleJSONTypes = string | number | boolean | (string | number)[];
+type RenderJSONProps<T extends Record<string, PossibleJSONTypes>> = {
   json: T;
 };
-export function RenderJSON<T>({ json }: RenderJSONProps<T>): ReactElement {
-  const renderedJson = useMemo(
-    () =>
-      Object.keys(json).map((key, index) => {
-        return (
-          <>
-            <div key={`rendered-json-key-${index}`} className={styles.Key}>
-              {key}:
-            </div>
-            <div key={`rendered-json-value-${index}`} className={styles.Value}>
-              {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
-              {/* @ts-ignore*/}
-              {JSON.stringify(json[key])}
-            </div>
-          </>
-        );
-      }),
-    [json],
-  );
 
-  return <div className={styles.Component}>{renderedJson}</div>;
+export function RenderJSON<T extends Record<string, PossibleJSONTypes>>({ json }: RenderJSONProps<T>): ReactElement {
+  const style = useMemo(
+    () => ({
+      backgroundColor: 'transparent',
+    }),
+    [],
+  );
+  return <ReactJson src={json} theme="twilight" enableClipboard={false} displayDataTypes={false} style={style} />;
 }

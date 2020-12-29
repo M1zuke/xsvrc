@@ -1,0 +1,63 @@
+@import "../../../common/_mixins";
+@import "../../../common/_spacing";
+@import "../../../common/_colors";
+
+.Component {
+  height: 100%;
+  display: grid;
+  grid-template-rows: autoSize() auto;
+  grid-gap: $innerSpacing;
+
+  .Filter {
+    display: grid;
+    grid-template-columns: repeat(4, autoSize());
+    grid-gap: $smallSpacing;
+    justify-content: flex-end;
+  }
+
+  .Content {
+    height: 100%;
+    overflow: hidden;
+
+    .Notifications {
+      display: grid;
+      padding: $smallSpacing;
+      grid-gap: $smallSpacing;
+      grid-template-rows: autoSize();
+
+      .Notification {
+        display: grid;
+        grid-template-columns: repeat(2, autoSize());
+        justify-content: space-between;
+        align-items: center;
+        grid-gap: $smallSpacing;
+        background-color: $color2;
+        border-radius: $standardBorderRadius;
+
+        .Info {
+          grid-template-columns: repeat(3, autoSize());
+          display: grid;
+          grid-gap: $smallSpacing;
+
+          div {
+            padding: $smallSpacing;
+            border-radius: $standardBorderRadius;
+
+            &:first-child {
+              border-radius: $standardBorderRadius 0 0 $standardBorderRadius;
+            }
+
+            &:last-child {
+              border-radius: 0 $standardBorderRadius $standardBorderRadius 0;
+            }
+          }
+
+          .Username {
+            background-color: $colorBlue;
+          }
+        }
+      }
+    }
+  }
+}
+

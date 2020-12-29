@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import { Provider } from 'react-redux';
 import { DeepPartial, Store } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
+import { AuthenticatedUserInfo } from './api/types';
 import { AppState } from './store';
 import { AppAction, AppActions, AppActionsType } from './store/actions';
 import { INITIAL_API_INFO_STATE } from './store/api-info/state';
@@ -14,7 +15,8 @@ import { createMemoryHistory, Location, MemoryHistory } from 'history';
 import merge from 'lodash.merge';
 import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import { messages as en } from './i18n/en';
-import { INITIAL_USER_STATE, AuthenticatedUserInfo } from './store/user/state';
+import { INITIAL_USER_EVENT_STATE } from './store/user-events/state';
+import { INITIAL_USER_STATE } from './store/user/state';
 
 import USER_INFO_FETCH_RESULT from './container/app/__tests__/user-info-fetch-results.json';
 
@@ -36,10 +38,11 @@ function Wrapper(
 
 export const INITIAL_TEST_APP_STATE: AppState = {
   cookies: INITIAL_COOKIE_STATE,
-  userInfo: INITIAL_USER_STATE,
+  user: INITIAL_USER_STATE,
   view: { i18n: en },
   apiInfo: INITIAL_API_INFO_STATE,
   friends: INITIAL_FRIEND_INFO_STATE,
+  userEvents: INITIAL_USER_EVENT_STATE,
 };
 
 export function extendInitialState(state: DeepPartial<AppState>): AppState {

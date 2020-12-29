@@ -2,6 +2,7 @@ import React, { ReactElement, ReactNode, useMemo } from 'react';
 import { isLoaded } from '../../api/prepare';
 import { messages } from '../../i18n/en';
 import { Loadable } from '../../store/reducer';
+import { Content } from '../content/Content';
 import { Loading } from '../loading/Loading';
 import styles from './LoadableContent.module.scss';
 
@@ -30,9 +31,9 @@ export function LoadableContent<T>({ data, children, rows, columns, loading }: L
 
   if (!isLoaded(data)) {
     return (
-      <div className={styles.Loading} style={style}>
+      <Content className={styles.Loading} style={style}>
         {messages.Views.Error.NoData}
-      </div>
+      </Content>
     );
   }
   return <>{children(data)}</>;

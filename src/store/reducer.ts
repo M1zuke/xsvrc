@@ -4,10 +4,11 @@ import { AppAction, AppActionsType } from './actions';
 import { reducer as apiInfo } from './api-info/reducer';
 import { AppState } from './index';
 
-import { reducer as userState } from './user/reducer';
+import { reducer as user } from './user/reducer';
 import { reducer as view } from './view/reducer';
 import { reducer as cookies } from './cookies/reducer';
 import { reducer as friends } from './friends/reducer';
+import { reducer as userEvents } from './user-events/reducer';
 
 export type Loadable<T> = T | 'loading' | ErrorType | null;
 
@@ -20,10 +21,11 @@ export function isErrorType<T>(obj?: Loadable<T>): obj is ErrorType {
 
 export function createRootReducer(): Reducer<CombinedState<AppState>, AppAction<AppActionsType>> {
   return combineReducers<AppState>({
-    userInfo: userState,
+    user,
     apiInfo,
     view,
     cookies,
     friends,
+    userEvents,
   });
 }

@@ -4,13 +4,14 @@
 
 .Component {
   display: grid;
-  grid-gap: $userOverviewGridGap;
-  grid-template-rows: repeat(4, autoSize());
-  width: 220px;
+  grid-template-columns: repeat(2, autoSize());
+  justify-content: space-between;
+  -webkit-app-region: drag;
 
   .Navigation {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(5, autoSize());
     grid-gap: $innerSpacing;
+    user-select: none;
   }
 }

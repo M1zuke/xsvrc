@@ -1,13 +1,21 @@
 import { Action } from 'redux';
+import { AuthenticatedUserInfo, NotificationDTO } from '../../api/types';
 import { Loadable } from '../reducer';
-import { EnrichedAuthenticatedUserInfo } from './state';
 
-export type UserActionType = 'user/set-vrc-user-info' | 'user/set-cookies' | 'user/reset-cookies';
+export type UserActionType = 'user/set-user-info' | 'user/set-notifications' | 'user/add-notification';
 
 export type UserAction<T extends UserActionType> = Action<T>;
 
-export type SetVRCUserInfo = UserAction<'user/set-vrc-user-info'> & {
-  userInfo: Loadable<EnrichedAuthenticatedUserInfo>;
+export type SetUserInfo = UserAction<'user/set-user-info'> & {
+  userInfo: Loadable<AuthenticatedUserInfo>;
 };
 
-export type UserActions = SetVRCUserInfo;
+export type SetNotifications = UserAction<'user/set-notifications'> & {
+  notifications: Loadable<NotificationDTO[]>;
+};
+
+export type AddNotification = UserAction<'user/add-notification'> & {
+  notification: NotificationDTO;
+};
+
+export type UserActions = SetUserInfo | SetNotifications | AddNotification;

@@ -1,0 +1,20 @@
+@import "../../../common/_spacing";
+@import "../../../common/_colors";
+
+.Component {
+  background-color: $color1;
+  padding: $smallSpacing;
+  border-radius: $standardBorderRadius;
+
+  .Title {
+    color: transparentize($colorWhite, .5);
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  .Content {
+    font-size: 64px;
+    text-align: center;
+  }
+}

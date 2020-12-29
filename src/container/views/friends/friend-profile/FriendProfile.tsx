@@ -2,8 +2,6 @@ import { Home } from '@material-ui/icons';
 import React, { ReactElement, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useApi } from '../../../../api/use-api';
-import { useSubscribe } from '../../../../common/use-subscribe';
 import { Button } from '../../../../components/button/Button';
 import { Content } from '../../../../components/content/Content';
 import { FriendOverview } from '../../../../components/friend-overview/FriendOverview';
@@ -11,7 +9,7 @@ import { LoadableContent } from '../../../../components/loadable-content/Loadabl
 import { RenderJSON } from '../../../../components/render-json/RenderJSON';
 import { ScrollableContent } from '../../../../components/scrollable-content/ScrollableContent';
 import { useMessages } from '../../../../i18n';
-import { selectCachedUser } from '../../../../store/friends/selectors';
+import { selectFriendInfoById } from '../../../../store/friends/selectors';
 import styles from './FriendsProfile.module.scss';
 
 type FriendProfileParams = {
@@ -21,10 +19,8 @@ type FriendProfileParams = {
 export function FriendProfile(): ReactElement {
   const { ShortInfo, Actions } = useMessages().Views.FriendsProfile;
   const { id } = useParams<FriendProfileParams>();
-  const cachedUser = useSelector(selectCachedUser(id));
-  const { getUser } = useApi();
+  const cachedUser = useSelector(selectFriendInfoById(id));
   const noOp = useCallback(() => undefined, []);
-  useSubscribe(getUser, id);
 
   return (
     <div className={styles.Component}>

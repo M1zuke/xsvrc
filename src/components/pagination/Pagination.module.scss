@@ -1,0 +1,31 @@
+@import "../../common/_mixins";
+@import "../../common/_spacing";
+@import "../../common/_colors";
+
+.Component {
+  display: grid;
+  grid-template-rows: auto autoSize();
+  height: 100%;
+  grid-gap: $innerSpacing;
+
+  .PaginatedContent {
+    height: 100%;
+    overflow: auto;
+  }
+
+  .PageNavigation {
+    background-color: $color1;
+    padding: $innerSpacing;
+    border-radius: $standardBorderRadius;
+    display: grid;
+    grid-gap: $smallSpacing;
+    justify-content: flex-end;
+    align-items: center;
+    grid-template-columns: repeat(6, autoSize());
+
+    .PageCounter {
+      border: 1px solid $color2;
+      padding:  0 $innerSpacing;
+    }
+  }
+}

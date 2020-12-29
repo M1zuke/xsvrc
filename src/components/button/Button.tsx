@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { PropsWithChildren, ReactElement, useMemo } from 'react';
-import style from './Button.module.scss';
+import styles from './Button.module.scss';
 
 interface ButtonProps {
   onClick: (evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -8,33 +8,38 @@ interface ButtonProps {
   disabled?: boolean;
   'aria-label': string;
   // unset for default style
-  theme?: 'light' | 'dark';
   active?: boolean;
   outline?: boolean;
   fullWidth?: boolean;
   mainClassName?: string;
+  icon?: boolean;
+  headerIcon?: boolean;
+  badge?: number;
 }
 
 export function Button(props: PropsWithChildren<ButtonProps>): ReactElement {
+  const badge = props.badge && props.badge >= 10 ? '9+' : props.badge;
   const classes = useMemo(
     () =>
       classNames(
-        style.StyleElement,
+        styles.StyleElement,
         {
-          [style.Disabled]: props.disabled,
-          [style.Active]: props.active,
+          [styles.Disabled]: props.disabled,
+          [styles.Active]: props.active,
+          [styles.Icon]: props.icon,
+          [styles.HeaderIcon]: props.headerIcon,
         },
         props.className,
       ),
-    [props.active, props.className, props.disabled],
+    [props.active, props.className, props.disabled, props.headerIcon, props.icon],
   );
   const mainClasses = useMemo(
     () =>
       classNames(
-        style.Component,
+        styles.Component,
         {
-          [style.FullWidth]: props.fullWidth,
-          [style.Outline]: props.outline,
+          [styles.FullWidth]: props.fullWidth,
+          [styles.Outline]: props.outline,
         },
         props.mainClassName,
       ),
@@ -42,6 +47,7 @@ export function Button(props: PropsWithChildren<ButtonProps>): ReactElement {
   );
   return (
     <button aria-label={props['aria-label']} className={mainClasses} onClick={props.onClick} disabled={props.disabled}>
+      {props.badge && props.badge > 0 ? <div className={styles.Badge}>{badge}</div> : <></>}
       <span className={classes}>{props.children}</span>
     </button>
   );
