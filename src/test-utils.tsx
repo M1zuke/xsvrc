@@ -7,7 +7,7 @@ import { AuthenticatedUserInfo } from './api/types';
 import { AppState } from './store';
 import { AppAction, AppActions, AppActionsType } from './store/actions';
 import { INITIAL_API_INFO_STATE } from './store/api-info/state';
-import { INITIAL_COOKIE_STATE } from './store/cookies/state';
+import { INITIAL_PERSISTED_STATE } from './store/persisted/state';
 import { INITIAL_FRIEND_INFO_STATE } from './store/friends/state';
 import { createAppStore } from './store/store';
 import { Router, RouteProps, Route } from 'react-router-dom';
@@ -37,7 +37,7 @@ function Wrapper(
 }
 
 export const INITIAL_TEST_APP_STATE: AppState = {
-  cookies: INITIAL_COOKIE_STATE,
+  persisted: INITIAL_PERSISTED_STATE,
   user: INITIAL_USER_STATE,
   view: { i18n: en },
   apiInfo: INITIAL_API_INFO_STATE,

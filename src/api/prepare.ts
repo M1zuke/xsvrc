@@ -1,6 +1,6 @@
-import { electronFetch, ElectronResult, ErrorType, RequestConfig } from '../common/electron-fetch';
+import { electronFetch, ElectronResult, ErrorType, RequestConfig } from '../common/electron-controls';
 import { AppState } from '../store';
-import { resetStoredCookies, setStoredCookies } from '../store/cookies/actions';
+import { resetStoredCookies, setStoredCookies } from '../store/persisted/actions';
 import { isErrorType, Loadable } from '../store/reducer';
 import { AppDispatch } from '../thunk';
 
@@ -11,7 +11,7 @@ export function api(path: string): string {
 }
 
 export function isLoaded<T>(object: Loadable<T>): object is T {
-  return !(object === null || object === 'loading' || isErrorType(object));
+  return !(object === null || object === 'loading' || object === 'not-found' || isErrorType(object));
 }
 
 function ensureApiKey(config: RequestConfig, key: string): RequestConfig {
@@ -32,7 +32,7 @@ export async function prepare<T>(
   try {
     const $state = typeof state === 'function' ? state() : state;
     const apiKey = $state.apiInfo;
-    const storedCookies = $state.cookies;
+    const storedCookies = $state.persisted.cookies;
 
     if (isLoaded(apiKey)) {
       config = ensureApiKey(config, apiKey.clientApiKey);

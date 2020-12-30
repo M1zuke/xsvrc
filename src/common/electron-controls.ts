@@ -1,5 +1,5 @@
 import { IpcRenderer } from 'electron';
-import { StoredCookie } from '../store/cookies/state';
+import { StoredCookie } from '../store/persisted/state';
 
 export interface RequestParams {
   key: string;
@@ -70,4 +70,8 @@ export async function electronFetch<T>(config: RequestConfig): Promise<ElectronR
   } catch (error) {
     return { type: 'error', message: error.message } as ErrorType;
   }
+}
+
+export function useIpcRenderer(): IpcRenderer {
+  return ((window as unknown) as IWindow).ipcRenderer;
 }

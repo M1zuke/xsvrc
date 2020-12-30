@@ -14,7 +14,7 @@ export function reducer(state: UserEventState = INITIAL_USER_EVENT_STATE, action
         ...state,
         worlds: {
           ...state.worlds,
-          [action.worldInfo.id]: action.worldInfo,
+          [action.id]: action.worldInfo,
         },
       };
     }

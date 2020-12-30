@@ -2,8 +2,8 @@ import { waitFor } from '@testing-library/dom';
 import pretty from 'pretty';
 import React from 'react';
 import { api } from '../../../api/prepare';
-import * as ElectronFetchModule from '../../../common/electron-fetch';
-import { ElectronResult } from '../../../common/electron-fetch';
+import * as ElectronFetchModule from '../../../common/electron-controls';
+import { ElectronResult } from '../../../common/electron-controls';
 import { AuthenticatedUserInfo } from '../../../store/user/state';
 import { render, withAuthentication } from '../../../test-utils';
 import { Friends } from '../friends/Friends';
@@ -68,6 +68,6 @@ describe('<Friends /> Component', () => {
     });
 
     expect(pretty(customResult.result.container.innerHTML)).toMatchSnapshot();
-    expect(customResult.store.getState().cookies).toEqual([]);
+    expect(customResult.store.getState().persisted).toEqual([]);
   });
 });

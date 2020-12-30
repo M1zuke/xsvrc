@@ -1,35 +1,32 @@
-import { History } from 'history';
-import { routes } from '../common/routes';
-import { resetStoredCookies } from '../store/cookies/actions';
+import { isErrorType } from '../store/reducer';
 import { setUserInfo } from '../store/user/actions';
 import { AppThunkAction } from '../thunk';
 import { getAllFriends } from './friends-api';
+import { logout } from './logout';
 import { getAllNotifications } from './notifications';
 import { api, prepare } from './prepare';
 import { AuthenticatedUserInfo } from './types';
 
-export function login(username?: string, password?: string, history?: History): AppThunkAction<Promise<void>> {
+export function login(username?: string, password?: string): AppThunkAction<Promise<void>> {
   return async function (dispatch, getState) {
     const state = getState();
-    if (state.user.userInfo === null) {
+    if (state.user.userInfo === null || isErrorType(state.user.userInfo)) {
       dispatch(setUserInfo('loading'));
-    }
 
-    const result = await prepare<AuthenticatedUserInfo>(state, dispatch, {
-      url: api('auth/user'),
-      headers: {
-        Authorization: `Basic ${btoa(`${username}:${password}`)}`,
-      },
-    });
+      const result = await prepare<AuthenticatedUserInfo>(state, dispatch, {
+        url: api('auth/user'),
+        headers: {
+          Authorization: `Basic ${btoa(`${username}:${password}`)}`,
+        },
+      });
 
-    if (result.type === 'entity') {
-      dispatch(setUserInfo(result.result));
-      dispatch(getAllFriends()).finally();
-      dispatch(getAllNotifications()).finally();
-      history && history.push(routes.home.path);
-    } else {
-      dispatch(setUserInfo(result));
-      dispatch(resetStoredCookies());
+      if (result.type === 'entity') {
+        await dispatch(getAllFriends()).finally();
+        await dispatch(getAllNotifications()).finally();
+        dispatch(setUserInfo(result.result));
+      } else {
+        dispatch(logout()).finally();
+      }
     }
   };
 }

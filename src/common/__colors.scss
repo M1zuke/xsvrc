@@ -6,21 +6,24 @@ $color3: #666666;
 
 $colorBlue: #25AAC5;
 $colorWhite: #FFFFFF;
+$textColor: #E7E7E7;
 $colorBlack: #000000;
+$colorGreen: #00FD00;
+$colorRed: red;
 
 // Index
 $indexBackgroundColor: $color0;
-$indexFontColor: $colorWhite;
+$indexFontColor: $textColor;
 
 // Login
 $loginBackgroundColor: $color1;
 
 // Loading
-$loadingBackgroundColor: $colorWhite;
+$loadingBackgroundColor: $textColor;
 
 // Button
 $buttonBackgroundColor: $color0;
-$buttonFontColor: $colorWhite;
+$buttonFontColor: $textColor;
 $buttonBackgroundColorOnHover: $color2;
 $buttonActiveBackgroundColor: $colorBlue;
 $buttonActiveFontColor: $colorBlack;
@@ -28,8 +31,8 @@ $buttonActiveBackgroundColorOnHover: $colorBlue;
 
 // TextInput
 $textInputBackgroundColor: $color2;
-$textInputFontColor: $colorWhite;
+$textInputFontColor: $textColor;
 
-// UserOverview
+// Navigation
 $userOverviewBackgroundColor: $color1;
 $userOverviewHighlight: $color2;

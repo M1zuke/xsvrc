@@ -1,24 +1,25 @@
-import { Close, Home, List, Notifications, PeopleAlt } from '@material-ui/icons';
+import { Home, List, Notifications, PeopleAlt, Person, PowerSettingsNew, Settings } from '@material-ui/icons';
 import React, { ReactElement, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { isLoaded } from '../../api/prepare';
-import { IWindow } from '../../common/electron-fetch';
+import { useApi } from '../../api/use-api';
 import { routes } from '../../common/routes';
-import { selectFriendInfo, selectFriendInfoById } from '../../store/friends/selectors';
+import { selectFriendInfo } from '../../store/friends/selectors';
 import { selectNotifications, selectUserInfo } from '../../store/user/selectors';
 import { Button } from '../button/Button';
 import { Content } from '../content/Content';
-import { FriendOverview } from '../friend-overview/FriendOverview';
-import styles from './UserOverview.module.scss';
+import styles from './Navigation.module.scss';
 
-export function UserOverview(): ReactElement {
-  const authenticatedUser = useSelector(selectUserInfo);
+export function Navigation(): ReactElement {
+  const userInfo = useSelector(selectUserInfo);
   const notifications = useSelector(selectNotifications);
   const friendInfo = useSelector(selectFriendInfo);
   const history = useHistory();
   const { pathname } = useLocation();
-  const cachedUser = useSelector(selectFriendInfoById(isLoaded(authenticatedUser) ? authenticatedUser.id : 'none'));
+  const { logout } = useApi();
+
+  const userId = useMemo(() => (isLoaded(userInfo) ? userInfo.id : 'none'), [userInfo]);
 
   const navigateTo = useCallback(
     (url: string) => {
@@ -26,17 +27,13 @@ export function UserOverview(): ReactElement {
     },
     [history],
   );
-
-  const disableNavigation = useMemo(() => !isLoaded(friendInfo) && !isLoaded(notifications), [
-    friendInfo,
-    notifications,
-  ]);
-
-  const closeApplication = useCallback(() => ((window as unknown) as IWindow).ipcRenderer.invoke('close'), []);
-
+  const doLogout = useCallback(() => logout().finally(), [logout]);
   const notificationsBadge = useMemo(() => (isLoaded(notifications) ? notifications.length : 0), [notifications]);
-
   const isActiveRoute = useCallback((route: string) => pathname === route, [pathname]);
+
+  if (!isLoaded(friendInfo) && !isLoaded(notifications) && !isLoaded(userInfo)) {
+    return <div />;
+  }
 
   return (
     <Content className={styles.Component}>
@@ -45,44 +42,57 @@ export function UserOverview(): ReactElement {
           aria-label="navigate to home"
           active={isActiveRoute(routes.home.path)}
           onClick={() => navigateTo(routes.home.path)}
-          headerIcon
-          disabled={disableNavigation}
+          icon
         >
           <Home />
         </Button>
-        <FriendOverview friendInfo={cachedUser} small />
+        <Button
+          aria-label="navigate to friends-profile"
+          active={isActiveRoute(`${routes.friendsProfile.path}/${userId}`)}
+          onClick={() => navigateTo(`${routes.friendsProfile.path}/${userId}`)}
+          icon
+        >
+          <Person />
+        </Button>
         <Button
           aria-label="navigate to friends"
           active={isActiveRoute(routes.friends.path)}
           onClick={() => navigateTo(routes.friends.path)}
-          headerIcon
-          disabled={disableNavigation}
+          icon
         >
           <PeopleAlt />
-        </Button>{' '}
+        </Button>
         <Button
-          aria-label="navigate to friends"
+          aria-label="navigate to notifications"
           active={isActiveRoute(routes.notifications.path)}
           onClick={() => navigateTo(routes.notifications.path)}
           badge={notificationsBadge}
-          headerIcon
-          disabled={disableNavigation}
+          icon
         >
           <Notifications />
         </Button>
         <Button
-          aria-label="navigate to friends"
+          aria-label="navigate to event-list"
           active={isActiveRoute(routes.eventList.path)}
           onClick={() => navigateTo(routes.eventList.path)}
-          headerIcon
-          disabled={disableNavigation}
+          icon
         >
           <List />
         </Button>
       </div>
-      <Button onClick={closeApplication} aria-label="close application" headerIcon>
-        <Close />
-      </Button>
+      <div className={styles.Settings}>
+        <Button
+          aria-label="navigate to settings"
+          active={isActiveRoute(routes.settings.path)}
+          onClick={() => navigateTo(routes.settings.path)}
+          icon
+        >
+          <Settings />
+        </Button>
+        <Button aria-label="navigate to settings" onClick={() => doLogout()} icon>
+          <PowerSettingsNew className={styles.LogoutButton} />
+        </Button>
+      </div>
     </Content>
   );
 }

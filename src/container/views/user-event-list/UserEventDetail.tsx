@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { UserInfo } from '../../../api/types';
 import styles from './UserEventList.module.scss';
-import { UserEventWorldDetail } from './UserEventWorldDetail';
+import { WorldDetail } from './WorldDetail';
 
 type UserEventDetailProps<K extends keyof UserInfo = keyof UserInfo> = {
   eventKey: K;
@@ -17,7 +17,7 @@ export function UserEventDetail({ eventKey, value }: UserEventDetailProps): Reac
   }
 
   if (eventKey === 'location') {
-    return <UserEventWorldDetail worldId={value as string} />;
+    return <WorldDetail worldId={value as string} />;
   }
 
   return <div className={styles.UserEventDetail}>{value}</div>;

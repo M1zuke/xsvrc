@@ -4,14 +4,21 @@
 .Component {
   height: 100%;
   width: 100%;
-
   display: grid;
   grid-template-rows: autoSize() auto;
-  padding: $innerSpacing;
-  grid-gap: $innerSpacing;
+  overflow: hidden;
 
-  .PageContent {
+  .Application {
+    display: grid;
+    grid-template-columns: autoSize() auto;
     height: 100%;
+    width: 100%;
     overflow: hidden;
+
+    .PageContent {
+      height: 100%;
+      padding: $innerSpacing;
+      overflow: hidden;
+    }
   }
 }

@@ -6,7 +6,7 @@ import { TextInput } from '../../../components/input/TextInput';
 import { Loading } from '../../../components/loading/Loading';
 import { isProbablyAuthenticated } from '../../../components/secured/Secured';
 import { useMessages } from '../../../i18n';
-import { savedCookies } from '../../../store/cookies/selectors';
+import { savedCookies } from '../../../store/persisted/selectors';
 import { selectUserInfo } from '../../../store/user/selectors';
 import styles from './Login.module.scss';
 
@@ -15,6 +15,7 @@ export function Login(): ReactElement {
   const cookies = useSelector(savedCookies);
   const userInfo = useSelector(selectUserInfo);
   const { login } = useApi();
+  const [verifiedAuth, setVerifiedAuth] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -26,10 +27,11 @@ export function Login(): ReactElement {
   }, [login, password, username]);
 
   useEffect(() => {
-    if (isProbablyAuthenticated(cookies)) {
+    if (isProbablyAuthenticated(cookies) && !verifiedAuth) {
+      setVerifiedAuth(true);
       handleLogin();
     }
-  }, [cookies, handleLogin]);
+  }, [handleLogin, cookies, verifiedAuth]);
 
   return (
     <div className={styles.Component}>

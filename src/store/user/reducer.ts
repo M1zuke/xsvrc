@@ -25,6 +25,9 @@ export function reducer(state: UserState = INITIAL_USER_STATE, action: UserActio
       }
       return state;
     }
+    case 'user/reset': {
+      return INITIAL_USER_STATE;
+    }
   }
   return state;
 }

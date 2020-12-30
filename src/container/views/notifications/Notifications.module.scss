@@ -21,7 +21,6 @@
 
     .Notifications {
       display: grid;
-      padding: $smallSpacing;
       grid-gap: $smallSpacing;
       grid-template-rows: autoSize();
 
@@ -33,15 +32,16 @@
         grid-gap: $smallSpacing;
         background-color: $color2;
         border-radius: $standardBorderRadius;
+        padding: $smallSpacing;
 
         .Info {
-          grid-template-columns: repeat(3, autoSize());
+          grid-template-columns: repeat(4, autoSize());
+          justify-content: center;
+          align-items: center;
           display: grid;
-          grid-gap: $smallSpacing;
 
           div {
             padding: $smallSpacing;
-            border-radius: $standardBorderRadius;
 
             &:first-child {
               border-radius: $standardBorderRadius 0 0 $standardBorderRadius;
@@ -52,8 +52,31 @@
             }
           }
 
+          .Detail {
+            background-color: $color3;
+          }
+
+          .CreationDate, .Message {
+            background-color: $color1;
+          }
+
           .Username {
             background-color: $colorBlue;
+            font-weight: bold;
+          }
+        }
+
+        .Actions {
+          display: grid;
+          grid-gap: $smallSpacing;
+          grid-template-columns: repeat(2, autoSize());
+
+          .Accept {
+            color: $colorGreen;
+          }
+
+          .Delete {
+            color: $colorRed;
           }
         }
       }

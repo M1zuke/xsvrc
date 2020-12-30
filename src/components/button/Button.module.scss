@@ -13,10 +13,13 @@
     top: -5px;
     right: -5px;
     padding: $tinySpacing;
-    background-color: red;
+    background-color: #FF3030;
     font-weight: bold;
-    color: $colorWhite;
+    color: $textColor;
     border-radius: 50%;
+    z-index: 99;
+    cursor: pointer;
+    user-select: none;
   }
 
   .StyleElement {
@@ -43,8 +46,8 @@
     }
 
     &.HeaderIcon, &.Icon {
-      width: 30px;
-      height: 30px;
+      width: 36px;
+      height: 36px;
 
       *:nth-child(2) {
         margin-left: -15px;
@@ -52,8 +55,13 @@
     }
 
     &.HeaderIcon {
-      width: 36px;
-      height: 36px;
+      width: 20px;
+      height: 20px;
+      color: $colorWhite;
+
+      svg {
+        font-size: 12px;
+      }
     }
 
     &.Active {
@@ -62,6 +70,22 @@
 
       &:hover {
         background-color: $buttonActiveBackgroundColorOnHover;
+      }
+    }
+
+    &.Light {
+      background-color: $color1;
+
+      &:hover {
+        background-color: $color3;
+      }
+    }
+
+    &.Dark {
+      background-color: $colorBlack;
+
+      &:hover {
+        background-color: $color2;
       }
     }
   }

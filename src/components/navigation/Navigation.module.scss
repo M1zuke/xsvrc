@@ -1,0 +1,25 @@
+@import "../../common/_spacing";
+@import "../../common/_mixins";
+@import "../../common/_colors";
+
+.Component {
+  display: grid;
+  margin: $innerSpacing 0 $innerSpacing $innerSpacing;
+  grid-template-rows: auto autoSize();
+
+  .Navigation {
+    display: grid;
+    grid-template-rows: repeat(6, autoSize());
+    grid-gap: $tinySpacing;
+  }
+
+  .Settings {
+    display: grid;
+    grid-template-rows: repeat(2, autoSize());
+    grid-gap: $tinySpacing;
+
+    .LogoutButton {
+      color: red;
+    }
+  }
+}

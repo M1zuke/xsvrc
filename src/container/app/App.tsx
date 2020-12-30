@@ -5,9 +5,10 @@ import { isLoaded } from '../../api/prepare';
 import { useApi } from '../../api/use-api';
 import { routes } from '../../common/routes';
 import { useSubscribe } from '../../common/use-subscribe';
+import { Header } from '../../components/header/Header';
 import { Loading } from '../../components/loading/Loading';
+import { Navigation } from '../../components/navigation/Navigation';
 import { Secured } from '../../components/secured/Secured';
-import { UserOverview } from '../../components/user-overview/UserOverview';
 import { WebSockets } from '../../components/websockets/WebSockets';
 import { selectUserInfo } from '../../store/user/selectors';
 import styles from './App.module.scss';
@@ -36,21 +37,24 @@ const App: React.FC = () => {
 
   return (
     <div className={styles.Component}>
-      <Secured>
+      <Header />
+      <div className={styles.Application}>
+        <Navigation />
         <WebSockets />
-        <UserOverview />
-        <div className={styles.PageContent}>
-          <Suspense fallback={<Loading />}>
-            <Switch>
-              <Route {...routes.home.config} component={HomeComponent} />
-              <Route {...routes.friends.config} component={FriendComponent} />
-              <Route {...routes.friendsProfile.config} component={FriendProfile} />
-              <Route {...routes.eventList.config} component={EventList} />
-              <Route {...routes.notifications.config} component={Notifications} />
-            </Switch>
-          </Suspense>
-        </div>
-      </Secured>
+        <Secured>
+          <div className={styles.PageContent}>
+            <Suspense fallback={<Loading />}>
+              <Switch>
+                <Route {...routes.home.config} component={HomeComponent} />
+                <Route {...routes.friends.config} component={FriendComponent} />
+                <Route {...routes.friendsProfile.config} component={FriendProfile} />
+                <Route {...routes.eventList.config} component={EventList} />
+                <Route {...routes.notifications.config} component={Notifications} />
+              </Switch>
+            </Suspense>
+          </div>
+        </Secured>
+      </div>
     </div>
   );
 };

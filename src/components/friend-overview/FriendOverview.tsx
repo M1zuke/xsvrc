@@ -76,7 +76,7 @@ export function FriendOverview({ friendInfo, small }: FriendOverviewProps): Reac
     [$friendInfo.status],
   );
 
-  const routeToProfile = useCallback(() => history.push(`${routes.friendsProfile.path}${$friendInfo.id}`), [
+  const routeToProfile = useCallback(() => history.push(`${routes.friendsProfile.path}/${$friendInfo.id}`), [
     $friendInfo.id,
     history,
   ]);

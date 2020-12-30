@@ -12,12 +12,15 @@ export function getWorld(location: string): AppThunkAction<Promise<void>> {
     const worldInfo = selectWorldByLocation(location)(state);
 
     if (worldInfo === null) {
+      saveWorldInfo(worldId, 'loading');
       const response = await prepare<WorldInfo>(state, dispatch, {
         url: api(`worlds/${worldId}`),
       });
 
       if (response.type === 'entity') {
-        dispatch(saveWorldInfo(response.result));
+        dispatch(saveWorldInfo(worldId, response.result));
+      } else {
+        dispatch(saveWorldInfo(worldId, 'not-found'));
       }
     }
   };

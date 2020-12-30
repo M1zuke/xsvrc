@@ -1,4 +1,5 @@
 import { UserInfo, WorldInfo } from '../../api/types';
+import { Loadable } from '../reducer';
 
 export type UserEvent<T extends UserInfo = UserInfo, K extends keyof T = keyof T> = {
   timestamp: Date;
@@ -10,7 +11,7 @@ export type UserEvent<T extends UserInfo = UserInfo, K extends keyof T = keyof T
 };
 
 export type WorldInfos = WorldInfo | 'private' | 'offline';
-export type WorldState = Record<WorldInfo['id'], WorldInfos>;
+export type WorldState = Record<WorldInfo['id'], Loadable<WorldInfos>>;
 export type UserEventState = {
   userEvents: UserEvent[];
   worlds: WorldState;
