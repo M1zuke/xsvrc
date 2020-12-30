@@ -1,6 +1,6 @@
 import { waitFor } from '@testing-library/dom';
 import { IpcRenderer } from 'electron';
-import { electronFetch, IWindow, RequestConfig } from '../electron-fetch';
+import { electronFetch, IWindow, RequestConfig } from '../electron-controls';
 
 describe('electronFetch function', () => {
   const invoke = jest.fn();

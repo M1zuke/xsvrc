@@ -1,6 +1,7 @@
 import { WorldInfo } from '../../api/types';
+import { Loadable } from '../reducer';
 import { UserEvent } from './state';
-import { AddUserEvent, SaveWorldInfo } from './types';
+import { AddUserEvent, ResetUserEvents, SaveWorldInfo } from './types';
 
 export function addUserEvent(userEvent: Omit<UserEvent, 'timestamp'>): AddUserEvent {
   const timestamp = new Date();
@@ -13,9 +14,16 @@ export function addUserEvent(userEvent: Omit<UserEvent, 'timestamp'>): AddUserEv
   };
 }
 
-export function saveWorldInfo(worldInfo: WorldInfo): SaveWorldInfo {
+export function saveWorldInfo(id: WorldInfo['id'], worldInfo: Loadable<WorldInfo>): SaveWorldInfo {
   return {
     type: 'user-event/save-world-info',
     worldInfo,
+    id,
+  };
+}
+
+export function resetUserEvent(): ResetUserEvents {
+  return {
+    type: 'user-event/reset',
   };
 }

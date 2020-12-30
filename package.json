@@ -1,6 +1,6 @@
 {
-  "name": "e-vrc",
-  "version": "0.1.2",
+  "name": "xsvrc",
+  "version": "0.1.6",
   "private": true,
   "main": "public/electron.js",
   "homepage": ".",

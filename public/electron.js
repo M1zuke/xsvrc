@@ -26,16 +26,34 @@ function createWindow() {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
     },
-    // webSecurity: false,
     resizable: true,
     frame: false,
-    backgroundColor: '#000000',
+    backgroundColor: '#1A1A1A',
   });
-  mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+  mainWindow
+    .loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
+    .finally();
   mainWindow.on('closed', () => (mainWindow = null));
 
-  electron.ipcMain.handle('close', () => {
-    mainWindow.close();
+  electron.ipcMain.handle('run', (event, args) => {
+    switch (args) {
+      case 'close': {
+        return app.quit();
+      }
+      case 'maximize': {
+        if (mainWindow.isMaximized()) {
+          return mainWindow.unmaximize();
+        }
+        return mainWindow.maximize();
+      }
+      case 'minimize': {
+        return mainWindow.minimize();
+      }
+      default:
+      case 'restore': {
+        return mainWindow.restore();
+      }
+    }
   });
 
   electron.ipcMain.handle('fetch', async (event, args) => {

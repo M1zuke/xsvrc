@@ -1,6 +1,6 @@
-import { setFriendById } from '../store/friends/actions';
+import { setFriendInfo } from '../store/friends/actions';
 import { AppThunkAction } from '../thunk';
-import { api, prepare } from './prepare';
+import { api, isLoaded, prepare } from './prepare';
 import { UserInfo } from './types';
 
 export function getUser(id: string): AppThunkAction<Promise<void>> {
@@ -12,7 +12,9 @@ export function getUser(id: string): AppThunkAction<Promise<void>> {
     });
 
     if (response.type === 'entity') {
-      dispatch(setFriendById(response.result.id, response.result));
+      const newState = getState();
+      const friends = isLoaded(newState.friends) ? Object.values(newState.friends) : [];
+      dispatch(setFriendInfo([...friends, response.result]));
     }
   };
 }

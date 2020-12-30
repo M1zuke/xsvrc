@@ -1,6 +1,17 @@
 export const messages = {
+  Application: {
+    Title: 'XSVRC - Manage your VRC',
+  },
   Views: {
+    WorldDetail: {
+      NotFound: 'World got removed',
+    },
     Notifications: {
+      Message: {
+        Invite: 'invited you to',
+        RequestInvite: 'wants to join you',
+        FriendRequest: 'wants to be your friend',
+      },
       Filter: {
         All: 'All',
         Invites: 'Invites',

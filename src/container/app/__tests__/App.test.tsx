@@ -1,10 +1,10 @@
 import { waitFor } from '@testing-library/dom';
 import pretty from 'pretty';
 import React from 'react';
-import * as ElectronFetchModule from '../../../common/electron-fetch';
-import { ElectronResult } from '../../../common/electron-fetch';
+import * as ElectronFetchModule from '../../../common/electron-controls';
+import { ElectronResult } from '../../../common/electron-controls';
 import { routes } from '../../../common/routes';
-import * as UserOverviewModule from '../../../components/user-overview/UserOverview';
+import * as UserOverviewModule from '../../../components/navigation/Navigation';
 import { VRCApiInfo } from '../../../store/api-info/state';
 import { render, withAuthentication } from '../../../test-utils';
 import App from '../App';
@@ -16,13 +16,13 @@ const { electronFetch: FetchMock } = ElectronFetchModule as jest.Mocked<typeof E
 const { Login: LoginMock } = LoginModule as jest.Mocked<typeof LoginModule>;
 const { Home: HomeMock } = HomeModule as jest.Mocked<typeof HomeModule>;
 const { Friends: FriendsMock } = FriendsModule as jest.Mocked<typeof FriendsModule>;
-const { UserOverview: UserOverviewMock } = UserOverviewModule as jest.Mocked<typeof UserOverviewModule>;
+const { Navigation: UserOverviewMock } = UserOverviewModule as jest.Mocked<typeof UserOverviewModule>;
 
 jest.mock('../../../common/electron-fetch');
 jest.mock('../../views/login/Login');
 jest.mock('../../views/home/Home');
 jest.mock('../../views/friends/Friends');
-jest.mock('../../../components/user-overview/UserOverview');
+jest.mock('../../../components/navigation/Navigation');
 
 describe('<App /> Component', () => {
   beforeEach(() => {

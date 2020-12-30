@@ -122,16 +122,18 @@ export function Friends(): ReactElement {
   return (
     <div className={styles.Component}>
       <Content className={styles.FriendsCountWrapper}>
-        <div className={styles.AllOnlineFriendsCount}>{friendsCount}</div>
-        <div className={styles.FilteredFriendsCount}>{filteredFriendsCount}</div>
-        {messages.Views.Friends.FriendsOnline}
-      </Content>
-      <Content className={styles.FilterButtons}>
-        <div className={styles.NormalFilter}>{filterButtons}</div>
+        <div className={styles.ShortOverview}>
+          <div className={styles.AllOnlineFriendsCount}>{friendsCount}</div>
+          <div className={styles.FilteredFriendsCount}>{filteredFriendsCount}</div>
+          {messages.Views.Friends.FriendsOnline}
+        </div>
         <div className={styles.SpecialFilter}>
           <Checkbox label={messages.Views.Friends.ShowOffline} onClick={setShowOffline} value={showOffline} />
           <Checkbox label={messages.Views.Friends.ShowPrivate} onClick={setShowPrivate} value={showPrivate} />
         </div>
+      </Content>
+      <Content className={styles.FilterButtons}>
+        <div className={styles.NormalFilter}>{filterButtons}</div>
       </Content>
       <ScrollableContent>
         <LoadableContent data={filteredFriendInfo}>

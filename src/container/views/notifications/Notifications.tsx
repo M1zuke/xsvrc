@@ -1,7 +1,7 @@
 import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { isLoaded } from '../../../api/prepare';
-import { NotificationDTO } from '../../../api/types';
+import { NotificationContent } from '../../../api/types';
 import { Button } from '../../../components/button/Button';
 import { Content } from '../../../components/content/Content';
 import { Pagination } from '../../../components/pagination/Pagination';
@@ -11,7 +11,7 @@ import { selectNotifications } from '../../../store/user/selectors';
 import { Notification } from './Notification';
 import styles from './Notifications.module.scss';
 
-type FilterType = NotificationDTO['type'] | 'all';
+type FilterType = NotificationContent['type'] | 'all';
 
 export function Notifications(): ReactElement {
   const notifications = useSelector(selectNotifications);

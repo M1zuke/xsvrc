@@ -2,8 +2,8 @@ import React, { PropsWithChildren, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { AuthenticatedUserInfo } from '../../api/types';
 import { Login } from '../../container/views/login/Login';
-import { savedCookies } from '../../store/cookies/selectors';
-import { StoredCookie } from '../../store/cookies/state';
+import { savedCookies } from '../../store/persisted/selectors';
+import { StoredCookie } from '../../store/persisted/state';
 import { isErrorType, Loadable } from '../../store/reducer';
 import { selectUserInfo } from '../../store/user/selectors';
 

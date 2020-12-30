@@ -7,7 +7,7 @@ import { Loadable } from '../reducer';
 import { addUserEvent, saveWorldInfo } from '../user-events/action';
 import { addNotification } from '../user/actions';
 import { FriendEntries } from './state';
-import { SetFriendById, SetFriendInfo } from './types';
+import { ResetFriends, SetFriendInfo } from './types';
 
 function compare<T extends keyof UserInfo, V = UserInfo[T]>(a: V, b: V): number {
   if (typeof a === 'number' && typeof b === 'number') {
@@ -36,13 +36,26 @@ function sortFriendInfo(friendInfo: UserInfo[]): UserInfo[] {
   return [...specialCharacterFriendInfo.sort(sortFunction), ...cleanFriendInfo.sort(sortFunction)];
 }
 
-export function setFriendInfo(friendInfo: Loadable<UserInfo[]>): SetFriendInfo {
+export function resetFriends(): ResetFriends {
+  return {
+    type: 'friend/reset',
+  };
+}
+
+export function setFriendInfo(friendInfo: Loadable<UserInfo[]>, updatedUser?: UserInfo): SetFriendInfo {
   if (isLoaded(friendInfo)) {
     const sortedFriends: FriendEntries = Object.assign(
       {},
-      ...sortFriendInfo(friendInfo).map((fi) => ({
-        [fi.id]: fi,
-      })),
+      ...sortFriendInfo(friendInfo).map((fi) => {
+        if (updatedUser && updatedUser.id === fi.id) {
+          return {
+            [fi.id]: { ...fi, ...updatedUser },
+          };
+        }
+        return {
+          [fi.id]: fi,
+        };
+      }),
     );
     return {
       type: 'friend/setFriendInfo',
@@ -55,17 +68,11 @@ export function setFriendInfo(friendInfo: Loadable<UserInfo[]>): SetFriendInfo {
   };
 }
 
-export function setFriendById(id: string, userInfo: UserInfo): SetFriendById {
-  return {
-    type: 'friend/setFriendById',
-    id,
-    userInfo,
-  };
-}
-
 export function updateFriend(websocketNotification: WebSocketNotification): AppThunkAction<Promise<void>> {
   return async function (dispatch, getState) {
     const state = getState();
+
+    const friends = isLoaded(state.friends) ? Object.values(state.friends) : [];
 
     if (isLoaded(state.friends) && isFriendNotification(websocketNotification)) {
       const oldUserInfo = state.friends[websocketNotification.content.userId];
@@ -75,7 +82,7 @@ export function updateFriend(websocketNotification: WebSocketNotification): AppT
         switch (websocketNotification.type) {
           case 'friend-active':
           case 'friend-update': {
-            dispatch(setFriendById(websocketNotification.content.userId, websocketNotification.content.user));
+            dispatch(setFriendInfo(friends, websocketNotification.content.user));
             if (
               oldUserInfo.currentAvatarThumbnailImageUrl !==
               websocketNotification.content.user.currentAvatarThumbnailImageUrl
@@ -105,7 +112,7 @@ export function updateFriend(websocketNotification: WebSocketNotification): AppT
             break;
           }
           case 'friend-add': {
-            dispatch(setFriendById(websocketNotification.content.userId, websocketNotification.content.user));
+            dispatch(setFriendInfo(friends, websocketNotification.content.user));
             dispatch(
               addUserEvent({
                 displayName: oldUserInfo.displayName,
@@ -136,7 +143,7 @@ export function updateFriend(websocketNotification: WebSocketNotification): AppT
           }
           case 'friend-offline': {
             dispatch(
-              setFriendById(websocketNotification.content.userId, {
+              setFriendInfo(friends, {
                 ...oldUserInfo,
                 location: 'offline',
                 status: 'offline',
@@ -161,9 +168,9 @@ export function updateFriend(websocketNotification: WebSocketNotification): AppT
               worldId: websocketNotification.content.world.id,
               instanceId: websocketNotification.content.instance,
             };
-            dispatch(setFriendById(websocketNotification.content.userId, enrichedUser));
+            dispatch(setFriendInfo(friends, enrichedUser));
             if (websocketNotification.content.location !== 'private') {
-              dispatch(saveWorldInfo(websocketNotification.content.world));
+              dispatch(saveWorldInfo(websocketNotification.content.world.id, websocketNotification.content.world));
             }
             dispatch(
               addUserEvent({

@@ -1,5 +1,5 @@
-import { resetStoredCookies } from '../store/cookies/actions';
 import { setFriendInfo } from '../store/friends/actions';
+import { resetStoredCookies } from '../store/persisted/actions';
 import { AppThunkAction } from '../thunk';
 import { api, isLoaded, prepare } from './prepare';
 import { UserInfo } from './types';
@@ -42,15 +42,13 @@ export function getAllFriends(): AppThunkAction<Promise<void>> {
       dispatch(setFriendInfo('loading'));
     }
     const onlineFriends = await dispatch(getFriends());
-    // const offlineFriends = await dispatch(getFriends(true));
+    const offlineFriends = await dispatch(getFriends(true));
 
     const newState = getState();
     if (isLoaded(newState.friends)) {
-      console.log('setFriends with Mizu', newState.friends);
-      dispatch(setFriendInfo([...Object.values(newState.friends), ...onlineFriends]));
+      dispatch(setFriendInfo([...Object.values(newState.friends), ...offlineFriends, ...onlineFriends]));
     } else {
-      console.log('setFriends without Mizu', state.friends);
-      dispatch(setFriendInfo([...onlineFriends]));
+      dispatch(setFriendInfo([...offlineFriends, ...onlineFriends]));
     }
   };
 }

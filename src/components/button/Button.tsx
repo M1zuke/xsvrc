@@ -7,7 +7,6 @@ interface ButtonProps {
   className?: string;
   disabled?: boolean;
   'aria-label': string;
-  // unset for default style
   active?: boolean;
   outline?: boolean;
   fullWidth?: boolean;
@@ -15,6 +14,8 @@ interface ButtonProps {
   icon?: boolean;
   headerIcon?: boolean;
   badge?: number;
+  light?: boolean;
+  dark?: boolean;
 }
 
 export function Button(props: PropsWithChildren<ButtonProps>): ReactElement {
@@ -28,10 +29,12 @@ export function Button(props: PropsWithChildren<ButtonProps>): ReactElement {
           [styles.Active]: props.active,
           [styles.Icon]: props.icon,
           [styles.HeaderIcon]: props.headerIcon,
+          [styles.Light]: props.light,
+          [styles.Dark]: props.dark,
         },
         props.className,
       ),
-    [props.active, props.className, props.disabled, props.headerIcon, props.icon],
+    [props.active, props.className, props.dark, props.disabled, props.headerIcon, props.icon, props.light],
   );
   const mainClasses = useMemo(
     () =>

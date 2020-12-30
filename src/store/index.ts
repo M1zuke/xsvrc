@@ -1,5 +1,5 @@
 import { VRCApiInfo } from './api-info/state';
-import { CookieState } from './cookies/state';
+import { PersistedState } from './persisted/state';
 import { FriendInfoState } from './friends/state';
 import { Loadable } from './reducer';
 import { UserEventState } from './user-events/state';
@@ -10,7 +10,7 @@ export interface AppState {
   user: UserState;
   apiInfo: Loadable<VRCApiInfo>;
   view: ViewState;
-  cookies: CookieState;
+  persisted: PersistedState;
   friends: FriendInfoState;
   userEvents: UserEventState;
 }

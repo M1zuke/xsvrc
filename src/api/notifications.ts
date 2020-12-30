@@ -1,13 +1,13 @@
-import { RequestParams } from '../common/electron-fetch';
+import { RequestParams } from '../common/electron-controls';
 import { setNotifications } from '../store/user/actions';
 import { AppThunkAction } from '../thunk';
 import { api, prepare } from './prepare';
-import { NotificationDTO } from './types';
+import { NotificationContent, NotificationDTO } from './types';
 
 const limit = 100;
 
 export function getAllNotifications(
-  type?: NotificationDTO['type'],
+  type?: NotificationContent['type'],
   notifications: NotificationDTO[] = [],
   offset = 0,
 ): AppThunkAction<Promise<void>> {
@@ -30,7 +30,11 @@ export function getAllNotifications(
       if (response.result.length > 0) {
         return dispatch(getAllNotifications(type, newNotifications, offset + limit));
       }
-      dispatch(setNotifications(newNotifications));
+      const parsedNotifications: NotificationContent[] = newNotifications.map((not) => ({
+        ...not,
+        details: JSON.parse(not.details),
+      }));
+      dispatch(setNotifications(parsedNotifications));
     } else {
       console.log(response);
     }

@@ -3,7 +3,11 @@ import { UserInfo } from '../../api/types';
 import { Loadable } from '../reducer';
 import { FriendEntries } from './state';
 
-export type FriendsActionType = 'friend/setFriendInfo' | 'friend/setCachedUser' | 'friend/setFriendById';
+export type FriendsActionType =
+  | 'friend/setFriendInfo'
+  | 'friend/setCachedUser'
+  | 'friend/setFriendById'
+  | 'friend/reset';
 
 export type FriendAction<T extends FriendsActionType> = Action<T>;
 
@@ -16,4 +20,6 @@ export type SetFriendById = FriendAction<'friend/setFriendById'> & {
   userInfo: UserInfo;
 };
 
-export type FriendActions = SetFriendInfo | SetFriendById;
+export type ResetFriends = FriendAction<'friend/reset'>;
+
+export type FriendActions = SetFriendInfo | SetFriendById | ResetFriends;

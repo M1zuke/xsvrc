@@ -1,8 +1,8 @@
 import { Action } from 'redux';
-import { AuthenticatedUserInfo, NotificationDTO } from '../../api/types';
+import { AuthenticatedUserInfo, NotificationContent } from '../../api/types';
 import { Loadable } from '../reducer';
 
-export type UserActionType = 'user/set-user-info' | 'user/set-notifications' | 'user/add-notification';
+export type UserActionType = 'user/set-user-info' | 'user/set-notifications' | 'user/add-notification' | 'user/reset';
 
 export type UserAction<T extends UserActionType> = Action<T>;
 
@@ -11,11 +11,13 @@ export type SetUserInfo = UserAction<'user/set-user-info'> & {
 };
 
 export type SetNotifications = UserAction<'user/set-notifications'> & {
-  notifications: Loadable<NotificationDTO[]>;
+  notifications: Loadable<NotificationContent[]>;
 };
 
 export type AddNotification = UserAction<'user/add-notification'> & {
-  notification: NotificationDTO;
+  notification: NotificationContent;
 };
 
-export type UserActions = SetUserInfo | SetNotifications | AddNotification;
+export type ResetUser = UserAction<'user/reset'>;
+
+export type UserActions = SetUserInfo | SetNotifications | AddNotification | ResetUser;

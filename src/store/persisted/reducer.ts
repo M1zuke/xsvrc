@@ -1,4 +1,4 @@
-import { CookieState, INITIAL_COOKIE_STATE, StoredCookie } from './state';
+import { INITIAL_PERSISTED_STATE, PersistedState, StoredCookie } from './state';
 import { CookieActions } from './types';
 
 function mergeWithNewCookies(oldCookies: StoredCookie[], newCookies: StoredCookie[]): StoredCookie[] {
@@ -14,12 +14,20 @@ function mergeWithNewCookies(oldCookies: StoredCookie[], newCookies: StoredCooki
   return mergedCookies;
 }
 
-export function reducer(state: CookieState = INITIAL_COOKIE_STATE, action: CookieActions): CookieState {
+export function reducer(state: PersistedState = INITIAL_PERSISTED_STATE, action: CookieActions): PersistedState {
   switch (action.type) {
-    case 'cookie/set-cookies':
-      return [...mergeWithNewCookies(state, action.cookies)];
-    case 'cookie/reset-cookies':
-      return [...INITIAL_COOKIE_STATE];
+    case 'cookie/set-cookies': {
+      return {
+        ...state,
+        cookies: [...mergeWithNewCookies(state.cookies, action.cookies)],
+      };
+    }
+    case 'cookie/reset-cookies': {
+      return {
+        ...state,
+        cookies: [],
+      };
+    }
   }
   return state;
 }

@@ -11,25 +11,37 @@
 
   .FriendsCountWrapper {
     display: grid;
-    grid-template-columns: repeat(3, autoSize());
-    align-items: center;
+    grid-template-columns: auto autoSize();
 
-    .AllOnlineFriendsCount {
-      padding: $tinySpacing $smallSpacing;
-      background-color: $colorBlue;
-      color: black;
-      font-weight: bold;
-      border-top-left-radius: $standardBorderRadius;
-      border-bottom-left-radius: $standardBorderRadius;
+    .ShortOverview {
+      display: grid;
+      grid-template-columns: repeat(3, autoSize());
+      align-items: center;
+
+      .AllOnlineFriendsCount {
+        padding: $tinySpacing $smallSpacing;
+        background-color: $colorBlue;
+        color: black;
+        font-weight: bold;
+        border-top-left-radius: $standardBorderRadius;
+        border-bottom-left-radius: $standardBorderRadius;
+      }
+
+      .FilteredFriendsCount {
+        padding: $tinySpacing $smallSpacing;
+        background-color: $color3;
+        font-weight: bold;
+        border-top-right-radius: $standardBorderRadius;
+        border-bottom-right-radius: $standardBorderRadius;
+        margin-right: $innerSpacing;
+      }
     }
 
-    .FilteredFriendsCount {
-      padding: $tinySpacing $smallSpacing;
-      background-color: $color3;
-      font-weight: bold;
-      border-top-right-radius: $standardBorderRadius;
-      border-bottom-right-radius: $standardBorderRadius;
-      margin-right: $innerSpacing;
+    .SpecialFilter {
+      display: grid;
+      grid-template-columns: repeat(2, autoSize());
+      grid-gap: $innerSpacing;
+      justify-content: flex-end;
     }
   }
 
@@ -45,32 +57,19 @@
       grid-template-columns: repeat(28, autoSize());
       grid-gap: $smallSpacing;
     }
-
-    .SpecialFilter {
-      display: grid;
-      grid-template-columns: repeat(2, autoSize());
-      grid-gap: $innerSpacing;
-      justify-content: flex-end;
-    }
   }
 
   .FriendsList {
     display: grid;
     grid-gap: $innerSpacing;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(10, 1fr);
   }
 }
 
 @media only screen and (max-width: 1610px) {
   .Component {
-    .FilterButtons {
-      .NormalFilter {
-        grid-template-columns: repeat(14, autoSize());
-      }
-    }
-
     .FriendsList {
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(8, 1fr);
     }
   }
 }

@@ -1,7 +1,7 @@
 import pretty from 'pretty';
 import React from 'react';
-import { ElectronResult } from '../../../common/electron-fetch';
-import * as ElectronFetchModule from '../../../common/electron-fetch';
+import { ElectronResult } from '../../../common/electron-controls';
+import * as ElectronFetchModule from '../../../common/electron-controls';
 import { routes } from '../../../common/routes';
 import { AuthenticatedUserInfo } from '../../../store/user/state';
 import { render, withAuthentication } from '../../../test-utils';

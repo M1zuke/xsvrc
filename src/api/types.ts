@@ -129,22 +129,30 @@ type FriendLocationUpdate = {
 
 type InviteNotification = {
   type: 'invite';
-  worldId: string;
+  details: {
+    worldId: string;
+    worldName: string;
+  };
 };
 
 type RequestInviteNotification = {
   type: 'requestInvite';
-  platform: string;
+  details: {
+    platform: string;
+  };
 };
 
 type VoteToKickNotification = {
   type: 'votetokick';
-  userToKickId: string;
-  initiatorUserId: string;
+  details: {
+    userToKickId: string;
+    initiatorUserId: string;
+  };
 };
 
 type FriendRequestNotificationDetails = {
   type: 'friendRequest';
+  details: Record<string, unknown>;
 };
 
 type NotificationDetails =
@@ -153,7 +161,7 @@ type NotificationDetails =
   | VoteToKickNotification
   | FriendRequestNotificationDetails;
 
-export type NotificationDTO = NotificationDetails & {
+export type NotificationContent = NotificationDetails & {
   id: string;
   senderUsername: string;
   senderUserId: string;
@@ -162,9 +170,13 @@ export type NotificationDTO = NotificationDetails & {
   created_at: string;
 };
 
+export type NotificationDTO = Omit<NotificationContent, 'details'> & {
+  details: string;
+};
+
 export type Notification = {
   type: 'notification';
-  content: NotificationDTO;
+  content: NotificationContent;
 };
 export type FriendNotification = FriendLocationUpdate | FriendUpdatesUserId | FriendUpdateWithUser;
 export type WebSocketNotification = Notification | FriendNotification;

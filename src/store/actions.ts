@@ -1,5 +1,5 @@
 import { ApiInfoActions, ApiInfoActionType } from './api-info/types';
-import { CookieActions, CookieActionType } from './cookies/types';
+import { CookieActions, CookieActionType } from './persisted/types';
 import { UserEventActions, UserEventActionType } from './user-events/types';
 import { FriendActions, FriendsActionType } from './friends/types';
 import { UserActions, UserActionType } from './user/types';
