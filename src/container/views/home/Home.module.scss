@@ -3,8 +3,25 @@
 
 .Component {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: autoSize();
-  height: 100%;
+  grid-template-rows: autoSize() auto;
   grid-gap: $innerSpacing;
+
+  .NumberOverview {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: autoSize();
+    height: 100%;
+    grid-gap: $innerSpacing;
+  }
+
+  .FriendFavorites {
+    display: grid;
+    grid-template-rows: repeat(3, autoSize());
+    grid-gap: $innerSpacing;
+  }
 }
+
+.PaddingOverwrite {
+  padding: 0;
+}
+

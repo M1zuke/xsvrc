@@ -1,0 +1,16 @@
+@import "../../common/_mixins";
+@import "../../common/_spacing";
+
+.Component {
+  height: 100%;
+  display: grid;
+  grid-gap: $innerSpacing;
+  grid-template-rows: autoSize() auto;
+  overflow: hidden;
+
+  .Content {
+    height: 100%;
+    overflow: hidden;
+    display: grid;
+  }
+}

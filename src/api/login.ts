@@ -1,6 +1,7 @@
 import { isErrorType } from '../store/reducer';
 import { setUserInfo } from '../store/user/actions';
 import { AppThunkAction } from '../thunk';
+import { getAllFavorites } from './favorites-api';
 import { getAllFriends } from './friends-api';
 import { logout } from './logout';
 import { getAllNotifications } from './notifications';
@@ -21,9 +22,10 @@ export function login(username?: string, password?: string): AppThunkAction<Prom
       });
 
       if (result.type === 'entity') {
-        await dispatch(getAllFriends()).finally();
-        await dispatch(getAllNotifications()).finally();
         dispatch(setUserInfo(result.result));
+        await dispatch(getAllFriends(true)).finally();
+        await dispatch(getAllNotifications()).finally();
+        await dispatch(getAllFavorites()).finally();
       } else {
         dispatch(logout()).finally();
       }

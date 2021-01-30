@@ -1,24 +1,26 @@
 import { Check, Delete } from '@material-ui/icons';
 import React, { ReactElement, useCallback, useMemo } from 'react';
 import { NotificationContent } from '../../../api/types';
+import { useSettings } from '../../../common/use-settings';
 import { Button } from '../../../components/button/Button';
 import { useMessages } from '../../../i18n';
 import styles from './Notifications.module.scss';
 
 export function Notification(props: NotificationContent): ReactElement {
   const messages = useMessages();
+  const settings = useSettings();
   const formattedTime = useMemo(
     () =>
-      Intl.DateTimeFormat('en-EN', {
+      Intl.DateTimeFormat(settings.localization, {
         day: 'numeric',
         month: 'numeric',
         year: 'numeric',
         hour: 'numeric',
         minute: 'numeric',
         second: 'numeric',
-        hour12: false,
+        hour12: settings.use12hours,
       }).format(new Date(props.created_at)),
-    [props.created_at],
+    [props.created_at, settings.localization, settings.use12hours],
   );
 
   const showDetail = useMemo(() => {

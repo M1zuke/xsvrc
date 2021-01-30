@@ -17,7 +17,8 @@ export function UserEventDetail({ eventKey, value }: UserEventDetailProps): Reac
   }
 
   if (eventKey === 'location') {
-    return <WorldDetail worldId={value as string} />;
+    console.log(value);
+    return <WorldDetail location={value as string} />;
   }
 
   return <div className={styles.UserEventDetail}>{value}</div>;

@@ -5,4 +5,9 @@
   background-color: $color1;
   padding: $smallSpacing;
   border-radius: $standardBorderRadius;
+  overflow: hidden;
+
+  &.Translucent {
+    background-color: transparent;
+  }
 }

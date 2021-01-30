@@ -3,9 +3,7 @@
 
 $trustedRankBorder: $tinySpacing;
 
-
 .Component {
-  overflow: hidden;
   border-radius: $standardBorderRadius;
   box-shadow: black 1px 1px 5px;
   position: relative;
@@ -16,8 +14,7 @@ $trustedRankBorder: $tinySpacing;
   cursor: pointer;
   box-sizing: border-box;
   user-select: none;
-  -webkit-app-region: no-drag;
-
+  font-size: 14px;
 
   &.Visitor {
     border: $trustedRankBorder solid #D6D6D6;
@@ -43,25 +40,38 @@ $trustedRankBorder: $tinySpacing;
     border: $trustedRankBorder solid #FFDA00;
   }
 
-  .PrivateIcon {
+  .Offline {
     position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparentize(black, 0.15);
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .PrivateIcon {
     top: $smallSpacing;
     right: 35px;
+  }
+
+  .OnlineThroughWebsite {
+    z-index: 99;
+    left: $smallSpacing;
+    top: $smallSpacing;
+  }
+
+  .OnlineThroughWebsite, .PrivateIcon {
     background-color: $color2;
     padding: $tinySpacing;
     border-radius: $standardBorderRadius;
+    position: absolute;
     display: grid;
     justify-content: center;
     align-items: center;
-  }
-
-  .Icon {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
   }
 
   .Status {
@@ -74,6 +84,7 @@ $trustedRankBorder: $tinySpacing;
     height: 23px;
     box-shadow: black 0 0 2px;
     border-radius: 50%;
+    z-index: 2;
 
     &.Active:not(.Private) {
       background-color: lawngreen;
@@ -103,6 +114,7 @@ $trustedRankBorder: $tinySpacing;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    z-index: 2;
   }
 
   &.Small {

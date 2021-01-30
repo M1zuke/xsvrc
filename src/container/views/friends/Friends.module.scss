@@ -39,7 +39,7 @@
 
     .SpecialFilter {
       display: grid;
-      grid-template-columns: repeat(2, autoSize());
+      grid-template-columns: repeat(3, autoSize());
       grid-gap: $innerSpacing;
       justify-content: flex-end;
     }

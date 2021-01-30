@@ -24,12 +24,14 @@ const EventList = lazy(() =>
 const Notifications = lazy(() =>
   import('../views/notifications/Notifications').then(({ Notifications }) => ({ default: Notifications })),
 );
+const Settings = lazy(() => import('../views/settings/Settings').then(({ Settings }) => ({ default: Settings })));
 
 const App: React.FC = () => {
   const userInfo = useSelector(selectUserInfo);
   const { info } = useApi();
-  const { getUser } = useApi();
-  useSubscribe(getUser, isLoaded(userInfo) ? userInfo.id : null);
+  const { getUser, getAllFriends } = useApi();
+  useSubscribe(getAllFriends, undefined, 240);
+  useSubscribe(getUser, isLoaded(userInfo) ? userInfo.id : null, 60);
 
   useEffect(() => {
     info().then();
@@ -50,6 +52,7 @@ const App: React.FC = () => {
                 <Route {...routes.friendsProfile.config} component={FriendProfile} />
                 <Route {...routes.eventList.config} component={EventList} />
                 <Route {...routes.notifications.config} component={Notifications} />
+                <Route {...routes.settings.config} component={Settings} />
               </Switch>
             </Suspense>
           </div>

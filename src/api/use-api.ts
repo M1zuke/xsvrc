@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useAppDispatch } from '../thunk/dispatch';
+import { getAllFriends } from './friends-api';
 import { getUser } from './getUser';
 import { getWorld } from './getWorld';
 import { info } from './info';
@@ -12,6 +13,7 @@ export type API = {
   logout(): Promise<void>;
   getWorld(worldId: string): Promise<void>;
   getUser(userId: string): Promise<void>;
+  getAllFriends(): Promise<void>;
 };
 
 export function useApi(): API {
@@ -33,6 +35,9 @@ export function useApi(): API {
       },
       getUser: async (userId: string) => {
         return dispatch(getUser(userId));
+      },
+      getAllFriends: async () => {
+        return dispatch(getAllFriends());
       },
     }),
     [dispatch],

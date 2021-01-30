@@ -1,0 +1,13 @@
+@import "../../common/_spacing";
+
+.FavoritesList {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-gap: $innerSpacing;
+}
+
+@media only screen and (max-width: 1610px) {
+  .FavoritesList {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}

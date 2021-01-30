@@ -13,7 +13,7 @@ export function getUser(id: string): AppThunkAction<Promise<void>> {
 
     if (response.type === 'entity') {
       const newState = getState();
-      const friends = isLoaded(newState.friends) ? Object.values(newState.friends) : [];
+      const friends = isLoaded(newState.friends.friendInfo) ? Object.values(newState.friends.friendInfo) : [];
       dispatch(setFriendInfo([...friends, response.result]));
     }
   };

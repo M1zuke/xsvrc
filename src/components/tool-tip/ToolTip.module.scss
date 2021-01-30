@@ -1,0 +1,34 @@
+@import "../../common/_colors";
+@import "../../common/_spacing";
+
+.ToolTipWrapper {
+  position: relative;
+
+  .ToolTip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    background-color: $color2;
+    z-index: 99;
+    width: 120px;
+    padding: $tinySpacing $smallSpacing;
+    border-radius: $standardBorderRadius;
+    transition: opacity, visibility 100ms linear;
+
+    &.Left {
+      right: calc(100% + #{$tinySpacing});
+    }
+
+    &.Right {
+      left: calc(100% + #{$tinySpacing});
+    }
+  }
+
+  &:hover {
+    .ToolTip {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}

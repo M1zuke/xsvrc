@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 
-export function useSubscribe<T>(func: (params: T) => void, params: T | null, time = 30000): void {
+export function useSubscribe<T>(func: (params: T) => void, params: T | null, timeInSeconds = 30): void {
   useLayoutEffect(() => {
     if (params !== null) {
       func(params);
@@ -9,9 +9,9 @@ export function useSubscribe<T>(func: (params: T) => void, params: T | null, tim
       if (params !== null) {
         func(params);
       }
-    }, time);
+    }, timeInSeconds * 1000);
     return () => {
       clearInterval(interval);
     };
-  }, [func, params, time]);
+  }, [func, params, timeInSeconds]);
 }
