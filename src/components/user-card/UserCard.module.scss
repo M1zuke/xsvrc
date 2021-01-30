@@ -1,0 +1,42 @@
+@import "../../common/_mixins";
+@import "../../common/_spacing";
+
+.UserCard {
+  display: grid;
+  grid-template-columns: autoSize() auto;
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+  text-shadow: 1px 1px #000000;
+  grid-gap: $innerSpacing;
+
+  .BackgroundImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    filter: blur(50px);
+    z-index: -1;
+  }
+
+  .AvatarThumbnail {
+    height: 100%;
+    width: 150px;
+    border-radius: $standardBorderRadius;
+  }
+
+  .AvatarThumbnail, .BackgroundImage {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  .UserInfo {
+    .UserName {
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 24px;
+    }
+  }
+}

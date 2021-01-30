@@ -21,8 +21,17 @@
 
   .WorldName {
     position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .WorldInstanceId {
+    position: absolute;
     bottom: 0;
     left: 0;
+  }
+
+  .WorldName, .WorldInstanceId {
     background-color: transparentize($color0, 0.4);
     width: 100%;
     padding: $tinySpacing $smallSpacing;

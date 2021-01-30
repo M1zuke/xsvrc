@@ -3,8 +3,12 @@ export const messages = {
     Title: 'XSVRC - Manage your VRC',
   },
   Views: {
+    Settings: {
+      Title: 'Settings',
+    },
     WorldDetail: {
       NotFound: 'World got removed',
+      InstanceId: (id: string): string => `Instance: ${id}`,
     },
     Notifications: {
       Message: {
@@ -43,10 +47,15 @@ export const messages = {
     Friends: {
       ShowPrivate: 'Show Private',
       ShowOffline: 'Show Offline',
+      ShowPeopleOnlineInWebsite: 'Show people online over website',
       Title: 'Friends',
       FriendsOnline: 'Friends online',
     },
     FriendsProfile: {
+      Tabs: {
+        Overview: 'Overview',
+        JSON: 'JSON',
+      },
       NotFound: 'User not Found',
       ShortInfo: {
         UserId: 'User ID:',
@@ -55,6 +64,11 @@ export const messages = {
       Actions: {
         AddFriend: 'Add Friend',
         Unfriend: 'Unfriend',
+      },
+    },
+    FriendsOverview: {
+      ToolTip: {
+        LoggedTroughWebsite: 'Logged in through Website',
       },
     },
   },

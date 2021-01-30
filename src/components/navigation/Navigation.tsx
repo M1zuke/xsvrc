@@ -6,7 +6,7 @@ import { isLoaded } from '../../api/prepare';
 import { useApi } from '../../api/use-api';
 import { routes } from '../../common/routes';
 import { selectFriendInfo } from '../../store/friends/selectors';
-import { selectNotifications, selectUserInfo } from '../../store/user/selectors';
+import { selectFavorites, selectNotifications, selectUserInfo } from '../../store/user/selectors';
 import { Button } from '../button/Button';
 import { Content } from '../content/Content';
 import styles from './Navigation.module.scss';
@@ -15,6 +15,7 @@ export function Navigation(): ReactElement {
   const userInfo = useSelector(selectUserInfo);
   const notifications = useSelector(selectNotifications);
   const friendInfo = useSelector(selectFriendInfo);
+  const favorites = useSelector(selectFavorites);
   const history = useHistory();
   const { pathname } = useLocation();
   const { logout } = useApi();
@@ -31,7 +32,7 @@ export function Navigation(): ReactElement {
   const notificationsBadge = useMemo(() => (isLoaded(notifications) ? notifications.length : 0), [notifications]);
   const isActiveRoute = useCallback((route: string) => pathname === route, [pathname]);
 
-  if (!isLoaded(friendInfo) && !isLoaded(notifications) && !isLoaded(userInfo)) {
+  if (!isLoaded(friendInfo) || !isLoaded(notifications) || !isLoaded(userInfo) || !isLoaded(favorites)) {
     return <div />;
   }
 

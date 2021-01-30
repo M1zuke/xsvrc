@@ -1,15 +1,13 @@
-import React, { ReactElement, useMemo } from 'react';
-import styles from './Loading.module.scss';
 import classNames from 'classnames';
+import React, { ReactElement } from 'react';
+import styles from './Loading.module.scss';
 
 interface LoadingProps {
   small?: boolean;
 }
 
 export function Loading(props: LoadingProps): ReactElement {
-  const classes: string = useMemo(() => classNames(styles.LoadingComponent, { [styles.Small]: props.small }), [
-    props.small,
-  ]);
+  const classes: string = classNames(styles.LoadingComponent, { [styles.Small]: props.small });
   return (
     <div className={classes}>
       <div className={styles.LdsEllipsis}>

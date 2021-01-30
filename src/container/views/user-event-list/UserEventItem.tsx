@@ -2,6 +2,7 @@ import { KeyboardArrowRight } from '@material-ui/icons';
 import classNames from 'classnames';
 import React, { ReactElement, useMemo, useState } from 'react';
 import { UserInfo } from '../../../api/types';
+import { useSettings } from '../../../common/use-settings';
 import { UserEvent } from '../../../store/user-events/state';
 import { UserEventDetail } from './UserEventDetail';
 import styles from './UserEventList.module.scss';
@@ -36,19 +37,20 @@ type UserEventItemProps = {
 
 export function UserEventItem({ userEvent }: UserEventItemProps): ReactElement {
   const [collapsed, setCollapsed] = useState(true);
+  const settings = useSettings();
 
   const timestamp = useMemo(
     () =>
-      Intl.DateTimeFormat('en-En', {
+      Intl.DateTimeFormat(settings.localization, {
         hour: 'numeric',
         minute: 'numeric',
         second: 'numeric',
-        hour12: false,
+        hour12: settings.use12hours,
       }).format(userEvent.timestamp),
-    [userEvent.timestamp],
+    [settings.localization, settings.use12hours, userEvent.timestamp],
   );
 
-  const classes = useMemo(() => classNames(styles.UserEvent, { [styles.Collapsed]: collapsed }), [collapsed]);
+  const classes = classNames(styles.UserEvent, { [styles.Collapsed]: collapsed });
 
   return (
     <div className={classes} onClick={() => setCollapsed(!collapsed)}>

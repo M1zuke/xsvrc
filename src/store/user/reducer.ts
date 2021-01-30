@@ -25,6 +25,12 @@ export function reducer(state: UserState = INITIAL_USER_STATE, action: UserActio
       }
       return state;
     }
+    case 'user/set-favorites': {
+      return {
+        ...state,
+        favorites: action.favorites,
+      };
+    }
     case 'user/reset': {
       return INITIAL_USER_STATE;
     }

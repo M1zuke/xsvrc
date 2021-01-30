@@ -6,8 +6,8 @@ import { AppThunkAction } from '../../thunk';
 import { Loadable } from '../reducer';
 import { addUserEvent, saveWorldInfo } from '../user-events/action';
 import { addNotification } from '../user/actions';
-import { FriendEntries } from './state';
-import { ResetFriends, SetFriendInfo } from './types';
+import { FriendEntries, FriendFilter } from './state';
+import { ResetFriends, SetFriendFilter, SetFriendInfo } from './types';
 
 function compare<T extends keyof UserInfo, V = UserInfo[T]>(a: V, b: V): number {
   if (typeof a === 'number' && typeof b === 'number') {
@@ -72,10 +72,10 @@ export function updateFriend(websocketNotification: WebSocketNotification): AppT
   return async function (dispatch, getState) {
     const state = getState();
 
-    const friends = isLoaded(state.friends) ? Object.values(state.friends) : [];
+    const friends = isLoaded(state.friends.friendInfo) ? Object.values(state.friends.friendInfo) : [];
 
-    if (isLoaded(state.friends) && isFriendNotification(websocketNotification)) {
-      const oldUserInfo = state.friends[websocketNotification.content.userId];
+    if (isLoaded(state.friends.friendInfo) && isFriendNotification(websocketNotification)) {
+      const oldUserInfo = state.friends.friendInfo[websocketNotification.content.userId];
       const eventKey = state.userEvents.userEvents.length;
 
       if (oldUserInfo) {
@@ -127,7 +127,7 @@ export function updateFriend(websocketNotification: WebSocketNotification): AppT
           case 'friend-delete': {
             dispatch(
               setFriendInfo(
-                Object.values(state.friends).filter((ui) => ui.id !== websocketNotification.content.userId),
+                Object.values(state.friends.friendInfo).filter((ui) => ui.id !== websocketNotification.content.userId),
               ),
             );
             dispatch(
@@ -190,5 +190,12 @@ export function updateFriend(websocketNotification: WebSocketNotification): AppT
     } else if (isNotification(websocketNotification)) {
       dispatch(addNotification(websocketNotification.content));
     }
+  };
+}
+
+export function setFriendFilter(filter: Partial<FriendFilter>): SetFriendFilter {
+  return {
+    type: 'friend/set-filter',
+    filter,
   };
 }

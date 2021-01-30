@@ -1,6 +1,8 @@
+import { AppState } from '../store';
 import { setFriendInfo } from '../store/friends/actions';
 import { resetStoredCookies } from '../store/persisted/actions';
-import { AppThunkAction } from '../thunk';
+import { AppDispatch, AppThunkAction } from '../thunk';
+import { getUser } from './getUser';
 import { api, isLoaded, prepare } from './prepare';
 import { UserInfo } from './types';
 
@@ -35,7 +37,7 @@ export function getFriends(
   };
 }
 
-export function getAllFriends(): AppThunkAction<Promise<void>> {
+export function getAllFriends(checkForMissing?: boolean): AppThunkAction<Promise<void>> {
   return async function (dispatch, getState) {
     const state = getState();
     if (state.friends === null) {
@@ -45,9 +47,27 @@ export function getAllFriends(): AppThunkAction<Promise<void>> {
     const offlineFriends = await dispatch(getFriends(true));
 
     const newState = getState();
-    if (isLoaded(newState.friends)) {
-      dispatch(setFriendInfo([...Object.values(newState.friends), ...offlineFriends, ...onlineFriends]));
+    if (isLoaded(newState.friends.friendInfo)) {
+      const allFriends = [...Object.values(newState.friends.friendInfo), ...offlineFriends, ...onlineFriends];
+      if (checkForMissing) {
+        checkForMissingFriends(
+          getState,
+          dispatch,
+          isLoaded(newState.user.userInfo) ? newState.user.userInfo.friends : [],
+          allFriends,
+        );
+      }
+      dispatch(setFriendInfo(allFriends));
     } else {
+      const allFriends = [...offlineFriends, ...onlineFriends];
+      if (checkForMissing) {
+        checkForMissingFriends(
+          getState,
+          dispatch,
+          isLoaded(newState.user.userInfo) ? newState.user.userInfo.friends : [],
+          allFriends,
+        );
+      }
       dispatch(setFriendInfo([...offlineFriends, ...onlineFriends]));
     }
   };
@@ -66,4 +86,15 @@ export function sendFriendRequest(id: string): AppThunkAction<Promise<void>> {
       console.log(response);
     }
   };
+}
+
+function checkForMissingFriends(
+  getState: () => AppState,
+  dispatch: AppDispatch,
+  allFriendKeys: string[],
+  allFriends: UserInfo[],
+): void {
+  const filteredFriendKeys = allFriendKeys.filter((key) => !allFriends.find((user) => user.id === key));
+  filteredFriendKeys.forEach((id) => dispatch(getUser(id)));
+  console.log('not-found', filteredFriendKeys);
 }

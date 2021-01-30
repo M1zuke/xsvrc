@@ -1,0 +1,14 @@
+@import "../../common/_mixins";
+@import "../../common/_spacing";
+
+.WorldInstance {
+  display: grid;
+  grid-template-rows: autoSize() autoSize();
+  grid-gap: $innerSpacing;
+
+  .UserList {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-gap: $innerSpacing;
+  }
+}

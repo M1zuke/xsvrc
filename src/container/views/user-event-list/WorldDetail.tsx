@@ -8,11 +8,14 @@ import { selectWorldByLocation } from '../../../store/user-events/selectors';
 import styles from './WorldDetail.module.scss';
 
 type UserEventWorldDetailProps = {
-  worldId: string;
+  location: string;
 };
 
-export function WorldDetail({ worldId }: UserEventWorldDetailProps): ReactElement {
+export function WorldDetail({ location }: UserEventWorldDetailProps): ReactElement {
   const { getWorld } = useApi();
+  const splitLocation = location.split('~');
+  const [worldId, instanceId] = splitLocation[0].split(':');
+
   const worldInfo = useSelector(selectWorldByLocation(worldId));
   const messages = useMessages();
 
@@ -29,6 +32,7 @@ export function WorldDetail({ worldId }: UserEventWorldDetailProps): ReactElemen
     return (
       <div className={styles.Component} style={backgroundImage}>
         <div className={styles.WorldName}>{worldInfo.name}</div>
+        <div className={styles.WorldInstanceId}>{messages.Views.WorldDetail.InstanceId(instanceId)}</div>
       </div>
     );
   }

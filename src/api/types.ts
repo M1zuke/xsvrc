@@ -199,7 +199,38 @@ export function isNotification(websocketNotification: WebSocketNotification): we
   return websocketNotification.type === 'notification';
 }
 
-export type RawWebsocketNotification = {
-  type: WebSocketNotification['type'];
-  content: string;
+export function isErrorNotification(notification: RawWebsocketNotification): notification is ErrorNotification {
+  return 'err' in notification && 'authToken' in notification && 'ip' in notification;
+}
+
+export type RawWebsocketNotification =
+  | ErrorNotification
+  | {
+      type: WebSocketNotification['type'];
+      content: string;
+    };
+
+type ErrorNotification = {
+  authToken: string;
+  err: string;
+  ip: string;
+};
+
+export type MappedFavoritesToGroupWithUser = {
+  [key: string]: (UserInfo | 'not-found' | string)[];
+};
+export type MappedFavoritesToGroup = {
+  [key: string]: Favorite['favoriteId'][];
+};
+export type MappedFavoritesToType = Record<FavoriteType, MappedFavoritesToGroup>;
+
+export const FriendFavoriteGroups = ['group_1', 'group_2', 'group_3'] as const;
+export type FriendFavoriteGroup = typeof FriendFavoriteGroups[number];
+export type FavoriteType = 'world' | 'friend' | 'avatar';
+
+export type Favorite = {
+  type: FavoriteType;
+  id: string;
+  favoriteId: string;
+  tags: FriendFavoriteGroup[];
 };
