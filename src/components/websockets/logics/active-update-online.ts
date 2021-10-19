@@ -5,12 +5,12 @@ import { addUserEvent } from '../../../store/user-events/action';
 import { AppDispatch } from '../../../thunk';
 import { compareUsers, getFriendsAndOldUser } from '../common';
 
-export function handleUserActiveOrUpdateNotification(
+export async function handleUserActiveOrUpdateNotification(
   websocketNotification: FriendUpdateWithUser | FriendLocationUpdate,
   state: AppState,
   dispatch: AppDispatch,
-): void {
-  const [friends, oldUserInfo] = getFriendsAndOldUser(state, websocketNotification.content.userId);
+): Promise<void> {
+  const [friends, oldUserInfo] = await getFriendsAndOldUser(state, dispatch, websocketNotification.content.userId);
   const userComparison = compareUsers(oldUserInfo, websocketNotification.content.user);
   if (Object.keys(userComparison).length !== 0) {
     dispatch(

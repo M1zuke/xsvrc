@@ -4,6 +4,7 @@ import React, { ReactElement, useMemo, useState } from 'react';
 import { UserInfo } from '../../../api/types';
 import { useSettings } from '../../../common/use-settings';
 import { UserEvent } from '../../../store/user-events/state';
+import { PropsWithSubscription } from '../../subscription-service/SubscriptionService';
 import { UserEventDetail } from './UserEventDetail';
 import styles from './UserEventList.module.scss';
 
@@ -37,7 +38,11 @@ type UserEventItemProps = {
   userEvent: UserEvent;
 };
 
-export function UserEventItem({ userEvent }: UserEventItemProps): ReactElement {
+export function UserEventItem({
+  userEvent,
+  subscribe,
+  unsubscribe,
+}: PropsWithSubscription<UserEventItemProps>): ReactElement {
   const [collapsed, setCollapsed] = useState(true);
   const settings = useSettings();
 
@@ -58,15 +63,31 @@ export function UserEventItem({ userEvent }: UserEventItemProps): ReactElement {
     return Object.keys(userEvent.comparison).map((k) => {
       const key = k as keyof UserInfo;
       return (
-        <>
-          <UserEventDetail eventKey="displayName" value={mappedKeys[key]} primary />
-          <UserEventDetail eventKey={key} value={userEvent.comparison[key]?.from} />
+        <React.Fragment key={`${key}-${userEvent.eventKey}`}>
+          <UserEventDetail
+            eventKey="displayName"
+            value={mappedKeys[key]}
+            primary
+            subscribe={subscribe}
+            unsubscribe={unsubscribe}
+          />
+          <UserEventDetail
+            eventKey={key}
+            value={userEvent.comparison[key]?.from}
+            subscribe={subscribe}
+            unsubscribe={unsubscribe}
+          />
           <KeyboardArrowRight />
-          <UserEventDetail eventKey={key} value={userEvent.comparison[key]?.to} />
-        </>
+          <UserEventDetail
+            eventKey={key}
+            value={userEvent.comparison[key]?.to}
+            subscribe={subscribe}
+            unsubscribe={unsubscribe}
+          />
+        </React.Fragment>
       );
     });
-  }, [userEvent.comparison]);
+  }, [subscribe, unsubscribe, userEvent.comparison, userEvent.eventKey]);
 
   return (
     <div className={classes} onClick={() => setCollapsed(!collapsed)}>

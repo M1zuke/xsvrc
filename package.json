@@ -1,9 +1,19 @@
 {
   "name": "xsvrc",
   "version": "0.2.5",
+  "description": "Manage your VRC",
+  "author": {
+    "name": "Mizuke",
+    "email": "...",
+    "url": "..."
+  },
   "private": true,
   "main": "public/electron.js",
   "homepage": ".",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/M1zuke/vrc-manager.git"
+  },
   "dependencies": {
     "@material-ui/core": "4.12.3",
     "@material-ui/icons": "4.11.2",
@@ -24,11 +34,11 @@
     "request": "2.88.2",
     "request-promise-native": "1.0.9",
     "tough-cookie": "4.0.0",
+    "update-electron-app": "2.0.1",
     "ws": "8.2.3"
   },
   "resolutions": {
-    "fsevents": "2.1.2",
-    "@types/react": "17.0.0"
+    "@types/react": "17.0.30"
   },
   "scripts": {
     "start": "cross-env EXTEND_ESLINT=true REACT_APP_STORE_LOG=true react-scripts start",

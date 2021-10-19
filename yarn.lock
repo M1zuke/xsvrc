@@ -4209,13 +4209,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.0":
-  version: 17.0.0
-  resolution: "@types/react@npm:17.0.0"
+"@types/react@npm:17.0.30":
+  version: 17.0.30
+  resolution: "@types/react@npm:17.0.30"
   dependencies:
     "@types/prop-types": "*"
+    "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: 0767d1c635613cb08de1ad6b8f73e3ee01ae0069733fa56382c72a8dbed741849e74f62a17756c7b76ccd2b57dd9891d5767c3134f35788720c6bb9c186a933b
+  checksum: e3aaac1b8fda6e3622b75db0bd7d8dc412c2f2b77a00afdd32cae8c71fb0b1ca6926ab1fbe1c536dd51d96c0ba372738993837a8df1637637aaab7b86e421b7f
   languageName: node
   linkType: hard
 
@@ -4252,6 +4253,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 3f86d2eaf4988a2775fc0fc164d35e73ce82d71228191da7b11d97ad5e8ac129f1c5f798307e31482f8cfebab758bd3b24e731860bed81afe5a1bbe13fa2b2df
+  languageName: node
+  linkType: hard
+
+"@types/scheduler@npm:*":
+  version: 0.16.2
+  resolution: "@types/scheduler@npm:0.16.2"
+  checksum: b6b4dcfeae6deba2e06a70941860fb1435730576d3689225a421280b7742318d1548b3d22c1f66ab68e414f346a9542f29240bc955b6332c5b11e561077583bc
   languageName: node
   linkType: hard
 
@@ -5782,6 +5790,15 @@ __metadata:
   version: 2.1.0
   resolution: "binary-extensions@npm:2.1.0"
   checksum: 16ef0ca9b8ebf1fa2376658d1fba6840b311ddfef81c507dbe0465ae3e9545899d9a5ae513e32907963259073e8f87247b0c43d43f13ed1c50ea1e29e9d1d19f
+  languageName: node
+  linkType: hard
+
+"bindings@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "bindings@npm:1.5.0"
+  dependencies:
+    file-uri-to-path: 1.0.0
+  checksum: 65b6b48095717c2e6105a021a7da4ea435aa8d3d3cd085cb9e85bcb6e5773cf318c4745c3f7c504412855940b585bdf9b918236612a1c7a7942491de176f1ae7
   languageName: node
   linkType: hard
 
@@ -8439,6 +8456,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"electron-is-dev@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "electron-is-dev@npm:0.3.0"
+  checksum: d251e3b4c9cfd515a599dd852319ffca5b6b59c52c40dc3109f74ff9921a71e288d66445fc713a7f6296d3a696f04bb8d2135fa23599af7d7f1bc74a7552646b
+  languageName: node
+  linkType: hard
+
 "electron-is-dev@npm:^1.0.1":
   version: 1.1.0
   resolution: "electron-is-dev@npm:1.1.0"
@@ -9685,6 +9709,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"file-uri-to-path@npm:1.0.0":
+  version: 1.0.0
+  resolution: "file-uri-to-path@npm:1.0.0"
+  checksum: b648580bdd893a008c92c7ecc96c3ee57a5e7b6c4c18a9a09b44fb5d36d79146f8e442578bc0e173dc027adf3987e254ba1dfd6e3ec998b7c282873010502144
+  languageName: node
+  linkType: hard
+
 "filelist@npm:^1.0.1":
   version: 1.0.1
   resolution: "filelist@npm:1.0.1"
@@ -10059,21 +10090,59 @@ __metadata:
   languageName: node
   linkType: hard
 
-fsevents@2.1.2:
-  version: 2.1.2
-  resolution: "fsevents@npm:2.1.2"
+fsevents@^1.2.7:
+  version: 1.2.13
+  resolution: "fsevents@npm:1.2.13"
   dependencies:
-    node-gyp: latest
-  checksum: 63fe1ba77b63d5da5dde6112c5f0eb161b9d18a61427a8a49d661eeed080189d99e8f9da11bb6b75ecd5129a69edc5757d60a4eb0bbada6de68d5156c382c5e1
+    bindings: ^1.5.0
+    nan: ^2.12.1
+  checksum: ae855aa737aaa2f9167e9f70417cf6e45a5cd11918e1fee9923709a0149be52416d765433b4aeff56c789b1152e718cd1b13ddec6043b78cdda68260d86383c1
   languageName: node
   linkType: hard
 
-"fsevents@patch:fsevents@2.1.2#~builtin<compat/fsevents>":
-  version: 2.1.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.1.2#~builtin<compat/fsevents>::version=2.1.2&hash=1cc4b2"
+"fsevents@^2.1.2, fsevents@^2.1.3, fsevents@~2.3.2":
+  version: 2.3.2
+  resolution: "fsevents@npm:2.3.2"
   dependencies:
     node-gyp: latest
-  checksum: 1cf5ff06cfd99ca4b005b59d239aa7dd699407ac1ea3ab1b966405d8f61615e67aa87dcf76ae9ba9e7f7ba8a2649cbd5021b0ade58c90337c2577a9ed92f493a
+  checksum: 97ade64e75091afee5265e6956cb72ba34db7819b4c3e94c431d4be2b19b8bb7a2d4116da417950c3425f17c8fe693d25e20212cac583ac1521ad066b77ae31f
+  languageName: node
+  linkType: hard
+
+"fsevents@patch:fsevents@^1.2.7#~builtin<compat/fsevents>":
+  version: 1.2.13
+  resolution: "fsevents@patch:fsevents@npm%3A1.2.13#~builtin<compat/fsevents>::version=1.2.13&hash=1cc4b2"
+  dependencies:
+    bindings: ^1.5.0
+    nan: ^2.12.1
+  checksum: b264407498db2cfdcc2a05287334a4160c985a88e4a989e2f2f8dcc6afc8b04a4fcd82c797266442452e11c1fb07d7747d138b078fe4bb1f8f4fd2a6f2484d7e
+  languageName: node
+  linkType: hard
+
+"fsevents@patch:fsevents@^2.1.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@^2.1.3#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
+  version: 2.3.2
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=1cc4b2"
+  dependencies:
+    node-gyp: latest
+  checksum: 78db9daf1f6526a49cefee3917cc988f62dc7f25b5dd80ad6de4ffc4af7f0cab7491ac737626ff53e482a111bc53aac9e411fe3602458eca36f6a003ecf69c16
+  languageName: node
+  linkType: hard
+
+"fsevents@patch:fsevents@~2.1.2#~builtin<compat/fsevents>":
+  version: 2.1.3
+  resolution: "fsevents@patch:fsevents@npm%3A2.1.3#~builtin<compat/fsevents>::version=2.1.3&hash=1cc4b2"
+  dependencies:
+    node-gyp: latest
+  checksum: 37502954e1b2cf7d1f555561e45956521afa12e12cbfe05445ffa1f2852a3d8932980cacb808d504b1def84b12b3b7b41c26673180691295001fa7740cc63fba
+  languageName: node
+  linkType: hard
+
+fsevents@~2.1.2:
+  version: 2.1.3
+  resolution: "fsevents@npm:2.1.3"
+  dependencies:
+    node-gyp: latest
+  checksum: b5ec0516b44d75b60af5c01ff80a80cd995d175e4640d2a92fbabd02991dd664d76b241b65feef0775c23d531c3c74742c0fbacd6205af812a9c3cef59f04292
   languageName: node
   linkType: hard
 
@@ -10214,6 +10283,15 @@ fsevents@2.1.2:
   dependencies:
     assert-plus: ^1.0.0
   checksum: ab18d55661db264e3eac6012c2d3daeafaab7a501c035ae0ccb193c3c23e9849c6e29b6ac762b9c2adae460266f925d55a3a2a3a3c8b94be2f222df94d70c046
+  languageName: node
+  linkType: hard
+
+"github-url-to-object@npm:^4.0.4":
+  version: 4.0.6
+  resolution: "github-url-to-object@npm:4.0.6"
+  dependencies:
+    is-url: ^1.1.0
+  checksum: 5056c1197cd496e2246217bc2626ab0d10a8dd293c834cb5301181db86282c312dc91831e331933c0b02e75716c87b1c13d8d202dc314d0d23cca0c38f1afb6f
   languageName: node
   linkType: hard
 
@@ -11618,6 +11696,13 @@ fsevents@2.1.2:
   version: 1.0.0
   resolution: "is-typedarray@npm:1.0.0"
   checksum: 3508c6cd0a9ee2e0df2fa2e9baabcdc89e911c7bd5cf64604586697212feec525aa21050e48affb5ffc3df20f0f5d2e2cf79b08caa64e1ccc9578e251763aef7
+  languageName: node
+  linkType: hard
+
+"is-url@npm:^1.1.0, is-url@npm:^1.2.4":
+  version: 1.2.4
+  resolution: "is-url@npm:1.2.4"
+  checksum: 100e74b3b1feab87a43ef7653736e88d997eb7bd32e71fd3ebc413e58c1cbe56269699c776aaea84244b0567f2a7d68dfaa512a062293ed2f9fdecb394148432
   languageName: node
   linkType: hard
 
@@ -13714,6 +13799,15 @@ fsevents@2.1.2:
     arrify: ^2.0.1
     minimatch: ^3.0.4
   checksum: bdb6a98dad4e919d9a1a2a0db872f44fa2337315f2fd5827d91ae005cf22f4425782bdfa97c10b80d567f0cb3c226c31f4e85f8f6a4a4be4facf9af0de1bb0c2
+  languageName: node
+  linkType: hard
+
+"nan@npm:^2.12.1":
+  version: 2.15.0
+  resolution: "nan@npm:2.15.0"
+  dependencies:
+    node-gyp: latest
+  checksum: 33e1bb4dfca447fe37d4bb5889be55de154828632c8d38646db67293a21afd61ed9909cdf1b886214a64707d935926c4e60e2b09de9edfc2ad58de31d6ce8f39
   languageName: node
   linkType: hard
 
@@ -19466,6 +19560,20 @@ typescript@4.4.4:
   languageName: node
   linkType: hard
 
+"update-electron-app@npm:2.0.1":
+  version: 2.0.1
+  resolution: "update-electron-app@npm:2.0.1"
+  dependencies:
+    electron-is-dev: ^0.3.0
+    github-url-to-object: ^4.0.4
+    is-url: ^1.2.4
+    ms: ^2.1.1
+  peerDependencies:
+    electron: ">= 6.0.0"
+  checksum: 14f780087d0dbddfe915433727cb71a5c42460a9dc6ad200f1b06f1576d37303f765100d714721685459b210095606350d91a850f66d4967a53eef9d2b19631e
+  languageName: node
+  linkType: hard
+
 "update-notifier@npm:^5.1.0":
   version: 5.1.0
   resolution: "update-notifier@npm:5.1.0"
@@ -20497,6 +20605,7 @@ typescript@4.4.4:
     sass: 1.43.2
     tough-cookie: 4.0.0
     typescript: 4.4.4
+    update-electron-app: 2.0.1
     wait-on: 6.0.0
     ws: 8.2.3
   languageName: unknown

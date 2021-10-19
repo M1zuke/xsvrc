@@ -7,7 +7,7 @@ import { isLoaded } from '../../api/prepare';
 import { UserInfo } from '../../api/types';
 import { useApi } from '../../api/use-api';
 import { routes } from '../../common/routes';
-import { getTrustRank } from '../../common/trust-system';
+import { useTrustRank } from '../../common/trust-system';
 import { useMessages } from '../../i18n';
 import { selectFriendInfoById, selectFriendInfoByLocation } from '../../store/friends/selectors';
 import { ToolTip } from '../tool-tip/ToolTip';
@@ -59,7 +59,7 @@ export function FriendOverview({ friendId, small }: FriendOverviewProps): ReactE
       backgroundImage: `url('${url}')`,
     };
   }, [$friendInfo.currentAvatarThumbnailImageUrl, $friendInfo.profilePicOverride]);
-  const trustRank = useMemo(() => getTrustRank($friendInfo.tags), [$friendInfo.tags]);
+  const trustRank = useTrustRank($friendInfo.tags);
 
   const trustRankClasses = classNames(styles.Component, {
     [styles.Visitor]: trustRank === 'Visitor',

@@ -9,6 +9,13 @@ export const messages = {
     Title: 'XSVRC - Manage your VRC',
   },
   Views: {
+    UserCard: {
+      Rank: 'User rank:',
+      UserInteractions: {
+        Befriend: 'Send friend request',
+        Unfriend: 'Remove friend',
+      },
+    },
     UserEventList: {
       SearchUsername: 'Search Username',
     },

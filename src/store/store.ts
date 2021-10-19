@@ -24,10 +24,8 @@ export function createAppStore(state?: AppState): Store<AppState, AppAction<AppA
   const rootReducer = createRootReducer();
 
   /* istanbul ignore next */
-  // const middleware =
-  //   process.env['REACT_APP_STORE_LOG'] === 'true' ? applyMiddleware(thunk, createLogger()) : applyMiddleware(thunk);
-  /* istanbul ignore next */
-  const middleware = applyMiddleware(thunk, createLogger());
+  const middleware =
+    process.env['REACT_APP_STORE_LOG'] === 'true' ? applyMiddleware(thunk, createLogger()) : applyMiddleware(thunk);
 
   const persistedReducer = persistReducer(persistConfig, rootReducer);
 

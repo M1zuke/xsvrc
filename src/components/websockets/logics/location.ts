@@ -6,12 +6,12 @@ import { setWorldInfo } from '../../../store/worlds/actions';
 import { AppDispatch } from '../../../thunk';
 import { getFriendsAndOldUser } from '../common';
 
-export function handleUserLocationNotification(
+export async function handleUserLocationNotification(
   websocketNotification: FriendLocationUpdate,
   state: AppState,
   dispatch: AppDispatch,
-): void {
-  const [friends, oldUserInfo] = getFriendsAndOldUser(state, websocketNotification.content.userId);
+): Promise<void> {
+  const [friends, oldUserInfo] = await getFriendsAndOldUser(state, dispatch, websocketNotification.content.userId);
   const enrichedUser: UserInfo = {
     ...websocketNotification.content.user,
     location: websocketNotification.content.location,

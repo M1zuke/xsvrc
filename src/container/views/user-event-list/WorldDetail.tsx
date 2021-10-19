@@ -3,19 +3,23 @@ import React, { ReactElement, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { isLoaded } from '../../../api/prepare';
 import { useApi } from '../../../api/use-api';
-import { useSubscribe } from '../../../common/use-subscribe';
 import { Loading } from '../../../components/loading/Loading';
 import { ToolTip } from '../../../components/tool-tip/ToolTip';
 import { useMessages } from '../../../i18n';
 import { selectFriendInfoByLocation } from '../../../store/friends/selectors';
 import { selectInstance, selectWorldByLocation } from '../../../store/worlds/selectors';
+import { PropsWithSubscription } from '../../subscription-service/SubscriptionService';
 import styles from './WorldDetail.module.scss';
 
 type UserEventWorldDetailProps = {
   location: string;
 };
 
-export function WorldDetail({ location }: UserEventWorldDetailProps): ReactElement {
+export function WorldDetail({
+  location,
+  subscribe,
+  unsubscribe,
+}: PropsWithSubscription<UserEventWorldDetailProps>): ReactElement {
   const { getWorld, getInstance } = useApi();
   const splitLocation = location.split('~');
   const [worldId, instanceId] = splitLocation[0].split(':');
@@ -24,16 +28,21 @@ export function WorldDetail({ location }: UserEventWorldDetailProps): ReactEleme
   const instanceInfo = useSelector(selectInstance(location));
   const friendsInInstance = useSelector(selectFriendInfoByLocation(location));
   const messages = useMessages();
-  useSubscribe(getInstance, location, 30);
 
   useEffect(() => {
-    if (!isLoaded(worldInfo)) {
-      getWorld(location).finally();
+    if (location !== '' && location !== 'private' && location !== 'offline') {
+      subscribe(getInstance, location, 30);
+      if (!isLoaded(worldInfo)) {
+        getWorld(location).finally();
+      }
+      if (!isLoaded(instanceInfo)) {
+        getInstance(location).finally();
+      }
+      return () => {
+        unsubscribe(location);
+      };
     }
-    if (!isLoaded(instanceInfo)) {
-      getInstance(location).finally();
-    }
-  }, [getInstance, getWorld, instanceInfo, location, worldInfo]);
+  }, [getInstance, getWorld, instanceInfo, location, subscribe, unsubscribe, worldInfo]);
 
   const backgroundImage = useMemo(() => {
     if (isLoaded(worldInfo) && typeof worldInfo !== 'string') {

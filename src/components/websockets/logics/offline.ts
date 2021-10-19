@@ -5,12 +5,12 @@ import { addUserEvent } from '../../../store/user-events/action';
 import { AppDispatch } from '../../../thunk';
 import { getFriendsAndOldUser } from '../common';
 
-export function handleUserOfflineNotification(
+export async function handleUserOfflineNotification(
   websocketNotification: FriendUpdatesUserId,
   state: AppState,
   dispatch: AppDispatch,
-): void {
-  const [, oldUserInfo] = getFriendsAndOldUser(state, websocketNotification.content.userId);
+): Promise<void> {
+  const [, oldUserInfo] = await getFriendsAndOldUser(state, dispatch, websocketNotification.content.userId);
   dispatch(
     addUserEvent({
       eventType: websocketNotification.type,

@@ -1,6 +1,8 @@
+import { getUser } from '../../api/getUser';
 import { isLoaded } from '../../api/prepare';
 import { UserInfo } from '../../api/types';
 import { AppState } from '../../store';
+import { AppDispatch } from '../../thunk';
 
 export type Comparison<V> = {
   from: V;
@@ -69,9 +71,17 @@ function compareArray<T extends string = string>(a: T[], b: T[]): ArrayCompariso
   return { added: differencesToA, removed: differencesToB };
 }
 
-export function getFriendsAndOldUser(state: AppState, userId: string): [UserInfo[], UserInfo | null] {
+export async function getFriendsAndOldUser(
+  state: AppState,
+  dispatch: AppDispatch,
+  userId: string,
+): Promise<[UserInfo[], UserInfo | null]> {
   if (isLoaded(state.friends.friendInfo)) {
+    if (!state.friends.friendInfo[userId]) {
+      await dispatch(getUser(userId));
+    }
+
     return [Object.values(state.friends.friendInfo), state.friends.friendInfo[userId] || null];
   }
-  return [[], null];
+  return Promise.resolve([[], null]);
 }

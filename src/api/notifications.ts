@@ -12,8 +12,6 @@ export function getAllNotifications(
   offset = 0,
 ): AppThunkAction<Promise<void>> {
   return async function (dispatch, getState) {
-    // const date = new Date();
-    // date.setHours(1, 0, 0, 0);
     const params: RequestParams[] = type ? [{ key: 'type', value: type }] : [];
     const response = await prepare<NotificationDTO[]>(getState, dispatch, {
       url: api(`auth/user/notifications`),
@@ -35,8 +33,6 @@ export function getAllNotifications(
         details: JSON.parse(not.details),
       }));
       dispatch(setNotifications(parsedNotifications));
-    } else {
-      console.log(response);
     }
   };
 }

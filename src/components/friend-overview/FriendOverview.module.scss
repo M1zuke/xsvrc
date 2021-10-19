@@ -18,27 +18,27 @@ $trustedRankBorder: $tinySpacing;
   font-size: 14px;
 
   &.Visitor {
-    border: $trustedRankBorder solid #d6d6d6;
+    border: $trustedRankBorder solid $visitor;
   }
 
   &.NewUser {
-    border: $trustedRankBorder solid #5083db;
+    border: $trustedRankBorder solid $newUser;
   }
 
   &.User {
-    border: $trustedRankBorder solid #5df848;
+    border: $trustedRankBorder solid $user;
   }
 
   &.KnownUser {
-    border: $trustedRankBorder solid #ff6600;
+    border: $trustedRankBorder solid $knownUser;
   }
 
   &.TrustedUser {
-    border: $trustedRankBorder solid #8000ff;
+    border: $trustedRankBorder solid $trustedUser;
   }
 
   &.LegendaryUser {
-    border: $trustedRankBorder solid #ffda00;
+    border: $trustedRankBorder solid $legendaryUser;
   }
 
   .Offline {
