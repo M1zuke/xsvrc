@@ -52,6 +52,6 @@ export async function prepare<T>(
     return Promise.resolve(result);
   } catch (error) {
     dispatch(resetStoredCookies());
-    return Promise.resolve({ type: 'error', message: error.me });
+    return Promise.resolve({ type: 'error', message: (error as Error).message });
   }
 }

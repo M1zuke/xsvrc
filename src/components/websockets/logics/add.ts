@@ -5,12 +5,12 @@ import { addUserEvent } from '../../../store/user-events/action';
 import { AppDispatch } from '../../../thunk';
 import { getFriendsAndOldUser } from '../common';
 
-export function handleUserAddNotification(
+export async function handleUserAddNotification(
   websocketNotification: FriendUpdateWithUser | FriendLocationUpdate,
   state: AppState,
   dispatch: AppDispatch,
-): void {
-  const [friends, oldUserInfo] = getFriendsAndOldUser(state, websocketNotification.content.userId);
+): Promise<void> {
+  const [friends, oldUserInfo] = await getFriendsAndOldUser(state, dispatch, websocketNotification.content.userId);
   dispatch(
     addUserEvent({
       eventType: websocketNotification.type,

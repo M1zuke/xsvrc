@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/no-var-requires: 0 */
 /* eslint @typescript-eslint/explicit-function-return-type: 0 */
-
+require('update-electron-app')();
 const request = require('request-promise-native');
 const electron = require('electron');
 const app = electron.app;
@@ -25,6 +25,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: false,
     },
     resizable: true,
     frame: false,
