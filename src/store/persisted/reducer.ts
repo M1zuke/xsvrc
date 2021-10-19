@@ -1,5 +1,5 @@
 import { INITIAL_PERSISTED_STATE, PersistedState, StoredCookie } from './state';
-import { CookieActions } from './types';
+import { PersistedActions } from './types';
 
 function mergeWithNewCookies(oldCookies: StoredCookie[], newCookies: StoredCookie[]): StoredCookie[] {
   const mergedCookies: StoredCookie[] = [...oldCookies];
@@ -14,7 +14,7 @@ function mergeWithNewCookies(oldCookies: StoredCookie[], newCookies: StoredCooki
   return mergedCookies;
 }
 
-export function reducer(state: PersistedState = INITIAL_PERSISTED_STATE, action: CookieActions): PersistedState {
+export function reducer(state: PersistedState = INITIAL_PERSISTED_STATE, action: PersistedActions): PersistedState {
   switch (action.type) {
     case 'cookie/set-cookies': {
       return {

@@ -37,6 +37,26 @@ export const selectFriendFavorites = (state: AppState): Loadable<MappedFavorites
   return state.user.favorites === 'loading' ? 'loading' : 'not-found';
 };
 
+export const isLoggedIn = (state: AppState): boolean => {
+  return (
+    isLoaded(state.friends.friendInfo) &&
+    isLoaded(state.user.userInfo) &&
+    isLoaded(state.apiInfo) &&
+    isLoaded(state.user.notifications) &&
+    isLoaded(state.user.favorites)
+  );
+};
+
+export const isLoggingIn = (state: AppState): boolean => {
+  return (
+    state.friends.friendInfo === 'loading' ||
+    state.user.userInfo === 'loading' ||
+    state.apiInfo === 'loading' ||
+    state.user.notifications === 'loading' ||
+    state.user.favorites === 'loading'
+  );
+};
+
 type UserOrNotFound = UserInfo | 'not-found';
 
 function sortByStatus(a: UserOrNotFound, b: UserOrNotFound): number {

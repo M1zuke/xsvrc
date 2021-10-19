@@ -19,6 +19,7 @@ import { INITIAL_USER_EVENT_STATE } from './store/user-events/state';
 import { INITIAL_USER_STATE } from './store/user/state';
 
 import USER_INFO_FETCH_RESULT from './container/app/__tests__/user-info-fetch-results.json';
+import { INITIAL_WORLD_STATE } from './store/worlds/state';
 
 function Wrapper(
   props: React.PropsWithChildren<{
@@ -43,6 +44,7 @@ export const INITIAL_TEST_APP_STATE: AppState = {
   apiInfo: INITIAL_API_INFO_STATE,
   friends: INITIAL_FRIEND_INFO_STATE,
   userEvents: INITIAL_USER_EVENT_STATE,
+  worlds: INITIAL_WORLD_STATE,
 };
 
 export function extendInitialState(state: DeepPartial<AppState>): AppState {
@@ -64,14 +66,13 @@ interface CustomRenderSettings<S> {
   route?: Partial<RouteProps>;
 }
 type FunctionPropertyNames<T> = { [K in keyof T]: T[K] extends (...args: never) => never ? K : never }[keyof T];
-type SpyObject<T, F extends FunctionPropertyNames<T>> = Pick<T, Exclude<keyof T, F>> &
-  {
-    [P in F]: T[P] &
-      jest.SpyInstance<
-        ReturnType<T[P] extends (...args: never) => never ? T[P] : never>,
-        Parameters<T[P] extends (...args: never) => never ? T[P] : never>
-      >;
-  };
+type SpyObject<T, F extends FunctionPropertyNames<T>> = Pick<T, Exclude<keyof T, F>> & {
+  [P in F]: T[P] &
+    jest.SpyInstance<
+      ReturnType<T[P] extends (...args: never) => never ? T[P] : never>,
+      Parameters<T[P] extends (...args: never) => never ? T[P] : never>
+    >;
+};
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -113,7 +114,7 @@ export function spyObject<T, F extends FunctionPropertyNames<T>>(object: T, func
     }
   });
 
-  return (object as unknown) as SpyObject<T, F>;
+  return object as unknown as SpyObject<T, F>;
 }
 
 export function createTestHistory<S>(location?: LocationOverrides<S>): HistorySpy {

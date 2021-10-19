@@ -1,9 +1,4 @@
 import { AppState } from '../index';
-import { Loadable } from '../reducer';
-import { UserEvent, WorldInfos } from './state';
+import { UserEvent } from './state';
 
-export const selectUserEvents = (state: AppState): UserEvent[] => state.userEvents.userEvents;
-export const selectWorldByLocation = (location: string) => (state: AppState): Loadable<WorldInfos> => {
-  const [id] = location.split(':');
-  return state.userEvents.worlds[id] ?? null;
-};
+export const selectUserEvents = (state: AppState): UserEvent[] => state.userEvents;

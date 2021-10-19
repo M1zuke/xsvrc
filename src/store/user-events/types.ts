@@ -8,7 +8,7 @@ export type UserEventActionType = 'user-event/add-event' | 'user-event/save-worl
 export type UserEventAction<T extends UserEventActionType> = Action<T>;
 
 export type AddUserEvent = UserEventAction<'user-event/add-event'> & {
-  userEvent: UserEvent;
+  userEvent: Omit<UserEvent, 'eventKey'>;
 };
 
 export type SaveWorldInfo = UserEventAction<'user-event/save-world-info'> & {

@@ -1,12 +1,13 @@
-@import "../../common/_mixins";
-@import "../../common/_spacing";
-@import "../../common/_colors";
+@import '../../common/_mixins';
+@import '../../common/_spacing';
+@import '../../common/_colors';
 
 .Component {
   display: grid;
   grid-template-rows: auto autoSize();
   height: 100%;
   grid-gap: $innerSpacing;
+  overflow: hidden;
 
   .PaginatedContent {
     height: 100%;
@@ -25,7 +26,7 @@
 
     .PageCounter {
       border: 1px solid $color2;
-      padding:  0 $innerSpacing;
+      padding: 0 $innerSpacing;
     }
   }
 }

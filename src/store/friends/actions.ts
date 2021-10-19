@@ -1,10 +1,13 @@
-import { getUser } from '../../api/getUser';
 import { isLoaded } from '../../api/prepare';
 import { isFriendNotification, isNotification, UserInfo, WebSocketNotification } from '../../api/types';
+import { handleUserActiveOrUpdateNotification } from '../../components/websockets/logics/active-update-online';
+import { handleUserAddNotification } from '../../components/websockets/logics/add';
+import { handleUserDeleteNotification } from '../../components/websockets/logics/delete';
+import { handleUserLocationNotification } from '../../components/websockets/logics/location';
+import { handleUserOfflineNotification } from '../../components/websockets/logics/offline';
 import { CharacterFilter, CharacterFilters } from '../../container/views/friends/Friends';
 import { AppThunkAction } from '../../thunk';
 import { Loadable } from '../reducer';
-import { addUserEvent, saveWorldInfo } from '../user-events/action';
 import { addNotification } from '../user/actions';
 import { FriendEntries, FriendFilter } from './state';
 import { ResetFriends, SetFriendFilter, SetFriendInfo } from './types';
@@ -68,134 +71,34 @@ export function setFriendInfo(friendInfo: Loadable<UserInfo[]>, updatedUser?: Us
   };
 }
 
-export function updateFriend(websocketNotification: WebSocketNotification): AppThunkAction<Promise<void>> {
-  return async function (dispatch, getState) {
-    const state = getState();
-
-    const friends = isLoaded(state.friends.friendInfo) ? Object.values(state.friends.friendInfo) : [];
-
-    if (isLoaded(state.friends.friendInfo) && isFriendNotification(websocketNotification)) {
-      const oldUserInfo = state.friends.friendInfo[websocketNotification.content.userId];
-      const eventKey = state.userEvents.userEvents.length;
-
-      if (oldUserInfo) {
-        switch (websocketNotification.type) {
-          case 'friend-active':
-          case 'friend-update': {
-            dispatch(setFriendInfo(friends, websocketNotification.content.user));
-            if (
-              oldUserInfo.currentAvatarThumbnailImageUrl !==
-              websocketNotification.content.user.currentAvatarThumbnailImageUrl
-            ) {
-              dispatch(
-                addUserEvent({
-                  displayName: oldUserInfo.displayName,
-                  key: 'currentAvatarThumbnailImageUrl',
-                  previous: oldUserInfo.currentAvatarThumbnailImageUrl,
-                  current: websocketNotification.content.user.currentAvatarThumbnailImageUrl,
-                  eventKey,
-                }),
-              );
-            }
-            break;
-          }
-          case 'friend-online': {
-            dispatch(
-              addUserEvent({
-                displayName: oldUserInfo.displayName,
-                key: 'status',
-                previous: oldUserInfo.status,
-                current: websocketNotification.content.user.status,
-                eventKey,
-              }),
-            );
-            break;
-          }
-          case 'friend-add': {
-            dispatch(setFriendInfo(friends, websocketNotification.content.user));
-            dispatch(
-              addUserEvent({
-                displayName: oldUserInfo.displayName,
-                key: 'isFriend',
-                previous: false,
-                current: websocketNotification.content.user.isFriend,
-                eventKey,
-              }),
-            );
-            break;
-          }
-          case 'friend-delete': {
-            dispatch(
-              setFriendInfo(
-                Object.values(state.friends.friendInfo).filter((ui) => ui.id !== websocketNotification.content.userId),
-              ),
-            );
-            dispatch(
-              addUserEvent({
-                displayName: oldUserInfo.displayName,
-                key: 'isFriend',
-                previous: oldUserInfo.isFriend,
-                current: false,
-                eventKey,
-              }),
-            );
-            break;
-          }
-          case 'friend-offline': {
-            dispatch(
-              setFriendInfo(friends, {
-                ...oldUserInfo,
-                location: 'offline',
-                status: 'offline',
-                state: 'offline',
-              }),
-            );
-            dispatch(
-              addUserEvent({
-                displayName: oldUserInfo.displayName,
-                key: 'status',
-                previous: oldUserInfo.status,
-                current: 'offline',
-                eventKey,
-              }),
-            );
-            break;
-          }
-          case 'friend-location': {
-            const enrichedUser: UserInfo = {
-              ...websocketNotification.content.user,
-              location: websocketNotification.content.location,
-              worldId: websocketNotification.content.world.id,
-              instanceId: websocketNotification.content.instance,
-            };
-            dispatch(setFriendInfo(friends, enrichedUser));
-            if (websocketNotification.content.location !== 'private') {
-              dispatch(saveWorldInfo(websocketNotification.content.world.id, websocketNotification.content.world));
-            }
-            dispatch(
-              addUserEvent({
-                displayName: oldUserInfo.displayName,
-                key: 'location',
-                previous: oldUserInfo.location,
-                current: websocketNotification.content.location,
-                eventKey,
-              }),
-            );
-          }
-        }
-      } else {
-        await dispatch(getUser(websocketNotification.content.userId)).finally();
-        updateFriend(websocketNotification);
-      }
-    } else if (isNotification(websocketNotification)) {
-      dispatch(addNotification(websocketNotification.content));
-    }
-  };
-}
-
 export function setFriendFilter(filter: Partial<FriendFilter>): SetFriendFilter {
   return {
     type: 'friend/set-filter',
     filter,
+  };
+}
+
+export function updateFriend(websocketNotification: WebSocketNotification): AppThunkAction<Promise<void>> {
+  return async function (dispatch, getState) {
+    const state = getState();
+
+    if (isFriendNotification(websocketNotification)) {
+      switch (websocketNotification.type) {
+        case 'friend-active':
+        case 'friend-update':
+        case 'friend-online':
+          return handleUserActiveOrUpdateNotification(websocketNotification, state, dispatch);
+        case 'friend-add':
+          return handleUserAddNotification(websocketNotification, state, dispatch);
+        case 'friend-delete':
+          return handleUserDeleteNotification(websocketNotification, state, dispatch);
+        case 'friend-offline':
+          return handleUserOfflineNotification(websocketNotification, state, dispatch);
+        case 'friend-location':
+          return handleUserLocationNotification(websocketNotification, state, dispatch);
+      }
+    } else if (isNotification(websocketNotification)) {
+      dispatch(addNotification(websocketNotification.content));
+    }
   };
 }

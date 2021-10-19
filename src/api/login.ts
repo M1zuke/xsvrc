@@ -11,6 +11,8 @@ import { AuthenticatedUserInfo } from './types';
 export function login(username?: string, password?: string): AppThunkAction<Promise<void>> {
   return async function (dispatch, getState) {
     const state = getState();
+    console.log('state');
+    console.log(state);
     if (state.user.userInfo === null || isErrorType(state.user.userInfo)) {
       dispatch(setUserInfo('loading'));
 
@@ -23,7 +25,7 @@ export function login(username?: string, password?: string): AppThunkAction<Prom
 
       if (result.type === 'entity') {
         dispatch(setUserInfo(result.result));
-        await dispatch(getAllFriends(true)).finally();
+        await dispatch(getAllFriends()).finally();
         await dispatch(getAllNotifications()).finally();
         await dispatch(getAllFavorites()).finally();
       } else {

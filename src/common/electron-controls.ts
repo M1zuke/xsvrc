@@ -38,7 +38,8 @@ export type ErrorType = {
 
 export async function electronFetch<T>(config: RequestConfig): Promise<ElectronResult<T> | ErrorType> {
   try {
-    const result: RequestType<T> = await ((window as unknown) as IWindow).ipcRenderer.invoke('fetch', config);
+    console.log('fetch', config);
+    const result: RequestType<T> = await (window as unknown as IWindow).ipcRenderer.invoke('fetch', config);
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -73,5 +74,5 @@ export async function electronFetch<T>(config: RequestConfig): Promise<ElectronR
 }
 
 export function useIpcRenderer(): IpcRenderer {
-  return ((window as unknown) as IWindow).ipcRenderer;
+  return (window as unknown as IWindow).ipcRenderer;
 }

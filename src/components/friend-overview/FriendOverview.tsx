@@ -1,4 +1,4 @@
-import { Home, Lock } from '@material-ui/icons';
+import { Home, Lock, Person } from '@material-ui/icons';
 import classNames from 'classnames';
 import React, { ReactElement, useCallback, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -9,7 +9,7 @@ import { useApi } from '../../api/use-api';
 import { routes } from '../../common/routes';
 import { getTrustRank } from '../../common/trust-system';
 import { useMessages } from '../../i18n';
-import { selectFriendInfoById } from '../../store/friends/selectors';
+import { selectFriendInfoById, selectFriendInfoByLocation } from '../../store/friends/selectors';
 import { ToolTip } from '../tool-tip/ToolTip';
 import styles from './FriendOverview.module.scss';
 
@@ -20,6 +20,8 @@ const defaultUserInfo: UserInfo = {
   displayName: 'unknown',
   location: 'offline',
   currentAvatarThumbnailImageUrl: 'unknown',
+  profilePicOverride: '',
+  fallbackAvatar: '',
   instanceId: 'offline',
   worldId: 'offline',
   allowAvatarCopying: false,
@@ -46,16 +48,17 @@ export function FriendOverview({ friendId, small }: FriendOverviewProps): ReactE
   const history = useHistory();
   const { getUser } = useApi();
   const friendInfo = useSelector(selectFriendInfoById(friendId));
+  const friendsInSameLobby = useSelector(selectFriendInfoByLocation(friendInfo));
   const messages = useMessages().Views.FriendsOverview;
 
   const $friendInfo = useMemo(() => (isLoaded(friendInfo) ? friendInfo : defaultUserInfo), [friendInfo]);
 
-  const avatarThumbnailImage = useMemo(
-    () => ({
-      backgroundImage: `url('${$friendInfo.currentAvatarThumbnailImageUrl}')`,
-    }),
-    [$friendInfo.currentAvatarThumbnailImageUrl],
-  );
+  const avatarThumbnailImage = useMemo(() => {
+    const url = $friendInfo.profilePicOverride || $friendInfo.currentAvatarThumbnailImageUrl;
+    return {
+      backgroundImage: `url('${url}')`,
+    };
+  }, [$friendInfo.currentAvatarThumbnailImageUrl, $friendInfo.profilePicOverride]);
   const trustRank = useMemo(() => getTrustRank($friendInfo.tags), [$friendInfo.tags]);
 
   const trustRankClasses = classNames(styles.Component, {
@@ -75,10 +78,10 @@ export function FriendOverview({ friendId, small }: FriendOverviewProps): ReactE
     [styles.Busy]: $friendInfo.status === 'busy',
   });
 
-  const routeToProfile = useCallback(() => history.push(`${routes.friendsProfile.path}/${$friendInfo.id}`), [
-    $friendInfo.id,
-    history,
-  ]);
+  const routeToProfile = useCallback(
+    () => history.push(`${routes.friendsProfile.path}/${$friendInfo.id}`),
+    [$friendInfo.id, history],
+  );
 
   useEffect(() => {
     if (!isLoaded(friendInfo)) {
@@ -97,6 +100,15 @@ export function FriendOverview({ friendId, small }: FriendOverviewProps): ReactE
       {$friendInfo.location === 'offline' && $friendInfo.status !== 'offline' && (
         <ToolTip className={styles.OnlineThroughWebsite} toolTip={messages.ToolTip.LoggedTroughWebsite}>
           <Home fontSize="small" />
+        </ToolTip>
+      )}
+      {friendsInSameLobby.length > 0 && (
+        <ToolTip
+          className={styles.SameInstanceIcon}
+          toolTip={messages.ToolTip.PeopleInSameInstance(friendsInSameLobby.length)}
+        >
+          <Person fontSize="small" />
+          {friendsInSameLobby.length}
         </ToolTip>
       )}
       <div className={friendStatusClasses} />

@@ -5,6 +5,7 @@ import { Loadable } from './reducer';
 import { UserEventState } from './user-events/state';
 import { UserState } from './user/state';
 import { ViewState } from './view/state';
+import { WorldsState } from './worlds/state';
 
 export interface AppState {
   user: UserState;
@@ -13,4 +14,5 @@ export interface AppState {
   persisted: PersistedState;
   friends: FriendInfoState;
   userEvents: UserEventState;
+  worlds: WorldsState;
 }

@@ -1,14 +1,27 @@
+const Type = {
+  hidden: 'Friends +',
+  public: 'Public',
+  friends: 'Friends Only',
+};
+
 export const messages = {
   Application: {
     Title: 'XSVRC - Manage your VRC',
   },
   Views: {
+    UserEventList: {
+      SearchUsername: 'Search Username',
+    },
     Settings: {
       Title: 'Settings',
     },
     WorldDetail: {
       NotFound: 'World got removed',
       InstanceId: (id: string): string => `Instance: ${id}`,
+      PeopleInInstance: (n_user: number): string =>
+        n_user === 0 ? '1 person in this instance' : `${n_user} persons in this instance`,
+      InstanceCapacity: (n_user: number, capacity: number): string => `${n_user}/${capacity}`,
+      Type,
     },
     Notifications: {
       Message: {
@@ -53,7 +66,8 @@ export const messages = {
     },
     FriendsProfile: {
       Tabs: {
-        Overview: 'Overview',
+        Bio: 'Bio',
+        Instance: (amount: number): string => `Instance (${amount})`,
         JSON: 'JSON',
       },
       NotFound: 'User not Found',
@@ -69,6 +83,8 @@ export const messages = {
     FriendsOverview: {
       ToolTip: {
         LoggedTroughWebsite: 'Logged in through Website',
+        PeopleInSameInstance: (value: number): string =>
+          value === 1 ? '1 friend in this instance' : `${value} friends in this instance`,
       },
     },
   },

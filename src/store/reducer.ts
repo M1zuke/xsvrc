@@ -9,6 +9,7 @@ import { reducer as view } from './view/reducer';
 import { reducer as persisted } from './persisted/reducer';
 import { reducer as friends } from './friends/reducer';
 import { reducer as userEvents } from './user-events/reducer';
+import { reducer as worlds } from './worlds/reducer';
 
 export type Loadable<T> = T | 'loading' | 'not-found' | ErrorType | null;
 
@@ -27,5 +28,6 @@ export function createRootReducer(): Reducer<CombinedState<AppState>, AppAction<
     persisted,
     friends,
     userEvents,
+    worlds,
   });
 }
