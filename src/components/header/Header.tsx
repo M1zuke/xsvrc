@@ -15,7 +15,9 @@ export function Header(): ReactElement {
 
   return (
     <Content className={styles.Component}>
-      <div className={styles.ApplicationTitle}>{messages.Application.Title}</div>
+      <div className={styles.ApplicationTitle}>
+        {messages.Application.Title} - {process.env['REACT_APP_VERSION']}
+      </div>
       <div className={styles.ApplicationControls}>
         <Button onClick={() => runElectronCmd('minimize')} aria-label="minimize application" headerIcon dark>
           <Minimize />
