@@ -31,6 +31,7 @@ export function Login(): ReactElement {
 
   useEffect(() => {
     if (isProbablyAuthenticated(cookies) && !verifiedAuth && isLoaded(apiInfo)) {
+      console.log('handleLogin');
       setVerifiedAuth(true);
       handleLogin();
     }

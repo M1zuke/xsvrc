@@ -1,6 +1,6 @@
-@import "../../../common/_mixins";
-@import "../../../common/_spacing";
-@import "../../../common/_colors";
+@import '../../../common/_mixins';
+@import '../../../common/_spacing';
+@import '../../../common/_colors';
 
 .Component {
   display: grid;
@@ -15,7 +15,7 @@
 
     .ShortOverview {
       display: grid;
-      grid-template-columns: repeat(3, autoSize());
+      grid-template-columns: repeat(4, autoSize());
       align-items: center;
 
       .AllOnlineFriendsCount {
@@ -49,8 +49,13 @@
     background-color: $color1;
     padding: $innerSpacing;
     border-radius: $standardBorderRadius;
-    display: grid;
-    grid-template-columns: repeat(2, auto);
+
+    .SearchByName {
+      margin-bottom: $innerSpacing;
+
+      input {
+      }
+    }
 
     .NormalFilter {
       display: grid;

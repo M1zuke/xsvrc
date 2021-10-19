@@ -1,10 +1,14 @@
-import React, { ReactElement, useEffect } from 'react';
+import { Person } from '@material-ui/icons';
+import React, { ReactElement, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { isLoaded } from '../../../api/prepare';
 import { useApi } from '../../../api/use-api';
+import { useSubscribe } from '../../../common/use-subscribe';
 import { Loading } from '../../../components/loading/Loading';
+import { ToolTip } from '../../../components/tool-tip/ToolTip';
 import { useMessages } from '../../../i18n';
-import { selectWorldByLocation } from '../../../store/user-events/selectors';
+import { selectFriendInfoByLocation } from '../../../store/friends/selectors';
+import { selectInstance, selectWorldByLocation } from '../../../store/worlds/selectors';
 import styles from './WorldDetail.module.scss';
 
 type UserEventWorldDetailProps = {
@@ -12,32 +16,35 @@ type UserEventWorldDetailProps = {
 };
 
 export function WorldDetail({ location }: UserEventWorldDetailProps): ReactElement {
-  const { getWorld } = useApi();
+  const { getWorld, getInstance } = useApi();
   const splitLocation = location.split('~');
   const [worldId, instanceId] = splitLocation[0].split(':');
 
-  const worldInfo = useSelector(selectWorldByLocation(worldId));
+  const worldInfo = useSelector(selectWorldByLocation(location));
+  const instanceInfo = useSelector(selectInstance(location));
+  const friendsInInstance = useSelector(selectFriendInfoByLocation(location));
   const messages = useMessages();
+  useSubscribe(getInstance, location, 30);
 
   useEffect(() => {
-    if (worldInfo === null && worldInfo !== 'not-found') {
-      getWorld(worldId).finally();
+    if (!isLoaded(worldInfo)) {
+      getWorld(location).finally();
     }
-  }, [getWorld, worldId, worldInfo]);
+    if (!isLoaded(instanceInfo)) {
+      getInstance(location).finally();
+    }
+  }, [getInstance, getWorld, instanceInfo, location, worldInfo]);
 
-  if (isLoaded(worldInfo) && typeof worldInfo !== 'string') {
-    const backgroundImage = {
-      backgroundImage: `url('${worldInfo.thumbnailImageUrl}')`,
-    };
-    return (
-      <div className={styles.Component} style={backgroundImage}>
-        <div className={styles.WorldName}>{worldInfo.name}</div>
-        <div className={styles.WorldInstanceId}>{messages.Views.WorldDetail.InstanceId(instanceId)}</div>
-      </div>
-    );
-  }
+  const backgroundImage = useMemo(() => {
+    if (isLoaded(worldInfo) && typeof worldInfo !== 'string') {
+      return {
+        backgroundImage: `url('${worldInfo.thumbnailImageUrl}')`,
+      };
+    }
+    return {};
+  }, [worldInfo]);
 
-  if (worldInfo === 'loading') {
+  if (worldInfo === 'loading' || instanceInfo === 'loading') {
     return (
       <div className={styles.Component}>
         <Loading small />
@@ -45,8 +52,34 @@ export function WorldDetail({ location }: UserEventWorldDetailProps): ReactEleme
     );
   }
 
-  if (worldInfo === 'not-found') {
+  if (worldInfo === 'not-found' || instanceInfo === 'not-found') {
     return <div className={styles.Component}>{messages.Views.WorldDetail.NotFound}</div>;
   }
+
+  if (isLoaded(worldInfo) && typeof worldInfo !== 'string' && isLoaded(instanceInfo)) {
+    return (
+      <div className={styles.Component} style={backgroundImage}>
+        <ToolTip
+          toolTip={messages.Views.FriendsOverview.ToolTip.PeopleInSameInstance(friendsInInstance.length)}
+          className={styles.FriendsInInstance}
+        >
+          <Person />
+          {friendsInInstance.length}
+        </ToolTip>
+        <ToolTip
+          toolTip={messages.Views.WorldDetail.PeopleInInstance(instanceInfo.n_users)}
+          className={styles.PeopleInInstance}
+        >
+          <Person />
+          {messages.Views.WorldDetail.InstanceCapacity(instanceInfo.n_users, instanceInfo.capacity)}
+        </ToolTip>
+        <div className={styles.WorldName}>
+          {worldInfo.name} - {messages.Views.WorldDetail.Type[instanceInfo.type]}
+        </div>
+        <div className={styles.WorldInstanceId}>{messages.Views.WorldDetail.InstanceId(instanceId)}</div>
+      </div>
+    );
+  }
+
   return <div className={styles.UserEventDetail}>{worldId}</div>;
 }

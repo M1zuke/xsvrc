@@ -1,5 +1,6 @@
-@import "../../../common/_colors";
-@import "../../../common/_spacing";
+@import '../../../common/_colors';
+@import '../../../common/_spacing';
+@import '../../../common/_mixins';
 
 .Component {
   background-color: $color1;
@@ -7,13 +8,11 @@
   border-radius: $standardBorderRadius;
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow: hidden;
-  max-width: 350px;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
-  height: 125px;
-  width: 200px;
+  height: 150px;
+  width: 250px;
   position: relative;
   display: grid;
   align-items: center;
@@ -23,21 +22,47 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 2;
   }
 
   .WorldInstanceId {
     position: absolute;
     bottom: 0;
     left: 0;
+    z-index: 2;
   }
 
-  .WorldName, .WorldInstanceId {
-    background-color: transparentize($color0, 0.4);
+  .WorldName,
+  .WorldInstanceId {
+    background-color: transparentize($color0, 0.1);
     width: 100%;
     padding: $tinySpacing $smallSpacing;
     text-align: center;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+
+  .PeopleInInstance,
+  .FriendsInInstance {
+    position: absolute;
+    bottom: calc(#{$innerSpacing} * 2 + #{$smallSpacing});
+    background-color: $color2;
+    display: grid;
+    grid-template-columns: repeat(2, autoSize());
+    align-items: center;
+    border-radius: $standardBorderRadius;
+    padding: 0 $tinySpacing;
+    line-height: 16px;
+    z-index: 10;
+  }
+
+  .PeopleInInstance {
+    right: $smallSpacing;
+  }
+
+  .FriendsInInstance {
+    left: $smallSpacing;
+    color: $colorRed;
   }
 }

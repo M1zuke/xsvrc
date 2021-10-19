@@ -1,26 +1,14 @@
-import { UserInfo, WorldInfo } from '../../api/types';
-import { Loadable } from '../reducer';
+import { FriendNotification, UserInfo } from '../../api/types';
+import { UserComparison } from '../../components/websockets/common';
 
-export type UserEvent<T extends UserInfo = UserInfo, K extends keyof T = keyof T> = {
+export type UserEvent = {
   timestamp: Date;
-  displayName: T['displayName'];
-  key: K;
-  previous: T[K];
-  current: T[K];
+  eventType: FriendNotification['type'];
+  displayName: UserInfo['displayName'];
+  comparison: UserComparison;
   eventKey: number;
 };
 
-export type WorldInfos = WorldInfo | 'private' | 'offline';
-export type WorldState = Record<WorldInfo['id'], Loadable<WorldInfos>>;
-export type UserEventState = {
-  userEvents: UserEvent[];
-  worlds: WorldState;
-};
+export type UserEventState = UserEvent[];
 
-export const INITIAL_USER_EVENT_STATE: UserEventState = {
-  userEvents: [],
-  worlds: {
-    private: 'private',
-    offline: 'offline',
-  },
-};
+export const INITIAL_USER_EVENT_STATE: UserEventState = [];

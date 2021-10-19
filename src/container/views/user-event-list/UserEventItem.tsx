@@ -10,8 +10,10 @@ import styles from './UserEventList.module.scss';
 const mappedKeys: Record<keyof UserInfo, string> = {
   displayName: 'Username',
   location: 'Location',
-  currentAvatarThumbnailImageUrl: 'Avatar',
+  currentAvatarThumbnailImageUrl: 'Avatar Thumbnail',
   currentAvatarImageUrl: 'Avatar',
+  fallbackAvatar: 'Fallback Avatar',
+  profilePicOverride: 'Profile Picture',
   state: 'State',
   status: 'Status',
   isFriend: 'Friend Status',
@@ -20,7 +22,7 @@ const mappedKeys: Record<keyof UserInfo, string> = {
   username: 'Username',
   userIcon: 'UserIcon',
   tags: 'Tags',
-  statusDescription: 'Description',
+  statusDescription: 'Status Description',
   last_platform: 'Last Platform',
   last_login: 'Last Login',
   instanceId: 'Instance',
@@ -52,18 +54,28 @@ export function UserEventItem({ userEvent }: UserEventItemProps): ReactElement {
 
   const classes = classNames(styles.UserEvent, { [styles.Collapsed]: collapsed });
 
+  const comparisons = useMemo(() => {
+    return Object.keys(userEvent.comparison).map((k) => {
+      const key = k as keyof UserInfo;
+      return (
+        <>
+          <UserEventDetail eventKey="displayName" value={mappedKeys[key]} primary />
+          <UserEventDetail eventKey={key} value={userEvent.comparison[key]?.from} />
+          <KeyboardArrowRight />
+          <UserEventDetail eventKey={key} value={userEvent.comparison[key]?.to} />
+        </>
+      );
+    });
+  }, [userEvent.comparison]);
+
   return (
     <div className={classes} onClick={() => setCollapsed(!collapsed)}>
       <div className={styles.InfoBox}>
         <div className={styles.Timestamp}>{timestamp}</div>
         <div className={styles.DisplayName}>{userEvent.displayName}</div>
-        <div className={styles.Key}>{mappedKeys[userEvent.key]}</div>
+        <div className={styles.Key}>{userEvent.eventType}</div>
       </div>
-      <div className={styles.ChangeInfo}>
-        <UserEventDetail eventKey={userEvent.key} value={userEvent.previous} />
-        <KeyboardArrowRight />
-        <UserEventDetail eventKey={userEvent.key} value={userEvent.current} />
-      </div>
+      <div className={styles.Comparison}>{comparisons}</div>
     </div>
   );
 }

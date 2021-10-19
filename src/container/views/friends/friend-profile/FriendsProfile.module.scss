@@ -1,6 +1,6 @@
-@import "../../../../common/_mixins";
-@import "../../../../common/_spacing";
-@import "../../../../common/_colors";
+@import '../../../../common/_mixins';
+@import '../../../../common/_spacing';
+@import '../../../../common/_colors';
 
 .Component {
   display: grid;
@@ -11,7 +11,21 @@
 
   grid-template-rows: autoSize() auto;
 
-  .Content, .Overview {
+  .Content,
+  .Overview {
     text-shadow: 2px 1px #000000;
+  }
+
+  .ScrollableContent {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .UserBio {
+    pre {
+      display: block;
+      width: 100%;
+      white-space: break-spaces;
+    }
   }
 }

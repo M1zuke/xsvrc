@@ -11,6 +11,9 @@ export type UserInfo = {
   statusDescription: string;
   currentAvatarImageUrl: string;
   currentAvatarThumbnailImageUrl: string;
+  fallbackAvatar: string;
+  userIcon: string;
+  profilePicOverride: string;
   last_login: string;
   last_platform: string;
   allowAvatarCopying: boolean;
@@ -18,10 +21,9 @@ export type UserInfo = {
   developerType: DeveloperType;
   isFriend: boolean;
   friendKey: string;
-  location: Location;
+  location: Location | ''; // can be empty for some reason
   worldId: string;
   instanceId: string;
-  userIcon: string;
 };
 
 type Location = string;
@@ -84,7 +86,7 @@ export type AuthenticatedUserInfo = {
   userIcon: string;
 };
 
-type FriendUpdateWithUser = {
+export type FriendUpdateWithUser = {
   type: 'friend-active' | 'friend-add' | 'friend-update';
   content: {
     userId: string;
@@ -92,11 +94,37 @@ type FriendUpdateWithUser = {
   };
 };
 
-type FriendUpdatesUserId = {
+export type FriendUpdatesUserId = {
   type: 'friend-offline' | 'friend-delete';
   content: {
     userId: string;
   };
+};
+
+export type Platforms = {
+  standalonewindows: number;
+  android: number;
+};
+
+export type InstanceInfo = {
+  active: boolean;
+  canRequestInvite: boolean;
+  capacity: number;
+  clientNumber: unknown;
+  full: boolean;
+  id: string;
+  instanceId: string;
+  location: string;
+  n_users: number;
+  name: string;
+  ownerId: string;
+  permanent: boolean;
+  photonRegion: unknown;
+  platforms: Platforms;
+  shortName: string;
+  tags: string[];
+  type: 'hidden' | 'friends' | 'public';
+  worldId: string;
 };
 
 export type WorldInfo = {
@@ -115,7 +143,7 @@ export type WorldInfo = {
   thumbnailImageUrl: string;
 };
 
-type FriendLocationUpdate = {
+export type FriendLocationUpdate = {
   type: 'friend-location' | 'friend-online';
   content: {
     userId: string;

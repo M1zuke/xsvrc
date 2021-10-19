@@ -30,7 +30,7 @@ const App: React.FC = () => {
   const userInfo = useSelector(selectUserInfo);
   const { info } = useApi();
   const { getUser, getAllFriends } = useApi();
-  useSubscribe(getAllFriends, undefined, 240);
+  useSubscribe(getAllFriends, undefined, 500);
   useSubscribe(getUser, isLoaded(userInfo) ? userInfo.id : null, 60);
 
   useEffect(() => {

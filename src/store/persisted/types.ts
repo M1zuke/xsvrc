@@ -1,14 +1,17 @@
 import { Action } from 'redux';
-import { StoredCookie } from './state';
+import { Settings, StoredCookie } from './state';
 
-export type CookieActionType = 'cookie/set-cookies' | 'cookie/reset-cookies';
+export type PersistedActionType = 'cookie/set-cookies' | 'cookie/reset-cookies' | 'settings/setSettings';
 
-export type CookieAction<T extends CookieActionType> = Action<T>;
+export type PersistedAction<T extends PersistedActionType> = Action<T>;
 
-export type SetUserCookies = CookieAction<'cookie/set-cookies'> & {
+export type SetUserCookies = PersistedAction<'cookie/set-cookies'> & {
   cookies: StoredCookie[];
 };
 
-export type ResetUserCookies = CookieAction<'cookie/reset-cookies'>;
+export type SetSettings = PersistedAction<'settings/setSettings'> & {
+  settings: Partial<Settings>;
+};
+export type ResetUserCookies = PersistedAction<'cookie/reset-cookies'>;
 
-export type CookieActions = SetUserCookies | ResetUserCookies;
+export type PersistedActions = SetUserCookies | ResetUserCookies | SetSettings;
