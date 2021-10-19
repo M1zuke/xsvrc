@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 export const TrustTags = [
   'system_trust_basic',
   'system_trust_intermediate',
@@ -19,25 +21,27 @@ export const TrustRanks = [
 ] as const;
 export type TrustRank = typeof TrustRanks[number];
 
-export function getTrustRank(tags: TrustTag[] = []): TrustRank {
-  const cleanTags = tags.filter((tag) => TrustTags.includes(tag));
-  if (cleanTags.includes('system_legend')) {
-    return 'Legendary User';
-  }
-  if (cleanTags.includes('system_trust_legend')) {
-    return 'Veteran User';
-  }
-  if (cleanTags.includes('system_trust_veteran')) {
-    return 'Trusted User';
-  }
-  if (cleanTags.includes('system_trust_trusted')) {
-    return 'Known User';
-  }
-  if (cleanTags.includes('system_trust_known')) {
-    return 'User';
-  }
-  if (cleanTags.includes('system_trust_intermediate')) {
-    return 'New User';
-  }
-  return 'Visitor';
+export function useTrustRank(tags: TrustTag[] = []): TrustRank {
+  return useMemo<TrustRank>(() => {
+    const cleanTags = tags.filter((tag) => TrustTags.includes(tag));
+    if (cleanTags.includes('system_legend')) {
+      return 'Legendary User';
+    }
+    if (cleanTags.includes('system_trust_legend')) {
+      return 'Veteran User';
+    }
+    if (cleanTags.includes('system_trust_veteran')) {
+      return 'Trusted User';
+    }
+    if (cleanTags.includes('system_trust_trusted')) {
+      return 'Known User';
+    }
+    if (cleanTags.includes('system_trust_known')) {
+      return 'User';
+    }
+    if (cleanTags.includes('system_trust_intermediate')) {
+      return 'New User';
+    }
+    return 'Visitor';
+  }, [tags]);
 }

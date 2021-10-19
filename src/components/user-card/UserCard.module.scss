@@ -1,5 +1,6 @@
-@import "../../common/_mixins";
-@import "../../common/_spacing";
+@import '../../common/_mixins';
+@import '../../common/_spacing';
+@import '../../common/_colors';
 
 .UserCard {
   display: grid;
@@ -24,19 +25,74 @@
     height: 100%;
     width: 150px;
     border-radius: $standardBorderRadius;
+    border-width: $tinySpacing;
+    border-style: solid;
   }
 
-  .AvatarThumbnail, .BackgroundImage {
+  .AvatarThumbnail,
+  .BackgroundImage {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
   }
 
-  .UserInfo {
-    .UserName {
-      font-size: 24px;
-      font-weight: bold;
-      line-height: 24px;
+  .Overview {
+    display: grid;
+    grid-template-rows: auto autoSize();
+
+    .UserInfo {
+      display: inline-grid;
+      grid-template-columns: autoSize();
+      grid-template-rows: repeat(2, autoSize());
+      grid-gap: $smallSpacing;
+
+      .UserName {
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 24px;
+      }
+
+      .TrustRank {
+        .FontStyles {
+          display: inline-block;
+          background-color: $color2;
+          padding: $tinySpacing;
+          border-radius: $smallBorderRadius;
+          font-weight: bold;
+        }
+      }
     }
+    .UserInteractions {
+    }
+  }
+
+  .Visitor {
+    border-color: $visitor;
+    color: $visitor;
+  }
+
+  .NewUser {
+    border-color: $newUser;
+    color: $newUser;
+  }
+
+  .User {
+    border-color: $user;
+    color: $user;
+  }
+
+  .KnownUser {
+    border-color: $knownUser;
+    color: $knownUser;
+  }
+
+  .TrustedUser {
+    border-color: $trustedUser;
+    color: $trustedUser;
+  }
+
+  .LegendaryUser {
+    border-color: $legendaryUser;
+    color: $legendaryUser;
   }
 }

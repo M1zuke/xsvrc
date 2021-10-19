@@ -1,6 +1,7 @@
 import React, { ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { UserInfo } from '../../api/types';
+import { SubscriptionService } from '../../container/subscription-service/SubscriptionService';
 import { WorldDetail } from '../../container/views/user-event-list/WorldDetail';
 import { selectFriendInfoByLocation } from '../../store/friends/selectors';
 import { FriendOverview } from '../friend-overview/FriendOverview';
@@ -17,9 +18,13 @@ export function WorldInstance({ user }: WorldInstanceProps): ReactElement {
   const mappedUser = useMemo(() => friends.map((ui) => <FriendOverview key={ui.id} friendId={ui.id} />), [friends]);
 
   return (
-    <ScrollableContent innerClassName={styles.WorldInstance}>
-      <WorldDetail location={user.location} />
-      <div className={styles.UserList}>{mappedUser}</div>
-    </ScrollableContent>
+    <SubscriptionService>
+      {(subscribe, unsubscribe) => (
+        <ScrollableContent innerClassName={styles.WorldInstance}>
+          <WorldDetail location={user.location} subscribe={subscribe} unsubscribe={unsubscribe} />
+          <div className={styles.UserList}>{mappedUser}</div>
+        </ScrollableContent>
+      )}
+    </SubscriptionService>
   );
 }

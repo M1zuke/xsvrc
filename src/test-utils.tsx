@@ -1,24 +1,23 @@
-import React from 'react';
-import { ReactElement } from 'react';
+import { render, RenderOptions, RenderResult } from '@testing-library/react';
+import { createMemoryHistory, Location, MemoryHistory } from 'history';
+import merge from 'lodash.merge';
+import React, { ReactElement } from 'react';
 import { Provider } from 'react-redux';
+import { Route, RouteProps, Router } from 'react-router-dom';
 import { DeepPartial, Store } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { AuthenticatedUserInfo } from './api/types';
+
+import USER_INFO_FETCH_RESULT from './container/app/__tests__/user-info-fetch-results.json';
+import { messages as en } from './i18n/en';
 import { AppState } from './store';
 import { AppAction, AppActions, AppActionsType } from './store/actions';
 import { INITIAL_API_INFO_STATE } from './store/api-info/state';
-import { INITIAL_PERSISTED_STATE } from './store/persisted/state';
 import { INITIAL_FRIEND_INFO_STATE } from './store/friends/state';
+import { INITIAL_PERSISTED_STATE } from './store/persisted/state';
 import { createAppStore } from './store/store';
-import { Router, RouteProps, Route } from 'react-router-dom';
-import { createMemoryHistory, Location, MemoryHistory } from 'history';
-import merge from 'lodash.merge';
-import { render, RenderOptions, RenderResult } from '@testing-library/react';
-import { messages as en } from './i18n/en';
 import { INITIAL_USER_EVENT_STATE } from './store/user-events/state';
 import { INITIAL_USER_STATE } from './store/user/state';
-
-import USER_INFO_FETCH_RESULT from './container/app/__tests__/user-info-fetch-results.json';
 import { INITIAL_WORLD_STATE } from './store/worlds/state';
 
 function Wrapper(
@@ -65,6 +64,7 @@ interface CustomRenderSettings<S> {
   location?: LocationOverrides<S>;
   route?: Partial<RouteProps>;
 }
+
 type FunctionPropertyNames<T> = { [K in keyof T]: T[K] extends (...args: never) => never ? K : never }[keyof T];
 type SpyObject<T, F extends FunctionPropertyNames<T>> = Pick<T, Exclude<keyof T, F>> & {
   [P in F]: T[P] &

@@ -31,7 +31,6 @@ export function getFriends(
           : state.user.userInfo.onlineFriends.length
         : 0;
       if (offset <= friendsLimit) {
-        console.log(offset, response.result);
         return dispatch(getFriends(offline, newFriendInfo, offset + limit));
       }
       return newFriendInfo;
