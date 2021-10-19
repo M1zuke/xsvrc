@@ -1,6 +1,6 @@
 {
   "name": "xsvrc",
-  "version": "0.2.5",
+  "version": "0.2.8",
   "description": "Manage your VRC",
   "author": {
     "name": "Mizuke",
@@ -20,7 +20,9 @@
     "classnames": "2.3.1",
     "electron-fetch": "1.7.4",
     "electron-is-dev": "2.0.0",
+    "electron-log": "4.4.1",
     "electron-unhandled": "3.0.2",
+    "electron-updater": "4.3.9",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-json-view": "1.21.3",
@@ -34,7 +36,6 @@
     "request": "2.88.2",
     "request-promise-native": "1.0.9",
     "tough-cookie": "4.0.0",
-    "update-electron-app": "2.0.1",
     "ws": "8.2.3"
   },
   "resolutions": {
@@ -42,7 +43,7 @@
   },
   "scripts": {
     "start": "cross-env EXTEND_ESLINT=true REACT_APP_STORE_LOG=true react-scripts start",
-    "build": "cross-env EXTEND_ESLINT=true react-scripts build",
+    "build": "cross-env EXTEND_ESLINT=true REACT_APP_STORE_LOG=false react-scripts build",
     "test": "react-scripts test --env=jsdom-fourteen --watchAll=false",
     "coverage": "react-scripts test --env=jsdom-fourteen --watchAll=false --coverage",
     "eject": "react-scripts eject",
@@ -53,7 +54,22 @@
     "update-yarn": "yarn set version latest && yarn plugin import interactive-tools && yarn plugin import typescript"
   },
   "build": {
-    "appId": "com.example.electron-boilerplate",
+    "appId": "com.xsvrc.app",
+    "nsis": {
+      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "oneClick": false,
+      "perMachine": false,
+      "deleteAppDataOnUninstall": true,
+      "allowToChangeInstallationDirectory": true,
+      "runAfterFinish": true,
+      "differentialPackage": true
+    },
+    "directories": {
+      "buildResources": "./build/"
+    },
+    "win": {
+      "target": "nsis"
+    },
     "files": [
       "build/**/*",
       "node_modules/**/*",
