@@ -1,5 +1,6 @@
-@import "../../common/_spacing";
-@import "../../common/_colors";
+@import '../../common/_spacing';
+@import '../../common/_mixins';
+@import '../../common/_colors';
 
 $trustedRankBorder: $tinySpacing;
 
@@ -17,27 +18,27 @@ $trustedRankBorder: $tinySpacing;
   font-size: 14px;
 
   &.Visitor {
-    border: $trustedRankBorder solid #D6D6D6;
+    border: $trustedRankBorder solid #d6d6d6;
   }
 
   &.NewUser {
-    border: $trustedRankBorder solid #5083DB;
+    border: $trustedRankBorder solid #5083db;
   }
 
   &.User {
-    border: $trustedRankBorder solid #5DF848;
+    border: $trustedRankBorder solid #5df848;
   }
 
   &.KnownUser {
-    border: $trustedRankBorder solid #FF6600;
+    border: $trustedRankBorder solid #ff6600;
   }
 
   &.TrustedUser {
-    border: $trustedRankBorder solid #8000FF;
+    border: $trustedRankBorder solid #8000ff;
   }
 
   &.LegendaryUser {
-    border: $trustedRankBorder solid #FFDA00;
+    border: $trustedRankBorder solid #ffda00;
   }
 
   .Offline {
@@ -58,13 +59,23 @@ $trustedRankBorder: $tinySpacing;
     right: 35px;
   }
 
+  .SameInstanceIcon {
+    color: $colorRed;
+    bottom: 28px;
+    left: $tinySpacing;
+    display: grid;
+    grid-template-columns: repeat(2, autoSize());
+  }
+
   .OnlineThroughWebsite {
     z-index: 99;
     left: $smallSpacing;
     top: $smallSpacing;
   }
 
-  .OnlineThroughWebsite, .PrivateIcon {
+  .OnlineThroughWebsite,
+  .PrivateIcon,
+  .SameInstanceIcon {
     background-color: $color2;
     padding: $tinySpacing;
     border-radius: $standardBorderRadius;
@@ -72,6 +83,7 @@ $trustedRankBorder: $tinySpacing;
     display: grid;
     justify-content: center;
     align-items: center;
+    z-index: 3;
   }
 
   .Status {
@@ -99,7 +111,7 @@ $trustedRankBorder: $tinySpacing;
     }
 
     &.JoinMe {
-      background-color: #25AAC5;
+      background-color: #25aac5;
     }
   }
 
@@ -126,5 +138,3 @@ $trustedRankBorder: $tinySpacing;
     }
   }
 }
-
-

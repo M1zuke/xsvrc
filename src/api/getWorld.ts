@@ -1,8 +1,8 @@
-import { saveWorldInfo } from '../store/user-events/action';
-import { selectWorldByLocation } from '../store/user-events/selectors';
+import { setInstanceInfo, setWorldInfo } from '../store/worlds/actions';
+import { selectInstance, selectWorldByLocation } from '../store/worlds/selectors';
 import { AppThunkAction } from '../thunk';
 import { api, prepare } from './prepare';
-import { WorldInfo } from './types';
+import { InstanceInfo, WorldInfo } from './types';
 
 export function getWorld(location: string): AppThunkAction<Promise<void>> {
   return async function (dispatch, getState) {
@@ -11,17 +11,47 @@ export function getWorld(location: string): AppThunkAction<Promise<void>> {
     const state = getState();
     const worldInfo = selectWorldByLocation(location)(state);
 
+    if (!worldId) {
+      return;
+    }
+
     if (worldInfo === null) {
-      saveWorldInfo(worldId, 'loading');
+      setWorldInfo(worldId, 'loading');
       const response = await prepare<WorldInfo>(state, dispatch, {
         url: api(`worlds/${worldId}`),
       });
 
       if (response.type === 'entity') {
-        dispatch(saveWorldInfo(worldId, response.result));
+        dispatch(setWorldInfo(worldId, response.result));
       } else {
-        dispatch(saveWorldInfo(worldId, 'not-found'));
+        dispatch(setWorldInfo(worldId, 'not-found'));
       }
+    }
+  };
+}
+
+export function getInstance(location: string): AppThunkAction<Promise<void>> {
+  return async function (dispatch, getState) {
+    const [worldId, instanceId] = location.split(':');
+
+    const state = getState();
+    const instanceInfo = selectInstance(location)(state);
+
+    if (!worldId || !instanceId) {
+      return;
+    }
+
+    if (instanceInfo === null) {
+      setInstanceInfo(location, 'loading');
+    }
+    const response = await prepare<InstanceInfo>(state, dispatch, {
+      url: api(`worlds/${worldId}/${instanceId}`),
+    });
+
+    if (response.type === 'entity') {
+      dispatch(setInstanceInfo(location, response.result));
+    } else {
+      dispatch(setInstanceInfo(location, 'not-found'));
     }
   };
 }

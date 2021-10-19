@@ -1,9 +1,8 @@
-@import "../../../common/_mixins";
-@import "../../../common/_spacing";
-@import "../../../common/_colors";
+@import '../../../common/_mixins';
+@import '../../../common/_spacing';
+@import '../../../common/_colors';
 
-
-@keyframes slideInFromLeft {
+@keyframes slideInFromTop {
   0% {
     max-height: 0;
     padding: 0;
@@ -16,72 +15,91 @@
   }
 }
 
-
 .Component {
   height: 100%;
   display: grid;
+  grid-template-rows: autoSize() auto;
   grid-gap: $innerSpacing;
   width: 100%;
-  overflow-y: auto;
+  overflow: hidden;
 
-  .UserEvent {
-    background-color: $color2;
-    padding: $smallSpacing;
-    border-radius: $standardBorderRadius;
+  .ScrollableContent {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
     display: grid;
-    grid-template-columns: repeat(1, autoSize());
-    grid-gap: $smallSpacing;
-    align-items: center;
-    animation: slideInFromLeft 500ms linear;
-    overflow: hidden;
+    grid-gap: $innerSpacing;
 
-    .InfoBox {
+    .UserEvent {
+      background-color: $color2;
+      padding: $smallSpacing;
+      border-radius: $standardBorderRadius;
       display: grid;
-      grid-template-columns: repeat(3, autoSize());
-
-      .Timestamp {
-        border-radius: $standardBorderRadius 0 0 $standardBorderRadius;
-        background-color: $color1;
-        padding: $smallSpacing;
-      }
-
-      .DisplayName {
-        background-color: $colorBlue;
-        padding: $smallSpacing;
-        font-weight: bold;
-        white-space: nowrap;
-      }
-
-      .Key {
-        background-color: $colorBlack;
-        padding: $smallSpacing $innerSpacing;
-        border-radius: 0 $standardBorderRadius $standardBorderRadius 0;
-        white-space: nowrap;
-      }
-    }
-
-    .ChangeInfo {
-      display: grid;
-      grid-template-columns: repeat(3, autoSize());
-      align-items: center;
+      grid-template-columns: repeat(1, autoSize());
       grid-gap: $smallSpacing;
+      align-items: center;
+      overflow: hidden;
 
-      .UserEventDetail {
-        background-color: $color1;
+      &:first-child {
+        animation: slideInFromTop 500ms linear;
+      }
+
+      .InfoBox {
+        display: grid;
+        grid-template-columns: repeat(3, autoSize());
+
+        .Timestamp {
+          border-radius: $standardBorderRadius 0 0 $standardBorderRadius;
+          background-color: $color1;
+          padding: $smallSpacing;
+        }
+
+        .DisplayName {
+          background-color: $colorBlue;
+          padding: $smallSpacing;
+          font-weight: bold;
+          white-space: nowrap;
+        }
+
+        .Key {
+          background-color: $colorBlack;
+          padding: $smallSpacing $innerSpacing;
+          border-radius: 0 $standardBorderRadius $standardBorderRadius 0;
+          white-space: nowrap;
+        }
+      }
+
+      .Comparison {
+        display: grid;
+        grid-gap: $smallSpacing;
+        background-color: $color0;
         padding: $smallSpacing;
         border-radius: $standardBorderRadius;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 350px;
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center center;
+        grid-template-columns: repeat(4, autoSize());
+        align-items: center;
 
-        &.Thumbnail {
-          height: 125px;
-          width: 200px;
-          position: relative;
+        .UserEventDetail {
+          background-color: $color1;
+          padding: $smallSpacing;
+          border-radius: $standardBorderRadius;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          max-width: 350px;
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: center center;
+
+          &.Primary {
+            background-color: $colorBlue;
+            font-weight: bold;
+          }
+
+          &.Thumbnail {
+            height: 125px;
+            width: 200px;
+            position: relative;
+          }
         }
       }
     }

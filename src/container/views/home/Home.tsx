@@ -21,15 +21,16 @@ export function Home(): ReactElement {
   const onlineFriends = useMemo(
     () =>
       (isLoaded(friendInfo) ? Object.values(friendInfo) : []).filter(
-        (fi) => fi.status !== 'offline' && fi.location !== 'offline',
+        (fi) => fi.status !== 'offline' && fi.location !== 'offline' && fi.location !== '',
       ).length,
     [friendInfo],
   );
 
   const notifications = useMemo(() => (isLoaded(allNotifications) ? allNotifications : []), [allNotifications]);
-  const friendRequests = useMemo(() => notifications.filter((not) => not.type === 'friendRequest').length, [
-    notifications,
-  ]);
+  const friendRequests = useMemo(
+    () => notifications.filter((not) => not.type === 'friendRequest').length,
+    [notifications],
+  );
   const invites = useMemo(() => notifications.filter((not) => not.type === 'invite').length, [notifications]);
 
   if (!isLoaded(userInfo) || !isLoaded(friendInfo) || !isLoaded(favorites)) {

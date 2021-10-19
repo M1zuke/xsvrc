@@ -71,13 +71,20 @@ function createWindow() {
       args.params.forEach((o) => url.searchParams.set(o.key, o.value));
     }
 
-    console.log(url.toString());
+    console.log((args.method || 'get').toUpperCase(), url.toString(), JSON.stringify(args.body || ''));
+    if (args.headers) {
+      Object.keys(args.headers).forEach((h) => console.log('Header:', h, '->', args.headers[h]));
+    }
 
     return request({
       url: url.toString(),
       method: args.method,
       body: args.body,
-      headers: args.headers,
+      headers: {
+        'user-agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
+        ...args.headers,
+      },
       resolveWithFullResponse: true,
       jar: cookiejar,
     })

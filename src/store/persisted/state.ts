@@ -6,7 +6,7 @@ export type StoredCookie = {
 };
 
 export type Settings = {
-  localization: 'en-EN' | 'de-DE';
+  localization: Localization;
   use12hours: boolean;
 };
 
@@ -24,3 +24,6 @@ export const INITIAL_PERSISTED_STATE: PersistedState = {
   cookies: [],
   settings: INITIAL_SETTINGS_STATE,
 };
+
+export const Localizations = ['en-EN', 'de-DE'] as const;
+export type Localization = typeof Localizations[number];

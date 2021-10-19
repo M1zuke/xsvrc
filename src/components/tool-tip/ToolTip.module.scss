@@ -1,5 +1,5 @@
-@import "../../common/_colors";
-@import "../../common/_spacing";
+@import '../../common/_colors';
+@import '../../common/_spacing';
 
 .ToolTipWrapper {
   position: relative;
@@ -10,7 +10,8 @@
     position: absolute;
     top: 0;
     background-color: $color2;
-    z-index: 99;
+    z-index: 999;
+    white-space: normal;
     width: 120px;
     padding: $tinySpacing $smallSpacing;
     border-radius: $standardBorderRadius;

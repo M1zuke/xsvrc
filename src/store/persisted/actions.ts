@@ -1,10 +1,17 @@
-import { StoredCookie } from './state';
-import { ResetUserCookies, SetUserCookies } from './types';
+import { Settings, StoredCookie } from './state';
+import { ResetUserCookies, SetSettings, SetUserCookies } from './types';
 
 export function setStoredCookies(cookies: StoredCookie[]): SetUserCookies {
   return {
     type: 'cookie/set-cookies',
     cookies: cookies,
+  };
+}
+
+export function setSettings(settings: Partial<Settings>): SetSettings {
+  return {
+    type: 'settings/setSettings',
+    settings,
   };
 }
 

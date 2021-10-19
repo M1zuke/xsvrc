@@ -8,16 +8,16 @@ type UserCardProps = {
 };
 
 export function UserCard({ user }: UserCardProps): ReactElement {
-  const backgroundStyle = useMemo(
-    () => ({
-      backgroundImage: `url('${user.currentAvatarThumbnailImageUrl}')`,
-    }),
-    [user.currentAvatarThumbnailImageUrl],
-  );
+  const avatarThumbnailImage = useMemo(() => {
+    const url = user.profilePicOverride || user.currentAvatarThumbnailImageUrl;
+    return {
+      backgroundImage: `url('${url}')`,
+    };
+  }, [user.currentAvatarThumbnailImageUrl, user.profilePicOverride]);
   return (
     <Content className={styles.UserCard} translucent>
-      <div className={styles.BackgroundImage} style={backgroundStyle} />
-      <div className={styles.AvatarThumbnail} style={backgroundStyle} />
+      <div className={styles.BackgroundImage} style={avatarThumbnailImage} />
+      <div className={styles.AvatarThumbnail} style={avatarThumbnailImage} />
       <div className={styles.UserInfo}>
         <div className={styles.UserName}>
           {user.displayName} ({user.username})
