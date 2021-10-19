@@ -1,11 +1,14 @@
 /* eslint @typescript-eslint/no-var-requires: 0 */
 /* eslint @typescript-eslint/explicit-function-return-type: 0 */
-require('update-electron-app')();
+
 const request = require('request-promise-native');
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const unhandled = require('electron-unhandled');
+const electronUpdater = require('electron-updater');
+const electronLog = require('electron-log');
+const autoUpdater = electronUpdater.autoUpdater;
 
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -105,6 +108,8 @@ function createWindow() {
         return Promise.reject(e.message);
       });
   });
+  autoUpdater.logger = electronLog;
+  autoUpdater.checkForUpdatesAndNotify().finally();
 }
 
 app.on('ready', createWindow);
