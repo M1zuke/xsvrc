@@ -6,12 +6,16 @@ const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const unhandled = require('electron-unhandled');
-const electronUpdater = require('electron-updater');
-const electronLog = require('electron-log');
-const autoUpdater = electronUpdater.autoUpdater;
 
 const path = require('path');
 const isDev = require('electron-is-dev');
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const electronUpdater = require('electron-updater');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const electronLog = require('electron-log');
+const autoUpdater = electronUpdater.autoUpdater;
+autoUpdater.logger = electronLog;
 
 let mainWindow;
 
@@ -42,6 +46,20 @@ function createWindow() {
   mainWindow.on('closed', () => (mainWindow = null));
   mainWindow.on('ready-to-show', () => {
     mainWindow.show();
+  });
+
+  autoUpdater.autoInstallOnAppQuit = false;
+
+  autoUpdater.signals.updateDownloaded(() => {
+    mainWindow.webContents.send('update-downloaded');
+  });
+
+  electron.ipcMain.on('check-for-update', () => {
+    autoUpdater.checkForUpdates().finally();
+  });
+
+  electron.ipcMain.on('do-update', () => {
+    autoUpdater.quitAndInstall(true, true);
   });
 
   electron.ipcMain.handle('run', (event, args) => {
@@ -114,8 +132,6 @@ function createWindow() {
         return Promise.reject(e.message);
       });
   });
-  autoUpdater.logger = electronLog;
-  autoUpdater.checkForUpdatesAndNotify().finally();
 }
 
 app.on('ready', createWindow);

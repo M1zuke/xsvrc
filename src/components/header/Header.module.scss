@@ -1,6 +1,6 @@
-@import "../../common/_mixins";
-@import "../../common/_spacing";
-@import "../../common/_colors";
+@import '../../common/_mixins';
+@import '../../common/_spacing';
+@import '../../common/_colors';
 
 .Component {
   display: grid;
@@ -18,10 +18,20 @@
     text-transform: uppercase;
   }
 
-  .ApplicationControls {
+  .WrapperRight {
     display: grid;
-    grid-template-columns: repeat(3, autoSize());
-    grid-gap: $tinySpacing;
-    user-select: none;
+    grid-gap: $smallSpacing;
+    grid-auto-flow: column;
+
+    .UpdateAvailable {
+      color: $colorGreen;
+    }
+
+    .ApplicationControls {
+      display: grid;
+      grid-template-columns: repeat(3, autoSize());
+      grid-gap: $tinySpacing;
+      user-select: none;
+    }
   }
 }

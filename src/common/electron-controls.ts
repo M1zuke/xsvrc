@@ -1,4 +1,5 @@
 import { IpcRenderer } from 'electron';
+import { RemoteTransport } from 'electron-log';
 import { StoredCookie } from '../store/persisted/state';
 
 export interface RequestParams {
@@ -17,6 +18,7 @@ export interface RequestConfig {
 
 export type IWindow = Window & {
   ipcRenderer: IpcRenderer;
+  remote: RemoteTransport;
 };
 
 type RequestType<T> = {

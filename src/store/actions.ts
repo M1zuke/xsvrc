@@ -3,6 +3,7 @@ import { FriendActions, FriendsActionType } from './friends/types';
 import { PersistedActions, PersistedActionType } from './persisted/types';
 import { UserEventActions, UserEventActionType } from './user-events/types';
 import { UserActions, UserActionType } from './user/types';
+import { ViewActions, ViewActionTypes } from './view/types';
 import { WorldsActions, WorldsActionType } from './worlds/types';
 
 export type AppActionsType =
@@ -11,7 +12,8 @@ export type AppActionsType =
   | PersistedActionType
   | FriendsActionType
   | UserEventActionType
-  | WorldsActionType;
+  | WorldsActionType
+  | ViewActionTypes;
 
 export interface AppAction<T extends AppActionsType> {
   type: T;
@@ -23,4 +25,5 @@ export type AppActions =
   | PersistedActions
   | FriendActions
   | UserEventActions
-  | WorldsActions;
+  | WorldsActions
+  | ViewActions;

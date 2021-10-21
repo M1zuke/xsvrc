@@ -18,6 +18,7 @@ export const messages = {
     Cancel: 'Cancel',
   },
   Application: {
+    UpdateAvailable: 'Update',
     Title: 'XSVRC - Manage your VRC',
   },
   Views: {

@@ -6,8 +6,6 @@ import { Provider } from 'react-redux';
 import { Route, RouteProps, Router } from 'react-router-dom';
 import { DeepPartial, Store } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
-
-import { messages as en } from './i18n/en';
 import { AppState } from './store';
 import { AppAction, AppActions, AppActionsType } from './store/actions';
 import { INITIAL_API_INFO_STATE } from './store/api-info/state';
@@ -16,6 +14,7 @@ import { INITIAL_PERSISTED_STATE } from './store/persisted/state';
 import { createAppStore } from './store/store';
 import { INITIAL_USER_EVENT_STATE } from './store/user-events/state';
 import { INITIAL_USER_STATE } from './store/user/state';
+import { INITIAL_VIEW_STATE } from './store/view/state';
 import { INITIAL_WORLD_STATE } from './store/worlds/state';
 
 function Wrapper(
@@ -37,7 +36,7 @@ function Wrapper(
 export const INITIAL_TEST_APP_STATE: AppState = {
   persisted: INITIAL_PERSISTED_STATE,
   user: INITIAL_USER_STATE,
-  view: { i18n: en },
+  view: INITIAL_VIEW_STATE,
   apiInfo: INITIAL_API_INFO_STATE,
   friends: INITIAL_FRIEND_INFO_STATE,
   userEvents: INITIAL_USER_EVENT_STATE,
