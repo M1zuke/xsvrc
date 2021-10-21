@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
 import { useAppDispatch } from '../thunk/dispatch';
-import { getAllFriends } from './friends-api';
+import { addToFavorites, removeFromFavorites } from './favorites-api';
+import { getAllFriends, sendUnfriendRequest } from './friends-api';
 import { getUser } from './getUser';
 import { getInstance, getWorld } from './getWorld';
 import { info } from './info';
 import { login } from './login';
 import { logout } from './logout';
+import { Favorite, FriendFavoriteGroup, NamedFavorite, UserInfo } from './types';
 
 export type API = {
   info(): Promise<void>;
@@ -15,6 +17,9 @@ export type API = {
   getInstance(location: string): Promise<void>;
   getUser(userId: string): Promise<void>;
   getAllFriends(): Promise<void>;
+  unfriendUser(id: string): Promise<void>;
+  addToFavorites(user: UserInfo, group: FriendFavoriteGroup): Promise<void>;
+  removeFromFavorites(favorite: Favorite | NamedFavorite): Promise<void>;
 };
 
 export function useApi(): API {
@@ -31,17 +36,26 @@ export function useApi(): API {
       logout: async () => {
         return dispatch(logout());
       },
-      getWorld: async (worldId: string) => {
+      getWorld: async (worldId) => {
         return dispatch(getWorld(worldId));
       },
-      getInstance: async (location: string) => {
+      getInstance: async (location) => {
         return dispatch(getInstance(location));
       },
-      getUser: async (userId: string) => {
+      getUser: async (userId) => {
         return dispatch(getUser(userId));
       },
       getAllFriends: async () => {
         return dispatch(getAllFriends());
+      },
+      unfriendUser: (id) => {
+        return dispatch(sendUnfriendRequest(id));
+      },
+      addToFavorites: (user, group) => {
+        return dispatch(addToFavorites(user, group));
+      },
+      removeFromFavorites: (favorite) => {
+        return dispatch(removeFromFavorites(favorite));
       },
     }),
     [dispatch],

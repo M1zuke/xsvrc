@@ -29,3 +29,8 @@ export const selectFriendInfoByLocation =
   };
 
 export const selectFriendFilter = (state: AppState): FriendFilter => state.friends.filter;
+export const IsLoggedInUser =
+  (id: string) =>
+  (state: AppState): boolean => {
+    return isLoaded(state.user.userInfo) ? state.user.userInfo.id === id : false;
+  };

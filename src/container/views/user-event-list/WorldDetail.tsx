@@ -1,4 +1,4 @@
-import { Person } from '@material-ui/icons';
+import { Person } from '@mui/icons-material';
 import React, { ReactElement, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { isLoaded } from '../../../api/prepare';

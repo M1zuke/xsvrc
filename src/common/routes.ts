@@ -14,6 +14,7 @@ export type Routes = {
   eventList: RouteDefinition;
   notifications: RouteDefinition;
   settings: RouteDefinition;
+  moderation: RouteDefinition;
 };
 
 export const routes: Routes = {
@@ -24,4 +25,5 @@ export const routes: Routes = {
   eventList: { path: '/user-event-list', config: { path: '/user-event-list', exact: true } },
   notifications: { path: '/notifications', config: { path: '/notifications', exact: true } },
   settings: { path: '/settings', config: { path: '/settings', exact: true } },
+  moderation: { path: '/moderation', config: { path: '/moderation', exact: true } },
 };

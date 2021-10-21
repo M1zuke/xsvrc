@@ -1,6 +1,20 @@
-import { AuthenticatedUserInfo, MappedFavoritesToType, NotificationContent } from '../../api/types';
+import {
+  AuthenticatedUserInfo,
+  Favorite,
+  MappedFavoritesToType,
+  NamedFavorite,
+  NotificationContent,
+} from '../../api/types';
 import { Loadable } from '../reducer';
-import { AddNotification, ResetUser, SetFavorites, SetNotifications, SetUserInfo } from './types';
+import {
+  AddFavorite,
+  AddNotification,
+  RemoveFavorite,
+  ResetUser,
+  SetFavorites,
+  SetNotifications,
+  SetUserInfo,
+} from './types';
 
 export function setUserInfo(vrcUserInfo: Loadable<AuthenticatedUserInfo>): SetUserInfo {
   return {
@@ -33,5 +47,19 @@ export function setFavorites(favorites: Loadable<MappedFavoritesToType>): SetFav
   return {
     type: 'user/set-favorites',
     favorites,
+  };
+}
+
+export function addFavorite(favorite: Favorite): AddFavorite {
+  return {
+    type: 'user/add-favorite',
+    favorite,
+  };
+}
+
+export function removeFavorite(favorite: NamedFavorite | Favorite): RemoveFavorite {
+  return {
+    type: 'user/remove-favorite',
+    favorite,
   };
 }

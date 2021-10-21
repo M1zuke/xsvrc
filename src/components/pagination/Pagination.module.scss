@@ -15,9 +15,6 @@
   }
 
   .PageNavigation {
-    background-color: $color1;
-    padding: $innerSpacing;
-    border-radius: $standardBorderRadius;
     display: grid;
     grid-gap: $smallSpacing;
     justify-content: flex-end;

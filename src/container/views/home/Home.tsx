@@ -1,6 +1,7 @@
 import React, { ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { isLoaded } from '../../../api/prepare';
+import { Content } from '../../../components/content/Content';
 import { FriendFavoriteList } from '../../../components/friend-favorite-list/FriendFavoriteList';
 import { LoadableContent } from '../../../components/loadable-content/LoadableContent';
 import { Loading } from '../../../components/loading/Loading';
@@ -34,11 +35,11 @@ export function Home(): ReactElement {
   const invites = useMemo(() => notifications.filter((not) => not.type === 'invite').length, [notifications]);
 
   if (!isLoaded(userInfo) || !isLoaded(friendInfo) || !isLoaded(favorites)) {
-    return <Loading />;
-  }
-
-  if (!isLoaded(userInfo)) {
-    return <div>No Content</div>;
+    return (
+      <Content translucent className={styles.FullScreen}>
+        <Loading />
+      </Content>
+    );
   }
 
   return (

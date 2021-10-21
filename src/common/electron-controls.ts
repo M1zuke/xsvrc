@@ -10,7 +10,7 @@ export interface RequestConfig {
   url: string;
   method?: 'GET' | 'POST' | 'DELETE' | 'PUT';
   headers?: { [key: string]: string };
-  body?: string;
+  body?: unknown;
   params?: RequestParams[];
   storedCookies?: StoredCookie[];
 }

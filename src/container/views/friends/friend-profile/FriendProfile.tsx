@@ -13,7 +13,7 @@ import { WorldInstance } from '../../../../components/world-instance/WorldInstan
 import { useMessages } from '../../../../i18n';
 import { selectFriendInfoById, selectFriendInfoByLocation } from '../../../../store/friends/selectors';
 import styles from './FriendsProfile.module.scss';
-import { UserBio } from './UserBio';
+import { UserOverview } from './UserOverview';
 
 type FriendProfileParams = {
   id: string;
@@ -41,13 +41,13 @@ export function FriendProfile(): ReactElement {
             <Content>
               <Tabs
                 title={[
-                  FriendsProfile.Tabs.Bio,
+                  FriendsProfile.Tabs.Overview,
                   FriendsProfile.Tabs.Instance(samePeopleInInstance.length),
                   FriendsProfile.Tabs.JSON,
                 ]}
               >
                 <ScrollableContent innerClassName={styles.ScrollableContent}>
-                  <UserBio user={user} />
+                  <UserOverview user={user} />
                 </ScrollableContent>
                 <WorldInstance user={user} />
                 <ScrollableContent innerClassName={styles.Content}>

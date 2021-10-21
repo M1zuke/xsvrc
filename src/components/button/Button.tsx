@@ -14,6 +14,7 @@ interface ButtonProps {
   icon?: boolean;
   headerIcon?: boolean;
   badge?: number;
+  padding?: boolean;
   light?: boolean;
   dark?: boolean;
 }
@@ -29,6 +30,7 @@ export function Button(props: PropsWithChildren<ButtonProps>): ReactElement {
       [styles.HeaderIcon]: props.headerIcon,
       [styles.Light]: props.light,
       [styles.Dark]: props.dark,
+      [styles.Padding]: props.padding !== false,
     },
     props.className,
   );

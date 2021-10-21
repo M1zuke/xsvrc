@@ -1,4 +1,4 @@
-import { KeyboardArrowRight } from '@material-ui/icons';
+import { KeyboardArrowRight } from '@mui/icons-material';
 import classNames from 'classnames';
 import React, { ReactElement, useMemo, useState } from 'react';
 import { UserInfo } from '../../../api/types';

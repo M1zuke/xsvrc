@@ -29,5 +29,5 @@ export function UserEventDetail({
     return <WorldDetail location={value as string} subscribe={subscribe} unsubscribe={unsubscribe} />;
   }
 
-  return <div className={classNames(styles.UserEventDetail, { [styles.Primary]: primary })}>{value}</div>;
+  return <div className={classNames(styles.UserEventDetail, { [styles.Primary]: primary })}>{value?.toString()}</div>;
 }

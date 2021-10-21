@@ -1,4 +1,4 @@
-import { CheckBox, CheckBoxOutlineBlank } from '@material-ui/icons';
+import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material';
 import React, { ReactElement, useCallback, useState } from 'react';
 import styles from './Checkbox.module.scss';
 
@@ -7,6 +7,7 @@ type CheckboxProps = {
   onClick: (value: boolean) => void;
   value?: boolean;
 };
+
 export function Checkbox({ label, onClick, value }: CheckboxProps): ReactElement {
   const [checked, setChecked] = useState(value || false);
   const handleClick = useCallback(() => {

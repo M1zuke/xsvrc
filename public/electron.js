@@ -33,11 +33,16 @@ function createWindow() {
     resizable: true,
     frame: false,
     backgroundColor: '#1A1A1A',
+    show: false,
   });
+
   mainWindow
     .loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
     .finally();
   mainWindow.on('closed', () => (mainWindow = null));
+  mainWindow.on('ready-to-show', () => {
+    mainWindow.show();
+  });
 
   electron.ipcMain.handle('run', (event, args) => {
     switch (args) {
@@ -84,6 +89,7 @@ function createWindow() {
       url: url.toString(),
       method: args.method,
       body: args.body,
+      json: true,
       headers: {
         'user-agent':
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
@@ -101,7 +107,7 @@ function createWindow() {
         return {
           type: 'entity',
           headers: result.headers,
-          result: JSON.parse(result.body),
+          result: result.body,
         };
       })
       .catch((e) => {

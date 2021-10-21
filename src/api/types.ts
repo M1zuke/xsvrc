@@ -248,11 +248,11 @@ export type MappedFavoritesToGroupWithUser = {
   [key: string]: (UserInfo | 'not-found' | string)[];
 };
 export type MappedFavoritesToGroup = {
-  [key: string]: Favorite['favoriteId'][];
+  [key: string]: Favorite[];
 };
 export type MappedFavoritesToType = Record<FavoriteType, MappedFavoritesToGroup>;
 
-export const FriendFavoriteGroups = ['group_1', 'group_2', 'group_3'] as const;
+export const FriendFavoriteGroups = ['group_0', 'group_1', 'group_2'] as const;
 export type FriendFavoriteGroup = typeof FriendFavoriteGroups[number];
 export type FavoriteType = 'world' | 'friend' | 'avatar';
 
@@ -262,3 +262,9 @@ export type Favorite = {
   favoriteId: string;
   tags: FriendFavoriteGroup[];
 };
+
+export type NamedFavorite = Favorite & {
+  groupName: string;
+};
+
+export type AddFavorite = Omit<Favorite, 'id'>;
