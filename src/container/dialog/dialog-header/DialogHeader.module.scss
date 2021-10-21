@@ -1,0 +1,15 @@
+@import '../../../common/_mixins';
+@import '../../../common/_spacing';
+
+.Component {
+  grid-area: DialogHeader;
+  padding: $innerSpacing;
+  border-radius: $standardBorderRadius $standardBorderRadius 0 0;
+  border-bottom: 2px solid rgba(153, 153, 153, 0.2);
+  font-size: 20px;
+  color: var(--color-5);
+  text-transform: uppercase;
+  display: grid;
+  grid-template-columns: auto autoSize();
+  align-items: center;
+}

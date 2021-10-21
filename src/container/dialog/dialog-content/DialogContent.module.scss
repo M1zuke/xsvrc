@@ -1,0 +1,6 @@
+@import '../../../common/_spacing';
+
+.Component {
+  grid-area: DialogContent;
+  padding: $innerSpacing;
+}

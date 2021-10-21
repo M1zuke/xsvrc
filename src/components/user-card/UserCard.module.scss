@@ -63,6 +63,30 @@
       }
     }
     .UserInteractions {
+      display: grid;
+      grid-gap: $smallSpacing;
+      grid-template-columns: repeat(2, autoSize());
+      justify-content: end;
+      align-items: center;
+
+      .DeleteUser {
+        background-color: $colorRed;
+      }
+
+      .FavoriteUser {
+        display: grid;
+        grid-gap: $tinySpacing;
+        grid-auto-flow: column;
+        background-color: $colorYellow;
+        align-items: center;
+        font-weight: bold;
+        height: 36px;
+
+        &.AlreadyFavorite {
+          background-color: $colorGreen;
+          color: $colorBlack;
+        }
+      }
     }
   }
 

@@ -57,14 +57,14 @@ export function UserEventList(): ReactElement {
   return (
     <SubscriptionService>
       {(subscribe, unsubscribe) => (
-        <Content className={styles.Component}>
-          <div className={styles.TagSearch}>
+        <div className={styles.Component}>
+          <Content className={styles.TagSearch}>
             <TextInput
               aria-label="tag-search"
               placeholder={messages.Views.UserEventList.SearchUsername}
               onChange={setUsernameFiler}
             />
-          </div>
+          </Content>
           <Pagination data={listItems(subscribe, unsubscribe)} pageSize={25}>
             {(records) => (
               <ScrollableContent innerClassName={styles.ScrollableContent} style={style(records.length)}>
@@ -72,7 +72,7 @@ export function UserEventList(): ReactElement {
               </ScrollableContent>
             )}
           </Pagination>
-        </Content>
+        </div>
       )}
     </SubscriptionService>
   );

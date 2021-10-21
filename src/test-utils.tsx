@@ -6,9 +6,7 @@ import { Provider } from 'react-redux';
 import { Route, RouteProps, Router } from 'react-router-dom';
 import { DeepPartial, Store } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
-import { AuthenticatedUserInfo } from './api/types';
 
-import USER_INFO_FETCH_RESULT from './container/app/__tests__/user-info-fetch-results.json';
 import { messages as en } from './i18n/en';
 import { AppState } from './store';
 import { AppAction, AppActions, AppActionsType } from './store/actions';
@@ -96,13 +94,13 @@ const initialLocation: Location<Record<string, unknown>> = {
   key: '123',
 };
 
-export function withAuthentication(state?: DeepPartial<AppState>): DeepPartial<AppState> {
-  return merge({}, state || {}, {
-    apiInfo: { clientApiKey: 'testApiKey' },
-    cookies: [{ key: 'auth', value: 'testAuthToken', url: 'testUrl' }],
-    userInfo: USER_INFO_FETCH_RESULT as AuthenticatedUserInfo,
-  });
-}
+// export function withAuthentication(state?: DeepPartial<AppState>): DeepPartial<AppState> {
+//   return merge({}, state || {}, {
+//     apiInfo: { clientApiKey: 'testApiKey' },
+//     cookies: [{ key: 'auth', value: 'testAuthToken', url: 'testUrl' }],
+//     userInfo: USER_INFO_FETCH_RESULT as AuthenticatedUserInfo,
+//   });
+// }
 
 export function spyObject<T, F extends FunctionPropertyNames<T>>(object: T, functions: F[]): SpyObject<T, F> {
   Object.keys(object).forEach((prop) => {

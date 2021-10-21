@@ -1,8 +1,12 @@
 import { isLoaded } from '../../api/prepare';
 import {
   AuthenticatedUserInfo,
+  Favorite,
+  FriendFavoriteGroup,
+  FriendFavoriteGroups,
   MappedFavoritesToGroupWithUser,
   MappedFavoritesToType,
+  NamedFavorite,
   NotificationContent,
   UserInfo,
 } from '../../api/types';
@@ -21,9 +25,9 @@ export const selectFriendFavorites = (state: AppState): Loadable<MappedFavorites
         {},
         ...Object.values(filteredByType).map((values, index) => ({
           [keys[index]]: values
-            .map((id) => {
+            .map((fav) => {
               if (isLoaded(state.friends.friendInfo)) {
-                return state.friends.friendInfo[id] ?? id;
+                return state.friends.friendInfo[fav.favoriteId] ?? fav.favoriteId;
               }
               return 'not-found';
             })
@@ -78,3 +82,33 @@ function sortByName(a: UserOrNotFound, b: UserOrNotFound): number {
 
   return a.displayName.toLowerCase().localeCompare(b.displayName.toLowerCase());
 }
+
+export type IsUserInAFavoriteGroup = {
+  group: FriendFavoriteGroup;
+  favId: Favorite['id'];
+  uid: UserInfo['id'];
+  groupName: string;
+};
+
+export const GetFavoriteOfUser =
+  (userId: string) =>
+  (state: AppState): NamedFavorite | null => {
+    const favorites = state.user.favorites;
+    const userInfo = state.user.userInfo;
+    if (isLoaded(favorites) && isLoaded(userInfo)) {
+      return Object.keys(favorites.friend)
+        .flatMap((key) =>
+          favorites.friend[key as FriendFavoriteGroup].map((fav) => {
+            if (fav.favoriteId === userId) {
+              return {
+                ...fav,
+                groupName: userInfo.friendGroupNames[FriendFavoriteGroups.indexOf(key as FriendFavoriteGroup)],
+              };
+            }
+            return null;
+          }),
+        )
+        .filter((u) => u !== null)[0];
+    }
+    return null;
+  };

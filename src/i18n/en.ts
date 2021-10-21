@@ -5,11 +5,34 @@ const Type = {
 };
 
 export const messages = {
+  AssignToFavoriteDialog: {
+    Header: 'Assign to one of your Groups',
+    Content: 'Group:',
+    Footer: {
+      Confirm: 'Confirm',
+      Cancel: 'Cancel',
+    },
+  },
+  ConfirmDialog: {
+    Confirm: 'Confirm',
+    Cancel: 'Cancel',
+  },
   Application: {
     Title: 'XSVRC - Manage your VRC',
   },
   Views: {
     UserCard: {
+      ConfirmMessages: {
+        ConfirmRemoveFavorite: {
+          Title: (name: string): string => `Remove favorite of ${name}?`,
+          Body: (name: string, group: string): string =>
+            `Do you really want to remove ${name} from the group "${group}"?`,
+        },
+        ConfirmUnfriend: {
+          Title: (name: string): string => `Unfriend ${name}?`,
+          Body: 'Do you really want to unfriend this person?',
+        },
+      },
       Rank: 'User rank:',
       UserInteractions: {
         Befriend: 'Send friend request',
@@ -73,7 +96,7 @@ export const messages = {
     },
     FriendsProfile: {
       Tabs: {
-        Bio: 'Bio',
+        Overview: 'Overview',
         Instance: (amount: number): string => `Instance (${amount})`,
         JSON: 'JSON',
       },

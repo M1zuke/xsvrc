@@ -1,8 +1,17 @@
 import { mergeWith } from 'lodash';
-import { setFavorites } from '../store/user/actions';
+import { addFavorite, removeFavorite, setFavorites } from '../store/user/actions';
 import { AppDispatch, AppThunkAction } from '../thunk';
 import { api, prepare } from './prepare';
-import { Favorite, FavoriteType, MappedFavoritesToGroup, MappedFavoritesToType } from './types';
+import {
+  AddFavorite,
+  Favorite,
+  FavoriteType,
+  FriendFavoriteGroup,
+  MappedFavoritesToGroup,
+  MappedFavoritesToType,
+  NamedFavorite,
+  UserInfo,
+} from './types';
 
 const limit = 100;
 
@@ -49,7 +58,7 @@ function mapToFavoritesGroup(favorites: Favorite[], type: FavoriteType): MappedF
   const filteredFavorites = favorites.filter((fav) => fav.type === type);
   let groups = {};
   const mapped = filteredFavorites.map((fav) => ({
-    [fav.tags[0]]: [fav.favoriteId],
+    [fav.tags[0]]: [fav],
   }));
   Object.values(mapped).forEach((obj) => {
     groups = mergeWith(groups, obj, customizer);
@@ -61,4 +70,43 @@ function customizer<T>(objValue: T[], srcValue: T[]): T[] | undefined {
   if (Array.isArray(objValue)) {
     return objValue.concat(srcValue);
   }
+}
+
+export function addToFavorites(user: UserInfo, favGroup: FriendFavoriteGroup): AppThunkAction<Promise<void>> {
+  return async function (dispatch, getState) {
+    const state = getState();
+
+    const body: AddFavorite = {
+      type: 'friend',
+      favoriteId: user.id,
+      tags: [favGroup],
+    };
+
+    const response = await prepare<Favorite>(state, dispatch, {
+      url: api(`favorites`),
+      method: 'POST',
+      body: body,
+    });
+
+    if (response.type === 'entity') {
+      dispatch(addFavorite(response.result));
+    } else {
+      console.log(response);
+    }
+  };
+}
+
+export function removeFromFavorites(favorite: Favorite | NamedFavorite): AppThunkAction<Promise<void>> {
+  return async function (dispatch, getState) {
+    const response = await prepare(getState, dispatch, {
+      url: api(`favorites/${favorite.id}`),
+      method: 'DELETE',
+    });
+
+    if (response.type === 'entity') {
+      dispatch(removeFavorite(favorite));
+    } else {
+      console.log(response);
+    }
+  };
 }

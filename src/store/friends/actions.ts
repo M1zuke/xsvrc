@@ -10,7 +10,7 @@ import { AppThunkAction } from '../../thunk';
 import { Loadable } from '../reducer';
 import { addNotification } from '../user/actions';
 import { FriendEntries, FriendFilter } from './state';
-import { ResetFriends, SetFriendFilter, SetFriendInfo } from './types';
+import { RemoveFriend, ResetFriends, SetFriendFilter, SetFriendInfo } from './types';
 
 function compare<T extends keyof UserInfo, V = UserInfo[T]>(a: V, b: V): number {
   if (typeof a === 'number' && typeof b === 'number') {
@@ -100,5 +100,12 @@ export function updateFriend(websocketNotification: WebSocketNotification): AppT
     } else if (isNotification(websocketNotification)) {
       dispatch(addNotification(websocketNotification.content));
     }
+  };
+}
+
+export function removeFriend(userId: string): RemoveFriend {
+  return {
+    type: 'friend/unfriend',
+    userId,
   };
 }

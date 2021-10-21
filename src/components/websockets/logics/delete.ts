@@ -17,7 +17,7 @@ export async function handleUserDeleteNotification(
       displayName: oldUserInfo?.displayName ?? websocketNotification.content.userId,
       comparison: {
         isFriend: {
-          from: oldUserInfo?.isFriend ?? true,
+          from: true,
           to: false,
         },
       },

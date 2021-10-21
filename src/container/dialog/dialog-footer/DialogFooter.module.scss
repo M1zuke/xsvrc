@@ -1,0 +1,9 @@
+@import '../../../common/_colors';
+@import '../../../common/_spacing';
+
+.Component {
+  grid-area: DialogFooter;
+  padding: $innerSpacing;
+  background-color: $dialogFooterBackgroundColor;
+  border-radius: 0 0 $standardBorderRadius $standardBorderRadius;
+}

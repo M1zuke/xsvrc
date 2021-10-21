@@ -1,4 +1,4 @@
-import { Check, Delete } from '@material-ui/icons';
+import { Check, Delete } from '@mui/icons-material';
 import React, { ReactElement, useCallback, useMemo } from 'react';
 import { NotificationContent } from '../../../api/types';
 import { useSettings } from '../../../common/use-settings';

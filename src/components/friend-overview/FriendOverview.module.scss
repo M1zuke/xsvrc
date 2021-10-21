@@ -41,6 +41,19 @@ $trustedRankBorder: $tinySpacing;
     border: $trustedRankBorder solid $legendaryUser;
   }
 
+  .Loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    background-color: $color3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .Offline {
     position: absolute;
     left: 0;

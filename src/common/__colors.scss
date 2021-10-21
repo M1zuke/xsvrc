@@ -10,6 +10,9 @@ $textColor: #e7e7e7;
 $colorBlack: #000000;
 $colorGreen: #00fd00;
 $colorRed: #ff2e2e;
+$colorYellow: #ffa400;
+
+$backdrop: rgba(0, 0, 0, 0.5);
 
 // Index
 $indexBackgroundColor: $color0;
@@ -45,3 +48,7 @@ $knownUser: #ff6600;
 $trustedUser: #8000ff;
 $veteranUser: #8000ff;
 $legendaryUser: #ffda00;
+
+// dialog
+$dialogBackgroundColor: $color1;
+$dialogFooterBackgroundColor: $color1;

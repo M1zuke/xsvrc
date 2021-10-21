@@ -1,0 +1,33 @@
+@import '../../common/_spacing';
+@import '../../common/_mixins';
+@import '../../common/_colors';
+
+.Component {
+  .Content {
+    display: grid;
+    grid-template-columns: repeat(2, autoSize());
+    grid-gap: $innerSpacing;
+    align-items: center;
+    justify-content: center;
+
+    select {
+      border: 0;
+      width: 200px;
+      background-color: $color3;
+      color: $colorWhite;
+      padding: $smallSpacing $innerSpacing;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .Footer {
+    display: grid;
+    grid-template-columns: repeat(2, autoSize());
+    grid-gap: $innerSpacing;
+    align-items: center;
+    justify-content: end;
+  }
+}

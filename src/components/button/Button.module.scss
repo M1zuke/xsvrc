@@ -13,7 +13,7 @@
     top: -5px;
     right: -5px;
     padding: $tinySpacing;
-    background-color: #FF3030;
+    background-color: #ff3030;
     font-weight: bold;
     color: $textColor;
     border-radius: 50%;
@@ -45,13 +45,18 @@
       opacity: 0.3;
     }
 
-    &.HeaderIcon, &.Icon {
+    &.HeaderIcon,
+    &.Icon {
       width: 36px;
       height: 36px;
 
       *:nth-child(2) {
         margin-left: -15px;
       }
+    }
+
+    &.Padding {
+      padding: $buttonPadding;
     }
 
     &.HeaderIcon {

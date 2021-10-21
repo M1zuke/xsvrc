@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<Login /> Component renders Login correctly 1`] = `
-"<div class=\\"Component\\">
-  <div class=\\"LoginBox\\">
-    <div class=\\"LoginImage\\"></div><input class=\\"Component\\" type=\\"text\\" placeholder=\\"Username\\" value=\\"\\"><input class=\\"Component\\" type=\\"password\\" placeholder=\\"Password\\" value=\\"\\"><button class=\\"Component\\"><span class=\\"StyleElement\\">Login</span></button>
-  </div>
-</div>"
-`;

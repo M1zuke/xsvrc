@@ -1,4 +1,4 @@
-import { Close, Fullscreen, Minimize } from '@material-ui/icons';
+import { Close, Fullscreen, Minimize } from '@mui/icons-material';
 import React, { ReactElement, useCallback } from 'react';
 import { useIpcRenderer } from '../../common/electron-controls';
 import { useMessages } from '../../i18n';

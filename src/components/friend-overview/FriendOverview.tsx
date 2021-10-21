@@ -1,4 +1,4 @@
-import { Home, Lock, Person } from '@material-ui/icons';
+import { Home, Lock, Person } from '@mui/icons-material';
 import classNames from 'classnames';
 import React, { ReactElement, useCallback, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -9,7 +9,8 @@ import { useApi } from '../../api/use-api';
 import { routes } from '../../common/routes';
 import { useTrustRank } from '../../common/trust-system';
 import { useMessages } from '../../i18n';
-import { selectFriendInfoById, selectFriendInfoByLocation } from '../../store/friends/selectors';
+import { IsLoggedInUser, selectFriendInfoById, selectFriendInfoByLocation } from '../../store/friends/selectors';
+import { Loading } from '../loading/Loading';
 import { ToolTip } from '../tool-tip/ToolTip';
 import styles from './FriendOverview.module.scss';
 
@@ -47,6 +48,7 @@ type FriendOverviewProps = {
 export function FriendOverview({ friendId, small }: FriendOverviewProps): ReactElement {
   const history = useHistory();
   const { getUser } = useApi();
+  const isLoggedInUser = useSelector(IsLoggedInUser(friendId));
   const friendInfo = useSelector(selectFriendInfoById(friendId));
   const friendsInSameLobby = useSelector(selectFriendInfoByLocation(friendInfo));
   const messages = useMessages().Views.FriendsOverview;
@@ -91,6 +93,11 @@ export function FriendOverview({ friendId, small }: FriendOverviewProps): ReactE
 
   return (
     <div className={trustRankClasses} style={avatarThumbnailImage} onClick={routeToProfile}>
+      {!$friendInfo.isFriend && !isLoggedInUser && (
+        <div className={styles.Loading}>
+          <Loading />
+        </div>
+      )}
       {$friendInfo.status === 'offline' && <div className={styles.Offline} />}
       {$friendInfo.location && $friendInfo.location === 'private' && (
         <div className={styles.PrivateIcon}>

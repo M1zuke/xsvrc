@@ -31,6 +31,40 @@ export function reducer(state: UserState = INITIAL_USER_STATE, action: UserActio
         favorites: action.favorites,
       };
     }
+    case 'user/add-favorite': {
+      const favorites = state.favorites;
+      if (isLoaded(favorites)) {
+        const favoriteFromGroup = favorites.friend[action.favorite.tags[0]];
+        return {
+          ...state,
+          favorites: {
+            ...favorites,
+            friend: {
+              ...favorites.friend,
+              [action.favorite.tags[0]]: [...favoriteFromGroup, action.favorite],
+            },
+          },
+        };
+      }
+      return state;
+    }
+    case 'user/remove-favorite': {
+      const favorites = state.favorites;
+      if (isLoaded(favorites)) {
+        const favoriteFromGroup = favorites.friend[action.favorite.tags[0]];
+        return {
+          ...state,
+          favorites: {
+            ...favorites,
+            friend: {
+              ...favorites.friend,
+              [action.favorite.tags[0]]: favoriteFromGroup.filter((f) => f.id !== action.favorite.id),
+            },
+          },
+        };
+      }
+      return state;
+    }
     case 'user/reset': {
       return INITIAL_USER_STATE;
     }

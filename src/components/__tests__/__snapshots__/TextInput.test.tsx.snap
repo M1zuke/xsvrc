@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<TextInput /> Component calls noOp onChange 1`] = `"<input aria-label=\\"text-input\\" class=\\"Component\\" type=\\"text\\" value=\\"\\">"`;
