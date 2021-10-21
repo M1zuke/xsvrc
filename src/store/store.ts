@@ -23,7 +23,6 @@ const persistConfig: PersistConfig<AppState> = {
 export function createAppStore(state?: AppState): Store<AppState, AppAction<AppActionsType>> {
   const rootReducer = createRootReducer();
 
-  console.log(process.env['REACT_APP_STORE_LOG']);
   /* istanbul ignore next */
   const middleware =
     process.env['REACT_APP_STORE_LOG'] === 'true' ? applyMiddleware(thunk, createLogger()) : applyMiddleware(thunk);
