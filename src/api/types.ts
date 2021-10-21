@@ -40,13 +40,8 @@ type UserFeature = {
   twoFactorAuth: boolean;
 };
 
-export type AuthenticatedUserInfo = {
-  username: string;
-  displayName: string;
+export type AuthenticatedUserInfo = UserInfo & {
   pastDisplayNames: PastDisplayNames[];
-  id: string;
-  bio: string;
-  bioLinks: string[];
   email: string;
   emailVerified: boolean;
   hasEmail: boolean;
@@ -63,27 +58,14 @@ export type AuthenticatedUserInfo = {
   activeFriends: string[];
   offlineFriends: string[];
   friendGroupNames: string[];
-  state: State;
-  status: Status;
-  statusDescription: string;
   currentAvatar: string;
   currentAvatarAssetUrl: string;
-  currentAvatarImageUrl: string;
-  currentAvatarThumbnailImageUrl: string;
   homeLocation: string;
-  last_login: string;
-  last_platform: string;
   hasLoggedInFromClient: boolean;
   twoFactorAuthEnabled: boolean;
-  allowAvatarCopying: boolean;
   accountDeletionDate: string | null;
   unsubscribe: boolean;
-  tags: TrustTag[];
   feature: UserFeature;
-  developerType: DeveloperType;
-  isFriend: boolean;
-  friendKey: string;
-  userIcon: string;
 };
 
 export type FriendUpdateWithUser = {

@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { lazy, Suspense, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { isLoaded } from '../../api/prepare';
@@ -28,14 +28,19 @@ const Settings = lazy(() => import('../views/settings/Settings').then(({ Setting
 
 const App: React.FC = () => {
   const userInfo = useSelector(selectUserInfo);
+  const fetched = useRef(false);
   const { info } = useApi();
   const { getUser, getAllFriends } = useApi();
   useSubscribe(getAllFriends, null, 500);
   useSubscribe(getUser, isLoaded(userInfo) ? userInfo.id : null, 60);
 
   useEffect(() => {
+    if (isLoaded(userInfo) && !fetched.current) {
+      fetched.current = true;
+      getUser(userInfo.id).finally();
+    }
     info().then();
-  }, [info]);
+  }, [getUser, info, userInfo]);
 
   return (
     <div className={styles.Component}>

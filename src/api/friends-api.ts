@@ -1,4 +1,4 @@
-import { removeFriend, setFriendInfo } from '../store/friends/actions';
+import { setFriendInfo } from '../store/friends/actions';
 import { resetStoredCookies } from '../store/persisted/actions';
 import { removeFavorite } from '../store/user/actions';
 import { GetFavoriteOfUser } from '../store/user/selectors';
@@ -84,13 +84,15 @@ export function sendUnfriendRequest(id: string): AppThunkAction<Promise<void>> {
       method: 'DELETE',
     });
 
+    const state = getState();
     if (response.type === 'entity') {
-      const state = getState();
-      const favorite = GetFavoriteOfUser(id)(state);
-      if (favorite) {
-        dispatch(removeFavorite(favorite));
+      if (isLoaded(state.friends.friendInfo)) {
+        const favorite = GetFavoriteOfUser(id)(state);
+        if (favorite) {
+          dispatch(removeFavorite(favorite));
+        }
+        dispatch(setFriendInfo([...Object.values(state.friends.friendInfo).filter((ui) => ui.id !== id)]));
       }
-      dispatch(removeFriend(id));
     } else {
       console.error(response);
     }

@@ -75,9 +75,10 @@ export async function getFriendsAndOldUser(
   state: AppState,
   dispatch: AppDispatch,
   userId: string,
+  suppressFetchingUser?: boolean,
 ): Promise<[UserInfo[], UserInfo | null]> {
   if (isLoaded(state.friends.friendInfo)) {
-    if (!state.friends.friendInfo[userId]) {
+    if (!suppressFetchingUser && !state.friends.friendInfo[userId]) {
       await dispatch(getUser(userId));
     }
 

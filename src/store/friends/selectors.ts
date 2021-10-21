@@ -8,6 +8,10 @@ export const selectFriendInfo = (appState: AppState): Loadable<FriendEntries> =>
 export const selectFriendInfoById =
   (id: string) =>
   (appState: AppState): Loadable<UserInfo> => {
+    if (isLoaded(appState.user.userInfo) && appState.user.userInfo.id === id) {
+      return appState.user.userInfo;
+    }
+
     if (isLoaded(appState.friends.friendInfo)) {
       return appState.friends.friendInfo[id] ?? null;
     }
