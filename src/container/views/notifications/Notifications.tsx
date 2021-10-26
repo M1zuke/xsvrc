@@ -30,6 +30,13 @@ export function Notifications(): ReactElement {
     return [];
   }, [filter, notifications]);
 
+  const scrollableContentStyle = useMemo(
+    () => ({
+      gridTemplateRows: `repeat(${filteredNotifications.length}, minmax(min-content, max-content)`,
+    }),
+    [filteredNotifications.length],
+  );
+
   return (
     <div className={styles.Component}>
       <Content className={styles.Filter}>
@@ -57,7 +64,7 @@ export function Notifications(): ReactElement {
       <div className={styles.Content}>
         <Pagination data={filteredNotifications} pageSize={50}>
           {(data) => (
-            <ScrollableContent innerClassName={styles.Notifications}>
+            <ScrollableContent innerClassName={styles.Notifications} style={scrollableContentStyle}>
               {data.map((not) => (
                 <Notification key={not.id} {...not} />
               ))}

@@ -10,9 +10,7 @@ const unhandled = require('electron-unhandled');
 const path = require('path');
 const isDev = require('electron-is-dev');
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const electronUpdater = require('electron-updater');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const electronLog = require('electron-log');
 const autoUpdater = electronUpdater.autoUpdater;
 autoUpdater.logger = electronLog;

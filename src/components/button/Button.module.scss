@@ -16,10 +16,13 @@
     background-color: #ff3030;
     font-weight: bold;
     color: $textColor;
-    border-radius: 50%;
+    border-radius: 100%;
     z-index: 99;
     cursor: pointer;
     user-select: none;
+    display: grid;
+    justify-content: center;
+    align-items: center;
   }
 
   .StyleElement {

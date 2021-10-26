@@ -29,6 +29,7 @@ const Settings = lazy(() => import('../views/settings/Settings').then(({ Setting
 const App: React.FC = () => {
   const userInfo = useSelector(selectUserInfo);
   const fetched = useRef(false);
+  const infoFetched = useRef(false);
   const { info } = useApi();
   const { getUser, getAllFriends } = useApi();
   useSubscribe(getAllFriends, null, 500);
@@ -39,15 +40,18 @@ const App: React.FC = () => {
       fetched.current = true;
       getUser(userInfo.id).finally();
     }
-    info().then();
+    if (!infoFetched.current) {
+      infoFetched.current = true;
+      info().then();
+    }
   }, [getUser, info, userInfo]);
 
   return (
     <div className={styles.Component}>
       <Header />
+      <WebSockets />
       <div className={styles.Application}>
         <Navigation />
-        <WebSockets />
         <Secured>
           <div className={styles.PageContent}>
             <Suspense fallback={<Loading />}>

@@ -1,6 +1,6 @@
-@import "../../../common/_mixins";
-@import "../../../common/_spacing";
-@import "../../../common/_colors";
+@import '../../../common/_mixins';
+@import '../../../common/_spacing';
+@import '../../../common/_colors';
 
 .Component {
   height: 100%;
@@ -22,7 +22,6 @@
     .Notifications {
       display: grid;
       grid-gap: $smallSpacing;
-      grid-template-rows: autoSize();
 
       .Notification {
         display: grid;
@@ -56,7 +55,8 @@
             background-color: $color3;
           }
 
-          .CreationDate, .Message {
+          .CreationDate,
+          .Message {
             background-color: $color1;
           }
 
@@ -83,4 +83,3 @@
     }
   }
 }
-
