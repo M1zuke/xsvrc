@@ -91,7 +91,7 @@ export function addToFavorites(user: UserInfo, favGroup: FriendFavoriteGroup): A
     if (response.type === 'entity') {
       dispatch(addFavorite(response.result));
     } else {
-      console.log(response);
+      console.error(response);
     }
   };
 }
@@ -106,7 +106,7 @@ export function removeFromFavorites(favorite: Favorite | NamedFavorite): AppThun
     if (response.type === 'entity') {
       dispatch(removeFavorite(favorite));
     } else {
-      console.log(response);
+      console.error(response);
     }
   };
 }

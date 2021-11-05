@@ -8,7 +8,7 @@ import styles from './Notifications.module.scss';
 
 export function Notification(props: NotificationContent): ReactElement {
   const messages = useMessages();
-  const settings = useSettings();
+  const { settings } = useSettings();
   const formattedTime = useMemo(
     () =>
       Intl.DateTimeFormat(settings.localization, {

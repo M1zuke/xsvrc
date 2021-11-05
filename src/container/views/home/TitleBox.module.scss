@@ -1,5 +1,5 @@
-@import "../../../common/_spacing";
-@import "../../../common/_colors";
+@import '../../../common/_spacing';
+@import '../../../common/_colors';
 
 .Component {
   background-color: $color1;
@@ -7,11 +7,14 @@
   border-radius: $standardBorderRadius;
 
   .Title {
-    color: transparentize($textColor, .5);
+    color: transparentize($textColor, 0.5);
     font-size: 16px;
     text-transform: uppercase;
     font-weight: bold;
-    margin-bottom: $innerSpacing;
+
+    &.AddMargin {
+      margin-bottom: $innerSpacing;
+    }
   }
 
   .Content {

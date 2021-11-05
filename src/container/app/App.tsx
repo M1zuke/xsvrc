@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import { isLoaded } from '../../api/prepare';
 import { useApi } from '../../api/use-api';
 import { routes } from '../../common/routes';
+import { useSettings } from '../../common/use-settings';
 import { useSubscribe } from '../../common/use-subscribe';
 import { Header } from '../../components/header/Header';
 import { Loading } from '../../components/loading/Loading';
@@ -30,21 +31,24 @@ const App: React.FC = () => {
   const userInfo = useSelector(selectUserInfo);
   const fetched = useRef(false);
   const infoFetched = useRef(false);
-  const { info } = useApi();
-  const { getUser, getAllFriends } = useApi();
-  useSubscribe(getAllFriends, null, 500);
+  const { info, getUser } = useApi();
+  const { applySettings } = useSettings();
   useSubscribe(getUser, isLoaded(userInfo) ? userInfo.id : null, 60);
+
+  useEffect(() => {
+    if (!infoFetched.current) {
+      applySettings();
+      infoFetched.current = true;
+      info().finally();
+    }
+  }, [applySettings, getUser, info, userInfo]);
 
   useEffect(() => {
     if (isLoaded(userInfo) && !fetched.current) {
       fetched.current = true;
       getUser(userInfo.id).finally();
     }
-    if (!infoFetched.current) {
-      infoFetched.current = true;
-      info().then();
-    }
-  }, [getUser, info, userInfo]);
+  }, [getUser, userInfo]);
 
   return (
     <div className={styles.Component}>

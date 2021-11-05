@@ -1,3 +1,5 @@
+import { SettingsState } from '../store/persisted/state';
+
 const Type = {
   hidden: 'Friends +',
   public: 'Public',
@@ -45,6 +47,11 @@ export const messages = {
     },
     Settings: {
       Title: 'Settings',
+      Localization: 'Localization',
+      Label: {
+        localization: 'Language:',
+        use12hours: 'Use 12 hours clock:',
+      } as Record<keyof SettingsState, string>,
     },
     WorldDetail: {
       NotFound: 'World got removed',
@@ -71,7 +78,7 @@ export const messages = {
       Friends: {
         Online: 'Friends online',
         FriendRequests: 'Friend requests',
-        invites: 'Invites',
+        Invites: 'Invites',
       },
     },
     Pagination: {

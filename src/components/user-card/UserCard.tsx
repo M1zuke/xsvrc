@@ -29,8 +29,6 @@ export function UserCard({ user }: UserCardProps): ReactElement {
   const isLoggedInUser = useSelector(IsLoggedInUser(user.id));
   const isFavorite = useSelector(GetFavoriteOfUser(user.id));
 
-  console.log(isFavorite);
-
   const avatarThumbnailImage = useMemo(() => {
     const url = user.profilePicOverride || user.currentAvatarThumbnailImageUrl;
     return {
@@ -83,7 +81,6 @@ export function UserCard({ user }: UserCardProps): ReactElement {
       if (isFavorite) {
         if (confirmed) {
           removeFromFavorites(isFavorite).finally();
-          console.log('unfav', isFavorite);
         } else {
           setShowConfirmDialog({
             onConfirmed: () => handleFavoriteUserButtonCLick(true),

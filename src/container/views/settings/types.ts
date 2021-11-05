@@ -1,23 +1,27 @@
-import { Settings } from '../../../store/persisted/state';
+import { DropDownOptionItem } from '../../../components/drop-down/DropDown';
+import { SettingsState } from '../../../store/persisted/state';
 
-type SettingsChangeHandler<P extends keyof Settings> = (value: Settings[P]) => void;
+export type SettingsChangeHandler<P extends keyof SettingsState> = (value: SettingsState[P]) => void;
 
 export type SettingsOptions = {
-  [P in keyof Settings]: AllOptions<P>;
+  [P in keyof SettingsState]: AllOptions<P>;
 };
 
-type Options<P extends keyof Settings> = {
+type Options<P extends keyof SettingsState> = {
+  label: string;
   changeHandler: SettingsChangeHandler<P>;
-  value: Settings[P];
+  value: SettingsState[P];
 };
 
-type AllOptions<P extends keyof Settings> = DropDownOption<P> | CheckBoxOptions<P>;
+type AllOptions<P extends keyof SettingsState> = DropDownOption<P> | CheckBoxOptions<P>;
 
-type DropDownOption<P extends keyof Settings> = Options<P> & {
+type DropDownOption<P extends keyof SettingsState> = Options<P> & {
   type: 'dropdown';
-  options: string[];
+  options: DropDownOptionItem[];
+  value: string | number;
 };
 
-type CheckBoxOptions<P extends keyof Settings> = Options<P> & {
+type CheckBoxOptions<P extends keyof SettingsState> = Options<P> & {
   type: 'checkbox';
+  value: boolean;
 };

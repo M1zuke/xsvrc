@@ -1,5 +1,5 @@
 import { isLoaded } from '../../api/prepare';
-import { UserInfo } from '../../api/types';
+import { AuthenticatedUserInfo, UserInfo } from '../../api/types';
 import { AppState } from '../index';
 import { Loadable } from '../reducer';
 import { FriendEntries, FriendFilter } from './state';
@@ -18,15 +18,37 @@ export const selectFriendInfoById =
     return appState.friends.friendInfo === 'loading' ? 'loading' : null;
   };
 export const selectFriendInfoByLocation =
-  (user: Loadable<UserInfo> | string) =>
-  (appState: AppState): UserInfo[] => {
-    if (isLoaded(appState.friends.friendInfo)) {
-      if (typeof user === 'string') {
-        return Object.values(appState.friends.friendInfo).filter((ui) => ui.location === user);
+  (userOrInstance: Loadable<UserInfo> | string) =>
+  (state: AppState): (AuthenticatedUserInfo | UserInfo)[] => {
+    if (isLoaded(state.friends.friendInfo)) {
+      if (typeof userOrInstance === 'string') {
+        const loggedInUser = isLoaded(state.user.userInfo)
+          ? state.user.userInfo.location === userOrInstance
+            ? [state.user.userInfo]
+            : []
+          : [];
+
+        return [
+          ...loggedInUser,
+          ...Object.values(state.friends.friendInfo).filter((ui) => ui.location === userOrInstance),
+        ];
       }
 
-      if (isLoaded(user) && user.location !== 'private' && user.location !== 'offline' && user.location !== '') {
-        return Object.values(appState.friends.friendInfo).filter((ui) => ui.location === user.location);
+      if (
+        isLoaded(userOrInstance) &&
+        userOrInstance.location !== 'private' &&
+        userOrInstance.location !== 'offline' &&
+        userOrInstance.location !== ''
+      ) {
+        const loggedInUser = isLoaded(state.user.userInfo)
+          ? state.user.userInfo.location === userOrInstance.location
+            ? [state.user.userInfo]
+            : []
+          : [];
+        return [
+          ...loggedInUser,
+          ...Object.values(state.friends.friendInfo).filter((ui) => ui.location === userOrInstance.location),
+        ];
       }
     }
     return [];

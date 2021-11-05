@@ -146,12 +146,12 @@ export function Friends(): ReactElement {
           </div>
           <Checkbox
             label={messages.Views.Friends.ShowOffline}
-            onClick={handleFilterUpdate['showOffline']}
+            onChange={handleFilterUpdate['showOffline']}
             value={showOffline}
           />
           <Checkbox
             label={messages.Views.Friends.ShowPrivate}
-            onClick={handleFilterUpdate['showPrivate']}
+            onChange={handleFilterUpdate['showPrivate']}
             value={showPrivate}
           />
         </div>

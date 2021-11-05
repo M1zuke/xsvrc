@@ -72,7 +72,7 @@ export function sendFriendRequest(id: string): AppThunkAction<Promise<void>> {
     if (response.type === 'entity') {
       console.log(response.result);
     } else {
-      console.log(response);
+      console.error(response);
     }
   };
 }

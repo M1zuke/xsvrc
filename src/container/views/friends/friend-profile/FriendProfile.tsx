@@ -1,7 +1,6 @@
 import React, { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { isLoaded } from '../../../../api/prepare';
 import { useApi } from '../../../../api/use-api';
 import { Content } from '../../../../components/content/Content';
 import { LoadableContent } from '../../../../components/loadable-content/LoadableContent';
@@ -27,10 +26,8 @@ export function FriendProfile(): ReactElement {
   const { getUser } = useApi();
 
   useEffect(() => {
-    if (!isLoaded(cachedUser)) {
-      getUser(id).finally();
-    }
-  }, [cachedUser, getUser, id]);
+    getUser(id).finally();
+  }, [getUser, id]);
 
   return (
     <div className={styles.Component}>

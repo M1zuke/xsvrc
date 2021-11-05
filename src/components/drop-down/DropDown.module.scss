@@ -1,0 +1,17 @@
+@import '../../common/_colors';
+@import '../../common/_spacing';
+@import '../../common/_mixins';
+
+.DropDown {
+  select {
+    background-color: $color2;
+    color: $textColor;
+    border: 0;
+    padding: $tinySpacing $innerSpacing;
+    border-radius: $smallBorderRadius;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

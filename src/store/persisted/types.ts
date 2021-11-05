@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { Settings, StoredCookie } from './state';
+import { SettingsState, StoredCookie } from './state';
 
 export type PersistedActionType = 'cookie/set-cookies' | 'cookie/reset-cookies' | 'settings/setSettings';
 
@@ -10,7 +10,7 @@ export type SetUserCookies = PersistedAction<'cookie/set-cookies'> & {
 };
 
 export type SetSettings = PersistedAction<'settings/setSettings'> & {
-  settings: Partial<Settings>;
+  settings: Partial<SettingsState>;
 };
 export type ResetUserCookies = PersistedAction<'cookie/reset-cookies'>;
 

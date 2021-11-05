@@ -5,17 +5,17 @@ export type StoredCookie = {
   cleanValue: string;
 };
 
-export type Settings = {
+export type SettingsState = {
   localization: Localization;
   use12hours: boolean;
 };
 
 export type PersistedState = {
-  settings: Settings;
+  settings: SettingsState;
   cookies: StoredCookie[];
 };
 
-export const INITIAL_SETTINGS_STATE: Settings = {
+export const INITIAL_SETTINGS_STATE: SettingsState = {
   localization: 'en-EN',
   use12hours: true,
 };

@@ -1,5 +1,5 @@
 import { AppState } from '../index';
-import { Settings, StoredCookie } from './state';
+import { SettingsState, StoredCookie } from './state';
 
 export const savedCookies = (state: AppState): StoredCookie[] => state.persisted.cookies;
-export const selectSettings = (state: AppState): Settings => state.persisted.settings;
+export const selectSettings = (state: AppState): SettingsState => state.persisted.settings;

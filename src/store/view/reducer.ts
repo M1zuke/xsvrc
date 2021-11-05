@@ -6,6 +6,9 @@ export function reducer(state: ViewState = INITIAL_VIEW_STATE, action: ViewActio
     case 'view/update-available': {
       return { ...state, updateAvailable: true };
     }
+    case 'view/set-i18n': {
+      return { ...state, i18n: action.i18n };
+    }
   }
   return state;
 }

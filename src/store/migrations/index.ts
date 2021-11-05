@@ -1,5 +1,5 @@
 import { PersistedState } from 'redux-persist/es/types';
-import { Settings, StoredCookie } from '../persisted/state';
+import { SettingsState, StoredCookie } from '../persisted/state';
 
 export function migrate(state: PersistedState, version: number): Promise<PersistedState> {
   console.log(state, version);
@@ -18,7 +18,7 @@ type PersistedRootStateV1 = {
   cookies: StoredCookie[];
 };
 type PersistedRootStateV2 = RootState<{
-  settings: Pick<Settings, 'localization' | 'use12hours'>;
+  settings: Pick<SettingsState, 'localization' | 'use12hours'>;
 }>;
 
 export const migrations = {

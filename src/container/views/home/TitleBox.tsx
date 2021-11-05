@@ -11,7 +11,17 @@ export function TitleBox({ title, children, className }: PropsWithChildren<Title
   const classes = classNames(styles.Content, className);
   return (
     <div className={styles.Component}>
-      {title ? <div className={styles.Title}>{title}</div> : <></>}
+      {title ? (
+        <div
+          className={classNames(styles.Title, {
+            [styles.AddMargin]: !!children,
+          })}
+        >
+          {title}
+        </div>
+      ) : (
+        <></>
+      )}
       <div className={classes}>{children}</div>
     </div>
   );

@@ -47,7 +47,7 @@ export function Home(): ReactElement {
       <div className={styles.NumberOverview}>
         <TitleBox title={messages.Views.Dashboard.Friends.Online}>{onlineFriends}</TitleBox>
         <TitleBox title={messages.Views.Dashboard.Friends.FriendRequests}>{friendRequests}</TitleBox>
-        <TitleBox title={messages.Views.Dashboard.Friends.invites}>{invites}</TitleBox>
+        <TitleBox title={messages.Views.Dashboard.Friends.Invites}>{invites}</TitleBox>
       </div>
       <LoadableContent data={favorites}>
         {(data) => (

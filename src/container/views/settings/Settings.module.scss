@@ -1,0 +1,25 @@
+@import '../../../common/_spacing';
+@import '../../../common/_mixins';
+@import '../../../common/_colors';
+
+.Settings {
+  display: grid;
+  grid-gap: $innerSpacing;
+
+  .ColumnGap {
+    display: grid;
+    grid-gap: $innerSpacing;
+  }
+
+  .RenderedSetting {
+    display: grid;
+    grid-template-columns: holdMinAspect(30%) auto;
+    text-align: left;
+    grid-gap: $smallSpacing;
+
+    .Label {
+      font-weight: bold;
+      color: $textColor;
+    }
+  }
+}

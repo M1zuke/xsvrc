@@ -44,7 +44,7 @@ export function UserEventItem({
   unsubscribe,
 }: PropsWithSubscription<UserEventItemProps>): ReactElement {
   const [collapsed, setCollapsed] = useState(true);
-  const settings = useSettings();
+  const { settings } = useSettings();
 
   const timestamp = useMemo(
     () =>

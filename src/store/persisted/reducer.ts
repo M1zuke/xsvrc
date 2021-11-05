@@ -28,6 +28,15 @@ export function reducer(state: PersistedState = INITIAL_PERSISTED_STATE, action:
         cookies: [],
       };
     }
+    case 'settings/setSettings': {
+      return {
+        ...state,
+        settings: {
+          ...state.settings,
+          ...action.settings,
+        },
+      };
+    }
   }
   return state;
 }

@@ -3,18 +3,18 @@ import React, { ReactElement, useCallback, useState } from 'react';
 import styles from './Checkbox.module.scss';
 
 type CheckboxProps = {
-  label: string;
-  onClick: (value: boolean) => void;
+  label?: string;
+  onChange: (value: boolean) => void;
   value?: boolean;
 };
 
-export function Checkbox({ label, onClick, value }: CheckboxProps): ReactElement {
+export function Checkbox({ label, onChange, value }: CheckboxProps): ReactElement {
   const [checked, setChecked] = useState(value || false);
   const handleClick = useCallback(() => {
     const newChecked = !checked;
-    onClick(newChecked);
+    onChange(newChecked);
     setChecked(newChecked);
-  }, [checked, onClick]);
+  }, [checked, onChange]);
 
   return (
     <div onClick={handleClick} className={styles.Component}>

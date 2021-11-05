@@ -11,6 +11,7 @@ export function useSubscribe<T extends string>(
 
   useEffect(() => {
     if (params !== null && loggedIn) {
+      func(params as T);
       const interval = setInterval(() => {
         func(params as T);
       }, timeInSeconds * 1000);
