@@ -250,3 +250,23 @@ export type NamedFavorite = Favorite & {
 };
 
 export type AddFavorite = Omit<Favorite, 'id'>;
+
+export const HardModerationTypes = ['mute', 'block', 'hideAvatar'] as const;
+export type HardModerationType = typeof HardModerationTypes[number];
+
+export const ModerationTypes = ['unmute', 'unblock', 'showAvatar'] as const;
+type ModerationType = typeof ModerationTypes[number] & HardModerationType;
+
+export type Moderation = {
+  created: string; // date-time
+  id: string;
+  sourceDisplayName: string;
+  sourceUserId: string;
+  targetDisplayName: string;
+  targetUserId: string;
+  type: ModerationType;
+};
+
+export type SortedModerations = {
+  [userId: string]: Moderation[];
+};

@@ -1,9 +1,13 @@
+import merge from 'lodash.merge';
+import { isLoaded } from '../../api/prepare';
 import {
   AuthenticatedUserInfo,
   Favorite,
   MappedFavoritesToType,
+  Moderation,
   NamedFavorite,
   NotificationContent,
+  SortedModerations,
 } from '../../api/types';
 import { Loadable } from '../reducer';
 import {
@@ -12,6 +16,7 @@ import {
   RemoveFavorite,
   ResetUser,
   SetFavorites,
+  SetModerations,
   SetNotifications,
   SetUserInfo,
 } from './types';
@@ -61,5 +66,40 @@ export function removeFavorite(favorite: NamedFavorite | Favorite): RemoveFavori
   return {
     type: 'user/remove-favorite',
     favorite,
+  };
+}
+
+type MappedModeration = {
+  [userId: string]: {
+    [type: string]: Moderation;
+  };
+};
+
+export function setModerations(moderations: Loadable<Moderation[]>): SetModerations {
+  if (isLoaded(moderations)) {
+    const mappedModeration: MappedModeration = merge(
+      {},
+      ...moderations.map((m) => ({
+        [m.targetUserId]: { [m.type]: m },
+      })),
+    );
+    const asArray: SortedModerations = Object.assign(
+      {},
+      ...Object.keys(mappedModeration).map((id) => {
+        const values = mappedModeration[id];
+        return {
+          [id]: Object.values(values),
+        };
+      }),
+    );
+    return {
+      type: 'user/set-moderations',
+      moderations: asArray,
+    };
+  }
+
+  return {
+    type: 'user/set-moderations',
+    moderations,
   };
 }

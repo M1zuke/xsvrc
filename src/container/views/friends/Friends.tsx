@@ -1,6 +1,7 @@
 import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isLoaded } from '../../../api/prepare';
+import { isOnline } from '../../../common/utils';
 import { Button } from '../../../components/button/Button';
 import { Checkbox } from '../../../components/checkbox/Checkbox';
 import { Content } from '../../../components/content/Content';
@@ -66,9 +67,7 @@ export function Friends(): ReactElement {
   const friendInfo = useMemo(() => {
     if (isLoaded(friends)) {
       const friendInfo = Object.values(friends);
-      const withOffline = showOffline
-        ? friendInfo
-        : friendInfo.filter((fi) => fi.status !== 'offline' && fi.location !== 'offline' && fi.location !== '');
+      const withOffline = showOffline ? friendInfo : friendInfo.filter((fi) => isOnline(fi));
       return showPrivate ? withOffline : withOffline.filter((fi) => fi.location !== 'private');
     }
     return [];

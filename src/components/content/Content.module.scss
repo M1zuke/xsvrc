@@ -1,5 +1,5 @@
-@import "../../common/_spacing";
-@import "../../common/_colors";
+@import '../../common/_spacing';
+@import '../../common/_colors';
 
 .Component {
   background-color: $color1;
@@ -9,5 +9,9 @@
 
   &.Translucent {
     background-color: transparent;
+  }
+
+  &.NoPadding {
+    padding: 0;
   }
 }

@@ -25,7 +25,7 @@ export function UserEventDetail({
     return <div className={`${styles.UserEventDetail} ${styles.Thumbnail}`} style={backgroundImage} />;
   }
 
-  if (eventKey === 'location') {
+  if (typeof value === 'string' && eventKey === 'location' && value !== 'offline' && value !== '') {
     return <WorldDetail location={value as string} subscribe={subscribe} unsubscribe={unsubscribe} />;
   }
 

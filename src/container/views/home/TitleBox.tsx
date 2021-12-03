@@ -10,11 +10,11 @@ type TitleBoxProps = {
 export function TitleBox({ title, children, className }: PropsWithChildren<TitleBoxProps>): ReactElement {
   const classes = classNames(styles.Content, className);
   return (
-    <div className={styles.Component}>
+    <div className={classNames(styles.Component)}>
       {title ? (
         <div
           className={classNames(styles.Title, {
-            [styles.AddMargin]: !!children,
+            [styles.AddMargin]: children,
           })}
         >
           {title}
@@ -22,7 +22,7 @@ export function TitleBox({ title, children, className }: PropsWithChildren<Title
       ) : (
         <></>
       )}
-      <div className={classes}>{children}</div>
+      {children !== undefined && <div className={classes}>{children}</div>}
     </div>
   );
 }

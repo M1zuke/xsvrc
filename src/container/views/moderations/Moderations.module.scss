@@ -1,0 +1,33 @@
+@import '../../../common/_mixins';
+@import '../../../common/_spacing';
+
+.Moderations {
+  height: 100%;
+  display: grid;
+  grid-template-rows: autoSize() auto;
+  grid-gap: $innerSpacing;
+  overflow: hidden;
+
+  .Filter {
+    font-size: 14px;
+    text-align: left;
+    display: grid;
+    grid-gap: $tinySpacing;
+    grid-template-columns: auto autoSize();
+    align-items: center;
+    font-weight: bold;
+
+    .TypeFilter {
+      display: grid;
+      grid-auto-flow: column;
+      grid-gap: $tinySpacing;
+    }
+
+    .SpecialFilter {
+      font-weight: normal;
+      display: grid;
+      justify-content: flex-end;
+      grid-template-columns: repeat(1, autoSize());
+    }
+  }
+}

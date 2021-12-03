@@ -11,6 +11,7 @@ import { UserCard } from '../../../../components/user-card/UserCard';
 import { WorldInstance } from '../../../../components/world-instance/WorldInstance';
 import { useMessages } from '../../../../i18n';
 import { selectFriendInfoById, selectFriendInfoByLocation } from '../../../../store/friends/selectors';
+import { GetModerationsByUserId } from '../../../../store/user/selectors';
 import styles from './FriendsProfile.module.scss';
 import { UserOverview } from './UserOverview';
 
@@ -23,7 +24,10 @@ export function FriendProfile(): ReactElement {
   const { id } = useParams<FriendProfileParams>();
   const cachedUser = useSelector(selectFriendInfoById(id));
   const samePeopleInInstance = useSelector(selectFriendInfoByLocation(cachedUser));
+  const userModerations = useSelector(GetModerationsByUserId(id));
   const { getUser } = useApi();
+
+  console.log(userModerations);
 
   useEffect(() => {
     getUser(id).finally();

@@ -1,6 +1,7 @@
 import React, { ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { isLoaded } from '../../../api/prepare';
+import { isOnline } from '../../../common/utils';
 import { Content } from '../../../components/content/Content';
 import { FriendFavoriteList } from '../../../components/friend-favorite-list/FriendFavoriteList';
 import { LoadableContent } from '../../../components/loadable-content/LoadableContent';
@@ -20,10 +21,7 @@ export function Home(): ReactElement {
   const messages = useMessages();
 
   const onlineFriends = useMemo(
-    () =>
-      (isLoaded(friendInfo) ? Object.values(friendInfo) : []).filter(
-        (fi) => fi.status !== 'offline' && fi.location !== 'offline' && fi.location !== '',
-      ).length,
+    () => (isLoaded(friendInfo) ? Object.values(friendInfo) : []).filter((fi) => isOnline(fi)).length,
     [friendInfo],
   );
 

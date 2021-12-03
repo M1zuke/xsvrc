@@ -1,4 +1,14 @@
-import { Home, List, Notifications, PeopleAlt, Person, PowerSettingsNew, Settings, Shield } from '@mui/icons-material';
+import {
+  Home,
+  List,
+  Notifications,
+  PeopleAlt,
+  Person,
+  PowerSettingsNew,
+  Search,
+  Settings,
+  Shield,
+} from '@mui/icons-material';
 import React, { ReactElement, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -87,6 +97,15 @@ export function Navigation(): ReactElement {
           icon
         >
           <List />
+        </Button>
+        <Button
+          aria-label="navigate to user search"
+          active={isActiveRoute(routes.userSearch.path)}
+          onClick={() => navigateTo(routes.userSearch.path)}
+          icon
+          disabled
+        >
+          <Search />
         </Button>
       </div>
       <div className={styles.Settings}>

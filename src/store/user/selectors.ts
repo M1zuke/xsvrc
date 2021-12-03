@@ -6,8 +6,10 @@ import {
   FriendFavoriteGroups,
   MappedFavoritesToGroupWithUser,
   MappedFavoritesToType,
+  Moderation,
   NamedFavorite,
   NotificationContent,
+  SortedModerations,
   UserInfo,
 } from '../../api/types';
 import { AppState } from '../index';
@@ -60,15 +62,15 @@ function sortByStatus(a: UserOrNotFound, b: UserOrNotFound): number {
     return 1;
   }
 
-  if (a.status === 'offline' && b.status === 'offline') {
+  if ((a.state === 'offline' || a.status === 'offline') && (b.state === 'offline' || b.status === 'offline')) {
     return 0;
   }
 
-  if (b.status === 'offline') {
+  if (b.state === 'offline' || b.status === 'offline') {
     return -1;
   }
 
-  if (a.status === 'offline') {
+  if (a.state === 'offline' || a.status === 'offline') {
     return 1;
   }
 
@@ -111,4 +113,20 @@ export const GetFavoriteOfUser =
         .filter((u) => u !== null)[0];
     }
     return null;
+  };
+
+export const GetSortedModerations = (state: AppState): SortedModerations => {
+  if (isLoaded(state.user.moderations)) {
+    return state.user.moderations;
+  }
+  return {};
+};
+
+export const GetModerationsByUserId =
+  (id: Moderation['targetUserId']) =>
+  (state: AppState): Moderation[] => {
+    if (isLoaded(state.user.moderations)) {
+      return state.user.moderations[id] ?? [];
+    }
+    return [];
   };

@@ -14,5 +14,7 @@ export function RenderJSON({ json }: RenderJSONProps): ReactElement {
     }),
     [],
   );
-  return <ReactJson src={json} theme="twilight" enableClipboard={false} displayDataTypes={false} style={style} />;
+  return (
+    <ReactJson src={json} theme="twilight" enableClipboard={false} displayDataTypes={false} style={style} sortKeys />
+  );
 }

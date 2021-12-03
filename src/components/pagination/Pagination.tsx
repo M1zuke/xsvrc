@@ -12,6 +12,7 @@ import React, {
 import { useMessages } from '../../i18n';
 import { Button } from '../button/Button';
 import { Content } from '../content/Content';
+import { ScrollableContent } from '../scrollable-content/ScrollableContent';
 import styles from './Pagination.module.scss';
 
 export type PaginationProps<T> = {
@@ -101,7 +102,7 @@ export function Pagination<T>({
 
   return (
     <div className={styles.Component}>
-      <div className={styles.PaginatedContent}>{children(pageElements)}</div>
+      <ScrollableContent className={styles.PaginatedContent}>{children(pageElements)}</ScrollableContent>
       <Content className={styles.PageNavigation}>
         <Button onClick={setFirstPage} disabled={isFirstPage} aria-label="first-page" icon>
           <ChevronLeft />

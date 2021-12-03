@@ -15,6 +15,7 @@ export type Routes = {
   notifications: RouteDefinition;
   settings: RouteDefinition;
   moderation: RouteDefinition;
+  userSearch: RouteDefinition;
 };
 
 export const routes: Routes = {
@@ -26,4 +27,5 @@ export const routes: Routes = {
   notifications: { path: '/notifications', config: { path: '/notifications', exact: true } },
   settings: { path: '/settings', config: { path: '/settings', exact: true } },
   moderation: { path: '/moderation', config: { path: '/moderation', exact: true } },
+  userSearch: { path: '/user-search', config: { path: '/user-search', exact: true } },
 };

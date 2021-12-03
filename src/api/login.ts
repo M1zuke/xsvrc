@@ -4,6 +4,7 @@ import { AppThunkAction } from '../thunk';
 import { getAllFavorites } from './favorites-api';
 import { getAllFriends } from './friends-api';
 import { logout } from './logout';
+import { getAllModerations } from './moderations';
 import { getAllNotifications } from './notifications';
 import { api, prepare } from './prepare';
 import { AuthenticatedUserInfo } from './types';
@@ -14,10 +15,13 @@ export function login(username?: string, password?: string): AppThunkAction<Prom
     if (state.user.userInfo === null || isErrorType(state.user.userInfo)) {
       dispatch(setUserInfo('loading'));
 
+      const authorizationBuffer = Buffer.from(`${username}:${password}`);
+      const base64 = authorizationBuffer.toString('base64');
+
       const result = await prepare<AuthenticatedUserInfo>(state, dispatch, {
         url: api('auth/user'),
         headers: {
-          Authorization: `Basic ${btoa(`${username}:${password}`)}`,
+          Authorization: `Basic ${base64}`,
         },
       });
 
@@ -26,6 +30,7 @@ export function login(username?: string, password?: string): AppThunkAction<Prom
         await dispatch(getAllFriends()).finally();
         await dispatch(getAllNotifications()).finally();
         await dispatch(getAllFavorites()).finally();
+        dispatch(getAllModerations()).finally();
       } else {
         dispatch(logout()).finally();
       }

@@ -45,7 +45,7 @@ export function Settings(): ReactElement {
   }, [messages.Views.Settings.Label, settingsOptions]);
 
   return (
-    <Content translucent className={styles.Settings}>
+    <Content noPadding translucent className={styles.Settings}>
       <TitleBox title={messages.Views.Settings.Title} />
       <TitleBox title={messages.Views.Settings.Localization} className={styles.ColumnGap}>
         {renderedSettings.localization} {renderedSettings.use12hours}

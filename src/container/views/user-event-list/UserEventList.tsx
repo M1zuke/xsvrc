@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { Content } from '../../../components/content/Content';
 import { TextInput } from '../../../components/input/TextInput';
 import { Pagination } from '../../../components/pagination/Pagination';
-import { ScrollableContent } from '../../../components/scrollable-content/ScrollableContent';
 import { useMessages } from '../../../i18n';
 import { selectUserEvents } from '../../../store/user-events/selectors';
 import {
@@ -67,9 +66,9 @@ export function UserEventList(): ReactElement {
           </Content>
           <Pagination data={listItems(subscribe, unsubscribe)} pageSize={25}>
             {(records) => (
-              <ScrollableContent innerClassName={styles.ScrollableContent} style={style(records.length)}>
+              <div className={styles.ScrollableContent} style={style(records.length)}>
                 {records}
-              </ScrollableContent>
+              </div>
             )}
           </Pagination>
         </div>

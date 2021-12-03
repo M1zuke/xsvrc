@@ -21,7 +21,7 @@ export async function handleUserOfflineNotification(
           to: 'offline',
         },
         state: {
-          from: oldUserInfo?.state || 'offline',
+          from: oldUserInfo?.state || 'active',
           to: 'offline',
         },
         status: {

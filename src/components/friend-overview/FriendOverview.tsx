@@ -8,6 +8,7 @@ import { UserInfo } from '../../api/types';
 import { useApi } from '../../api/use-api';
 import { routes } from '../../common/routes';
 import { useTrustRank } from '../../common/trust-system';
+import { isActive, isLoggedIn, isOffline } from '../../common/utils';
 import { useMessages } from '../../i18n';
 import { IsLoggedInUser, selectFriendInfoById, selectFriendInfoByLocation } from '../../store/friends/selectors';
 import { Loading } from '../loading/Loading';
@@ -74,10 +75,10 @@ export function FriendOverview({ friendId, small }: FriendOverviewProps): ReactE
   });
 
   const friendStatusClasses = classNames(styles.Status, {
-    [styles.Active]: $friendInfo.status === 'active',
-    [styles.AskMe]: $friendInfo.status === 'ask me',
-    [styles.JoinMe]: $friendInfo.status === 'join me',
-    [styles.Busy]: $friendInfo.status === 'busy',
+    [styles.Active]: $friendInfo.status === 'active' && isLoggedIn($friendInfo),
+    [styles.AskMe]: $friendInfo.status === 'ask me' && isLoggedIn($friendInfo),
+    [styles.JoinMe]: $friendInfo.status === 'join me' && isLoggedIn($friendInfo),
+    [styles.Busy]: $friendInfo.status === 'busy' && isLoggedIn($friendInfo),
   });
 
   const routeToProfile = useCallback(
@@ -98,13 +99,13 @@ export function FriendOverview({ friendId, small }: FriendOverviewProps): ReactE
           <Loading />
         </div>
       )}
-      {$friendInfo.status === 'offline' && <div className={styles.Offline} />}
-      {$friendInfo.location && $friendInfo.location === 'private' && (
+      {isOffline($friendInfo) && <div className={styles.Offline} />}
+      {$friendInfo.location === 'private' && (
         <div className={styles.PrivateIcon}>
           <Lock fontSize="small" />
         </div>
       )}
-      {$friendInfo.location === 'offline' && $friendInfo.status !== 'offline' && (
+      {isActive($friendInfo) && (
         <ToolTip className={styles.OnlineThroughWebsite} toolTip={messages.ToolTip.LoggedTroughWebsite}>
           <Home fontSize="small" />
         </ToolTip>

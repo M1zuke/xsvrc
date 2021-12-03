@@ -82,10 +82,10 @@ export function WorldDetail({
           <Person />
           {messages.Views.WorldDetail.InstanceCapacity(instanceInfo.n_users, instanceInfo.capacity)}
         </ToolTip>
-        <div className={styles.WorldName}>
-          {worldInfo.name} - {messages.Views.WorldDetail.Type[instanceInfo.type]}
+        <div className={styles.WorldName}>{worldInfo.name}</div>
+        <div className={styles.WorldInstanceId}>
+          {messages.Views.WorldDetail.InstanceId(instanceId)} - {messages.Views.WorldDetail.Type[instanceInfo.type]}
         </div>
-        <div className={styles.WorldInstanceId}>{messages.Views.WorldDetail.InstanceId(instanceId)}</div>
       </div>
     );
   }

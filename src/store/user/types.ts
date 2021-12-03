@@ -5,6 +5,7 @@ import {
   MappedFavoritesToType,
   NamedFavorite,
   NotificationContent,
+  SortedModerations,
 } from '../../api/types';
 import { Loadable } from '../reducer';
 
@@ -15,7 +16,8 @@ export type UserActionType = `user/${
   | 'reset'
   | 'set-favorites'
   | 'add-favorite'
-  | 'remove-favorite'}`;
+  | 'remove-favorite'
+  | 'set-moderations'}`;
 
 export type UserAction<T extends UserActionType> = Action<T>;
 
@@ -42,6 +44,9 @@ export type AddFavorite = UserAction<'user/add-favorite'> & {
 export type RemoveFavorite = UserAction<'user/remove-favorite'> & {
   favorite: NamedFavorite | Favorite;
 };
+export type SetModerations = UserAction<'user/set-moderations'> & {
+  moderations: Loadable<SortedModerations>;
+};
 
 export type ResetUser = UserAction<'user/reset'>;
 
@@ -52,4 +57,5 @@ export type UserActions =
   | ResetUser
   | SetFavorites
   | AddFavorite
-  | RemoveFavorite;
+  | RemoveFavorite
+  | SetModerations;

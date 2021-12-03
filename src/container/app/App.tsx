@@ -26,14 +26,18 @@ const Notifications = lazy(() =>
   import('../views/notifications/Notifications').then(({ Notifications }) => ({ default: Notifications })),
 );
 const Settings = lazy(() => import('../views/settings/Settings').then(({ Settings }) => ({ default: Settings })));
+const Moderations = lazy(() =>
+  import('../views/moderations/Moderations').then(({ Moderations }) => ({ default: Moderations })),
+);
 
 const App: React.FC = () => {
   const userInfo = useSelector(selectUserInfo);
   const fetched = useRef(false);
   const infoFetched = useRef(false);
-  const { info, getUser } = useApi();
+  const { info, getUser, getAllFriends } = useApi();
   const { applySettings } = useSettings();
   useSubscribe(getUser, isLoaded(userInfo) ? userInfo.id : null, 60);
+  useSubscribe(getAllFriends, isLoaded(userInfo) ? undefined : null, 300);
 
   useEffect(() => {
     if (!infoFetched.current) {
@@ -66,6 +70,7 @@ const App: React.FC = () => {
                 <Route {...routes.eventList.config} component={EventList} />
                 <Route {...routes.notifications.config} component={Notifications} />
                 <Route {...routes.settings.config} component={Settings} />
+                <Route {...routes.moderation.config} component={Moderations} />
               </Switch>
             </Suspense>
           </div>

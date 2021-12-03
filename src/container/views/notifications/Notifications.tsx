@@ -5,7 +5,6 @@ import { NotificationContent } from '../../../api/types';
 import { Button } from '../../../components/button/Button';
 import { Content } from '../../../components/content/Content';
 import { Pagination } from '../../../components/pagination/Pagination';
-import { ScrollableContent } from '../../../components/scrollable-content/ScrollableContent';
 import { useMessages } from '../../../i18n';
 import { selectNotifications } from '../../../store/user/selectors';
 import { Notification } from './Notification';
@@ -30,11 +29,15 @@ export function Notifications(): ReactElement {
     return [];
   }, [filter, notifications]);
 
-  const scrollableContentStyle = useMemo(
-    () => ({
-      gridTemplateRows: `repeat(${filteredNotifications.length}, minmax(min-content, max-content)`,
+  const renderedNotifications = useMemo(() => {
+    return filteredNotifications.map((not) => <Notification key={not.id} {...not} />);
+  }, [filteredNotifications]);
+
+  const style = useCallback(
+    (items: number) => ({
+      gridTemplateRows: `repeat(${items}, minmax(min-content, max-content))`,
     }),
-    [filteredNotifications.length],
+    [],
   );
 
   return (
@@ -62,13 +65,11 @@ export function Notifications(): ReactElement {
         </Button>
       </Content>
       <div className={styles.Content}>
-        <Pagination data={filteredNotifications} pageSize={50}>
+        <Pagination data={renderedNotifications} pageSize={50}>
           {(data) => (
-            <ScrollableContent innerClassName={styles.Notifications} style={scrollableContentStyle}>
-              {data.map((not) => (
-                <Notification key={not.id} {...not} />
-              ))}
-            </ScrollableContent>
+            <div className={styles.Notifications} style={style(data.length)}>
+              {data}
+            </div>
           )}
         </Pagination>
       </div>

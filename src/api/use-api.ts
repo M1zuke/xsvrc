@@ -7,6 +7,7 @@ import { getInstance, getWorld } from './getWorld';
 import { info } from './info';
 import { login } from './login';
 import { logout } from './logout';
+import { getAllModerations } from './moderations';
 import { Favorite, FriendFavoriteGroup, NamedFavorite, UserInfo } from './types';
 
 export type API = {
@@ -20,6 +21,7 @@ export type API = {
   unfriendUser(id: string): Promise<void>;
   addToFavorites(user: UserInfo, group: FriendFavoriteGroup): Promise<void>;
   removeFromFavorites(favorite: Favorite | NamedFavorite): Promise<void>;
+  getAllModerations(): Promise<void>;
 };
 
 export function useApi(): API {
@@ -56,6 +58,9 @@ export function useApi(): API {
       },
       removeFromFavorites: (favorite) => {
         return dispatch(removeFromFavorites(favorite));
+      },
+      getAllModerations: () => {
+        return dispatch(getAllModerations());
       },
     }),
     [dispatch],

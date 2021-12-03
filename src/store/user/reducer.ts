@@ -65,6 +65,12 @@ export function reducer(state: UserState = INITIAL_USER_STATE, action: UserActio
       }
       return state;
     }
+    case 'user/set-moderations': {
+      return {
+        ...state,
+        moderations: action.moderations,
+      };
+    }
     case 'user/reset': {
       return INITIAL_USER_STATE;
     }

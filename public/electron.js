@@ -2,9 +2,7 @@
 /* eslint @typescript-eslint/explicit-function-return-type: 0 */
 
 const request = require('request-promise-native');
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const { app, Tray, Menu, BrowserWindow, ipcMain } = require('electron');
 const unhandled = require('electron-unhandled');
 
 const path = require('path');
@@ -12,58 +10,94 @@ const isDev = require('electron-is-dev');
 
 const electronUpdater = require('electron-updater');
 const electronLog = require('electron-log');
+
+const Store = require('electron-store');
+const store = new Store();
+
 const autoUpdater = electronUpdater.autoUpdater;
 autoUpdater.logger = electronLog;
 
 let mainWindow;
+let tray;
 
-function createWindow() {
-  unhandled();
-
-  mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 800,
-    minWidth: 1280,
-    minHeight: 800,
-    autoHideMenuBar: true,
-    darkTheme: true,
-    webPreferences: {
-      nodeIntegration: true,
-      preload: path.join(__dirname, 'preload.js'),
-      contextIsolation: false,
+function createTray() {
+  const appIcon = new Tray(path.join(__dirname, 'favicon.ico'));
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Show',
+      click: function () {
+        mainWindow.show();
+      },
     },
-    resizable: true,
-    frame: false,
-    backgroundColor: '#1A1A1A',
-    show: false,
-  });
+    {
+      label: 'Exit',
+      click: function () {
+        app.isQuiting = true;
+        app.quit();
+      },
+    },
+  ]);
 
-  mainWindow
-    .loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
-    .finally();
-  mainWindow.on('closed', () => (mainWindow = null));
-  mainWindow.on('ready-to-show', () => {
+  appIcon.on('double-click', function () {
     mainWindow.show();
   });
+  appIcon.setToolTip('xsvrc');
+  appIcon.setContextMenu(contextMenu);
+  return appIcon;
+}
 
-  autoUpdater.autoInstallOnAppQuit = false;
+function createWindow() {
+  try {
+    const options = {
+      width: 1280,
+      height: 800,
+      minWidth: 1280,
+      minHeight: 800,
+      autoHideMenuBar: true,
+      darkTheme: true,
+      webPreferences: {
+        nodeIntegration: true,
+        preload: path.join(__dirname, 'preload.js'),
+        contextIsolation: false,
+      },
+      resizable: true,
+      frame: false,
+      backgroundColor: '#1A1A1A',
+      show: false,
+      ...store.get('winBounds'),
+    };
 
-  autoUpdater.signals.updateDownloaded(() => {
-    mainWindow.webContents.send('update-downloaded');
-  });
+    mainWindow = new BrowserWindow(options);
 
-  electron.ipcMain.on('check-for-update', () => {
+    mainWindow
+      .loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
+      .finally();
+    mainWindow.on('closed', () => (mainWindow = null));
+    mainWindow.once('ready-to-show', () => {
+      mainWindow.show();
+    });
+
+    autoUpdater.autoInstallOnAppQuit = false;
+
+    autoUpdater.signals.updateDownloaded(() => {
+      mainWindow.webContents.send('update-downloaded');
+    });
+  } catch (e) {
+    electronLog.log(e);
+  }
+
+  ipcMain.on('check-for-update', () => {
     autoUpdater.checkForUpdates().finally();
   });
 
-  electron.ipcMain.on('do-update', () => {
+  ipcMain.on('do-update', () => {
     autoUpdater.quitAndInstall(true, true);
   });
 
-  electron.ipcMain.handle('run', (event, args) => {
+  ipcMain.handle('run', (event, args) => {
     switch (args) {
       case 'close': {
-        return app.quit();
+        return mainWindow.hide();
       }
       case 'maximize': {
         if (mainWindow.isMaximized()) {
@@ -76,12 +110,12 @@ function createWindow() {
       }
       default:
       case 'restore': {
-        return mainWindow.restore();
+        return mainWindow.show();
       }
     }
   });
 
-  electron.ipcMain.handle('fetch', async (event, args) => {
+  ipcMain.handle('fetch', async (event, args) => {
     unhandled();
     const cookiejar = request.jar();
 
@@ -96,9 +130,9 @@ function createWindow() {
       args.params.forEach((o) => url.searchParams.set(o.key, o.value));
     }
 
-    console.log((args.method || 'get').toUpperCase(), url.toString(), JSON.stringify(args.body || ''));
+    electronLog.log((args.method || 'get').toUpperCase(), url.toString(), JSON.stringify(args.body || ''));
     if (args.headers) {
-      Object.keys(args.headers).forEach((h) => console.log('Header:', h, '->', args.headers[h]));
+      Object.keys(args.headers).forEach((h) => electronLog.log('Header:', h, '->', args.headers[h]));
     }
 
     return request({
@@ -132,7 +166,33 @@ function createWindow() {
   });
 }
 
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      if (mainWindow.isVisible() === false) {
+        mainWindow.show();
+      }
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      }
+      mainWindow.focus();
+    }
+  });
+}
+
 app.on('ready', createWindow);
+app.whenReady().then(() => {
+  tray = createTray();
+});
+
+app.on('before-quit', () => {
+  store.set('winBounds', mainWindow.getBounds());
+});
 
 app.on('window-all-closed', () => {
   unhandled();

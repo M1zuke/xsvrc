@@ -1,5 +1,6 @@
 import { isLoaded } from '../../api/prepare';
 import { AuthenticatedUserInfo, UserInfo } from '../../api/types';
+import { isOnline } from '../../common/utils';
 import { AppState } from '../index';
 import { Loadable } from '../reducer';
 import { FriendEntries, FriendFilter } from './state';
@@ -34,12 +35,7 @@ export const selectFriendInfoByLocation =
         ];
       }
 
-      if (
-        isLoaded(userOrInstance) &&
-        userOrInstance.location !== 'private' &&
-        userOrInstance.location !== 'offline' &&
-        userOrInstance.location !== ''
-      ) {
+      if (isLoaded(userOrInstance) && userOrInstance.location !== 'private' && isOnline(userOrInstance)) {
         const loggedInUser = isLoaded(state.user.userInfo)
           ? state.user.userInfo.location === userOrInstance.location
             ? [state.user.userInfo]
