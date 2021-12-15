@@ -49,9 +49,12 @@ export async function prepare<T>(
         type: 'entity',
       });
     }
+    if (result.type === 'error' && result.error.statusCode === 401) {
+      dispatch(resetStoredCookies());
+    }
+
     return Promise.resolve(result);
   } catch (error) {
-    dispatch(resetStoredCookies());
-    return Promise.resolve({ type: 'error', message: (error as Error).message });
+    return Promise.resolve({ type: 'code-error', error: error as Error });
   }
 }

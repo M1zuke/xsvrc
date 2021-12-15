@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { HardModerationTypes, Moderation, ModerationTypes } from '../../../api/types';
 import { useApi } from '../../../api/use-api';
@@ -41,18 +41,13 @@ export function Moderations(): ReactElement {
       )),
     [allModerations],
   );
-  // const handleShowOnlyHardModerationsSwap = useCallback(
-  //   (value: boolean) => {
-  //     if (
-  //       value &&
-  //       typeFilter !== 'all' &&
-  //       (typeFilter === 'showAvatar' || typeFilter === 'unmute' || typeFilter === 'unblock')
-  //     ) {
-  //       setTypeFilter('all');
-  //     }
-  //   },
-  //   [typeFilter],
-  // );
+
+  const gridStyle = useCallback(
+    (data) => ({
+      gridTemplateRows: `repeat(${data.length}, minmax(min-content, max-content))`,
+    }),
+    [],
+  );
 
   useEffect(() => {
     getAllModerations().finally();
@@ -62,7 +57,7 @@ export function Moderations(): ReactElement {
     <Content translucent noPadding className={styles.Moderations}>
       <TitleBox title="Moderations">
         <div className={styles.Filter}>
-          <div className={styles.Title}>{`${allModerations.length} moderations`}</div>
+          <div className={styles.Title}>{`${renderedModerations.length} moderations`}</div>
           <div className={styles.TypeFilter}>{renderedFilters}</div>
           <div />
           <div className={styles.SpecialFilter}>
@@ -75,7 +70,11 @@ export function Moderations(): ReactElement {
         </div>
       </TitleBox>
       <Pagination data={renderedModerations} pageSize={PageSize}>
-        {(data) => data}
+        {(data) => (
+          <div className={styles.ModerationItems} style={gridStyle(data)}>
+            {data}
+          </div>
+        )}
       </Pagination>
     </Content>
   );

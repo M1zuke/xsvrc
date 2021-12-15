@@ -8,6 +8,11 @@
   grid-gap: $innerSpacing;
   overflow: hidden;
 
+  .ModerationItems {
+    display: grid;
+    grid-gap: $smallSpacing;
+  }
+
   .Filter {
     font-size: 14px;
     text-align: left;

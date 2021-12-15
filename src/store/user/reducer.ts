@@ -34,7 +34,7 @@ export function reducer(state: UserState = INITIAL_USER_STATE, action: UserActio
     case 'user/add-favorite': {
       const favorites = state.favorites;
       if (isLoaded(favorites)) {
-        const favoriteFromGroup = favorites.friend[action.favorite.tags[0]];
+        const favoriteFromGroup = favorites.friend[action.favorite.tags[0]] || [];
         return {
           ...state,
           favorites: {
@@ -51,7 +51,7 @@ export function reducer(state: UserState = INITIAL_USER_STATE, action: UserActio
     case 'user/remove-favorite': {
       const favorites = state.favorites;
       if (isLoaded(favorites)) {
-        const favoriteFromGroup = favorites.friend[action.favorite.tags[0]];
+        const favoriteFromGroup = favorites.friend[action.favorite.tags[0]] || [];
         return {
           ...state,
           favorites: {

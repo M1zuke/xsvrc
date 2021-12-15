@@ -98,3 +98,10 @@ export function sendUnfriendRequest(id: string): AppThunkAction<Promise<void>> {
     }
   };
 }
+
+export function getFavoriteGroupNames(groupNames: string[]): string[] {
+  const defaultGroupNames = ['Group 1', 'Group 2', 'Group 3'];
+  return defaultGroupNames.map((gn, i) => {
+    return groupNames[i] || gn;
+  });
+}

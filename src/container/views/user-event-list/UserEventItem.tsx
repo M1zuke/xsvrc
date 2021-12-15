@@ -25,6 +25,7 @@ const mappedKeys: Record<keyof UserInfo, string> = {
   tags: 'Tags',
   statusDescription: 'Status Description',
   last_platform: 'Last Platform',
+  last_activity: 'Last Activity',
   last_login: 'Last Login',
   instanceId: 'Instance',
   friendKey: 'Friend State',

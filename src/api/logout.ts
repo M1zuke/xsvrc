@@ -7,14 +7,14 @@ import { api, prepare } from './prepare';
 
 export function logout(): AppThunkAction<Promise<void>> {
   return async function (dispatch, getState) {
-    await prepare(getState, dispatch, {
-      url: api('logout'),
-      method: 'PUT',
-    });
-
     dispatch(resetStoredCookies());
     dispatch(resetFriends());
     dispatch(resetUser());
     dispatch(resetUserEvent());
+
+    await prepare(getState, dispatch, {
+      url: api('logout'),
+      method: 'PUT',
+    });
   };
 }

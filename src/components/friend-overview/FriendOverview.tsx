@@ -31,6 +31,7 @@ const defaultUserInfo: UserInfo = {
   bioLinks: [],
   developerType: 'none',
   friendKey: '',
+  last_activity: 'N.A.',
   last_login: 'N.A.',
   statusDescription: 'N.A.',
   tags: [],

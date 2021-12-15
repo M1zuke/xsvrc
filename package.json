@@ -1,6 +1,6 @@
 {
   "name": "xsvrc",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Manage your VRC",
   "author": {
     "name": "Mizuke",
@@ -46,7 +46,7 @@
   },
   "scripts": {
     "start": "cross-env EXTEND_ESLINT=true REACT_APP_STORE_LOG=true react-scripts start",
-    "build": "cross-env EXTEND_ESLINT=true REACT_APP_STORE_LOG=true react-scripts build",
+    "build": "cross-env EXTEND_ESLINT=true REACT_APP_STORE_LOG=false react-scripts build",
     "test": "react-scripts test --env=jsdom-fourteen --watchAll=false",
     "coverage": "react-scripts test --env=jsdom-fourteen --watchAll=false --coverage",
     "eject": "react-scripts eject",

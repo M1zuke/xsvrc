@@ -1,3 +1,4 @@
+import { getFavoriteGroupNames } from '../../api/friends-api';
 import { isLoaded } from '../../api/prepare';
 import {
   AuthenticatedUserInfo,
@@ -12,6 +13,7 @@ import {
   SortedModerations,
   UserInfo,
 } from '../../api/types';
+import { isOffline } from '../../common/utils';
 import { AppState } from '../index';
 import { Loadable } from '../reducer';
 
@@ -26,7 +28,7 @@ export const selectFriendFavorites = (state: AppState): Loadable<MappedFavorites
       return Object.assign(
         {},
         ...Object.values(filteredByType).map((values, index) => ({
-          [keys[index]]: values
+          [keys[index]]: (values || [])
             .map((fav) => {
               if (isLoaded(state.friends.friendInfo)) {
                 return state.friends.friendInfo[fav.favoriteId] ?? fav.favoriteId;
@@ -62,15 +64,15 @@ function sortByStatus(a: UserOrNotFound, b: UserOrNotFound): number {
     return 1;
   }
 
-  if ((a.state === 'offline' || a.status === 'offline') && (b.state === 'offline' || b.status === 'offline')) {
+  if (isOffline(a) && isOffline(b)) {
     return 0;
   }
 
-  if (b.state === 'offline' || b.status === 'offline') {
+  if (isOffline(b)) {
     return -1;
   }
 
-  if (a.state === 'offline' || a.status === 'offline') {
+  if (isOffline(a)) {
     return 1;
   }
 
@@ -100,11 +102,13 @@ export const GetFavoriteOfUser =
     if (isLoaded(favorites) && isLoaded(userInfo)) {
       return Object.keys(favorites.friend)
         .flatMap((key) =>
-          favorites.friend[key as FriendFavoriteGroup].map((fav) => {
+          (favorites.friend[key as FriendFavoriteGroup] ?? []).map((fav) => {
             if (fav.favoriteId === userId) {
               return {
                 ...fav,
-                groupName: userInfo.friendGroupNames[FriendFavoriteGroups.indexOf(key as FriendFavoriteGroup)],
+                groupName: getFavoriteGroupNames(userInfo.friendGroupNames)[
+                  FriendFavoriteGroups.indexOf(key as FriendFavoriteGroup)
+                ],
               };
             }
             return null;

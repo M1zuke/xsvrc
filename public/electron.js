@@ -161,7 +161,11 @@ function createWindow() {
         };
       })
       .catch((e) => {
-        return Promise.reject(e.message);
+        console.log(e.error);
+        return Promise.resolve({
+          type: 'error',
+          error: e.error.error,
+        });
       });
   });
 }

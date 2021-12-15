@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useImperativeHandle,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { useMessages } from '../../i18n';
@@ -42,6 +43,7 @@ export function Pagination<T>({
   onPageChange,
   controlsRef,
 }: PaginationProps<T>): ReactElement {
+  const scrollingRef = useRef<HTMLDivElement>(null);
   const { Of } = useMessages().Views.Pagination;
   const [page, setPage] = useState(1);
   const pageBegin = useCallback((page: number) => pageSize * (page - 1), [pageSize]);
@@ -54,20 +56,24 @@ export function Pagination<T>({
   const setFirstPage = useCallback(() => {
     setPage(1);
     onPageChange && onPageChange(pageBegin(1));
+    scrollingRef.current?.scrollTo(0, 0);
   }, [onPageChange, pageBegin]);
   const setLastPage = useCallback(() => {
     setPage(pageCount);
     onPageChange && onPageChange(pageBegin(pageCount));
+    scrollingRef.current?.scrollTo(0, 0);
   }, [onPageChange, pageBegin, pageCount]);
   const prevPage = useCallback(() => {
     const newPage = page - 1;
     setPage(newPage);
     onPageChange && onPageChange(pageBegin(newPage));
+    scrollingRef.current?.scrollTo(0, 0);
   }, [onPageChange, page, pageBegin]);
   const nextPage = useCallback(() => {
     const newPage = page + 1;
     setPage(newPage);
     onPageChange && onPageChange(pageBegin(newPage));
+    scrollingRef.current?.scrollTo(0, 0);
   }, [onPageChange, page, pageBegin]);
 
   const pageElements = useMemo<T[]>(() => {
@@ -102,7 +108,9 @@ export function Pagination<T>({
 
   return (
     <div className={styles.Component}>
-      <ScrollableContent className={styles.PaginatedContent}>{children(pageElements)}</ScrollableContent>
+      <ScrollableContent ref={scrollingRef} className={styles.PaginatedContent}>
+        {children(pageElements)}
+      </ScrollableContent>
       <Content className={styles.PageNavigation}>
         <Button onClick={setFirstPage} disabled={isFirstPage} aria-label="first-page" icon>
           <ChevronLeft />

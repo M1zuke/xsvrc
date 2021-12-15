@@ -1,5 +1,6 @@
 import React, { ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { getFavoriteGroupNames } from '../../api/friends-api';
 import { isLoaded } from '../../api/prepare';
 import { MappedFavoritesToGroupWithUser } from '../../api/types';
 import { TitleBox } from '../../container/views/home/TitleBox';
@@ -17,7 +18,10 @@ type FavoriteListProps = {
 
 export function FriendFavoriteList({ favorites }: FavoriteListProps): ReactElement {
   const userInfo = useSelector(selectUserInfo);
-  const groupNames = useMemo(() => (isLoaded(userInfo) ? userInfo.friendGroupNames : []), [userInfo]);
+  const groupNames = useMemo(
+    () => (isLoaded(userInfo) ? getFavoriteGroupNames(userInfo.friendGroupNames) : []),
+    [userInfo],
+  );
 
   const favoritesByGroup = useMemo<MappedToJSXElement>(() => {
     return Object.assign(

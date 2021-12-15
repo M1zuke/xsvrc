@@ -1,5 +1,6 @@
 import React, { ReactElement, useCallback, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { getFavoriteGroupNames } from '../../api/friends-api';
 import { isLoaded } from '../../api/prepare';
 import { FriendFavoriteGroup, FriendFavoriteGroups } from '../../api/types';
 import { Button } from '../../components/button/Button';
@@ -23,7 +24,9 @@ export function AssignToFavoriteDialog({ onConfirmed, onCanceled }: AssignToFavo
   const userInfo = useSelector(selectUserInfo);
   const options = useMemo(() => {
     if (isLoaded(userInfo)) {
-      return userInfo.friendGroupNames.map((g, i) => (
+      const friendGroupNames = getFavoriteGroupNames(userInfo.friendGroupNames);
+      console.log(friendGroupNames);
+      return friendGroupNames.map((g, i) => (
         <option key={`${g}-${i}`} value={FriendFavoriteGroups[i]}>
           {g}
         </option>

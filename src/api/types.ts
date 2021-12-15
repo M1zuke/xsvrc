@@ -14,6 +14,7 @@ export type UserInfo = {
   fallbackAvatar: string;
   userIcon: string;
   profilePicOverride: string;
+  last_activity: string;
   last_login: string;
   last_platform: string;
   allowAvatarCopying: boolean;
@@ -57,7 +58,7 @@ export type AuthenticatedUserInfo = UserInfo & {
   onlineFriends: string[];
   activeFriends: string[];
   offlineFriends: string[];
-  friendGroupNames: string[];
+  friendGroupNames: string[]; // can be empty if not customized :(
   currentAvatar: string;
   currentAvatarAssetUrl: string;
   homeLocation: string;
@@ -230,7 +231,7 @@ export type MappedFavoritesToGroupWithUser = {
   [key: string]: (UserInfo | 'not-found' | string)[];
 };
 export type MappedFavoritesToGroup = {
-  [key: string]: Favorite[];
+  [key: string]: Favorite[] | undefined;
 };
 export type MappedFavoritesToType = Record<FavoriteType, MappedFavoritesToGroup>;
 

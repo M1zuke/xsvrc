@@ -1,2 +1,41 @@
+@import '../../../../common/_colors';
+@import '../../../../common/_spacing';
+@import '../../../../common/_mixins';
+
 .ModerationItem {
+  background-color: $color2;
+  padding: $smallSpacing;
+  border-radius: $standardBorderRadius;
+  display: grid;
+  grid-gap: $smallSpacing;
+
+  .Moderations {
+    display: grid;
+    grid-gap: $smallSpacing;
+
+    .Moderation {
+      display: grid;
+      grid-template-columns: repeat(2, autoSize());
+      grid-gap: $smallSpacing;
+      align-items: center;
+
+      .TimeStamp {
+        background-color: $color1;
+        padding: $smallSpacing;
+        border-radius: $standardBorderRadius;
+      }
+    }
+  }
+
+  .Header {
+    display: grid;
+    grid-template-columns: repeat(2, autoSize());
+
+    .TargetName {
+      background-color: $colorBlue;
+      font-weight: bold;
+      padding: $smallSpacing;
+      border-radius: $standardBorderRadius;
+    }
+  }
 }

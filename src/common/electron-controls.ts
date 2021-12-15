@@ -33,44 +33,57 @@ export type ElectronResult<T> = {
   cookies: StoredCookie[];
 };
 
-export type ErrorType = {
+export type ErrorType = CodeError | ResponseError;
+
+export type ResponseError = {
   type: 'error';
+  error: CustomError;
+};
+
+export type CodeError = {
+  type: 'code-error';
+  error: Error;
+};
+
+type CustomError = {
   message: string;
+  statusCode: number;
 };
 
 export async function electronFetch<T>(config: RequestConfig): Promise<ElectronResult<T> | ErrorType> {
   try {
-    const result: RequestType<T> = await (window as unknown as IWindow).ipcRenderer.invoke('fetch', config);
+    const result: RequestType<T> | ErrorType = await (window as unknown as IWindow).ipcRenderer.invoke('fetch', config);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const setCookies: string[] = result.headers['set-cookie'] || [];
-    const storedCookies: StoredCookie[] = [];
+    if (result.type === 'entity') {
+      const setCookies: string[] = (result.headers['set-cookie'] || []) as string[];
+      const storedCookies: StoredCookie[] = [];
 
-    setCookies.forEach((cookie: string) => {
-      const equalIndex = cookie.indexOf('=');
-      const semiIndex = cookie.indexOf(';');
+      setCookies.forEach((cookie: string) => {
+        const equalIndex = cookie.indexOf('=');
+        const semiIndex = cookie.indexOf(';');
 
-      const key = cookie.slice(0, equalIndex);
-      const value = cookie.slice(equalIndex + 1, semiIndex);
+        const key = cookie.slice(0, equalIndex);
+        const value = cookie.slice(equalIndex + 1, semiIndex);
 
-      /* istanbul ignore else: Can't Happen */
-      if (key && value) {
-        storedCookies.push({
-          key: key,
-          value: cookie,
-          url: 'https://api.vrchat.cloud',
-          cleanValue: value,
-        });
-      }
-    });
-    return {
-      type: 'entity',
-      cookies: storedCookies,
-      result: result.result,
-    } as ElectronResult<T>;
+        /* istanbul ignore else: Can't Happen */
+        if (key && value) {
+          storedCookies.push({
+            key: key,
+            value: cookie,
+            url: 'https://api.vrchat.cloud',
+            cleanValue: value,
+          });
+        }
+      });
+      return Promise.resolve({
+        type: 'entity',
+        cookies: storedCookies,
+        result: result.result,
+      } as ElectronResult<T>);
+    }
+    return Promise.resolve({ type: 'error', error: result.error } as ErrorType);
   } catch (error) {
-    return { type: 'error', message: (error as Error).message } as ErrorType;
+    return Promise.resolve({ type: 'code-error', error: error as Error });
   }
 }
 
