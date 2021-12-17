@@ -4,7 +4,6 @@ import { isLoaded } from '../../../api/prepare';
 import { isOnline } from '../../../common/utils';
 import { Content } from '../../../components/content/Content';
 import { FriendFavoriteList } from '../../../components/friend-favorite-list/FriendFavoriteList';
-import { LoadableContent } from '../../../components/loadable-content/LoadableContent';
 import { Loading } from '../../../components/loading/Loading';
 import { ScrollableContent } from '../../../components/scrollable-content/ScrollableContent';
 import { useMessages } from '../../../i18n';
@@ -47,13 +46,9 @@ export function Home(): ReactElement {
         <TitleBox title={messages.Views.Dashboard.Friends.FriendRequests}>{friendRequests}</TitleBox>
         <TitleBox title={messages.Views.Dashboard.Friends.Invites}>{invites}</TitleBox>
       </div>
-      <LoadableContent data={favorites}>
-        {(data) => (
-          <div className={styles.FriendFavorites}>
-            <FriendFavoriteList favorites={data} />
-          </div>
-        )}
-      </LoadableContent>
+      <div className={styles.FriendFavorites}>
+        <FriendFavoriteList favorites={favorites} />
+      </div>
     </ScrollableContent>
   );
 }

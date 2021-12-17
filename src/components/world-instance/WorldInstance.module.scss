@@ -1,14 +1,111 @@
-@import "../../common/_mixins";
-@import "../../common/_spacing";
+@import '../../common/_mixins';
+@import '../../common/_spacing';
+@import '../../common/_colors';
 
 .WorldInstance {
+  padding: 0;
   display: grid;
-  grid-template-rows: autoSize() autoSize();
+  grid-template-columns: autoSize() auto;
   grid-gap: $innerSpacing;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+
+  .WorldImage {
+    width: 500px;
+    height: 300px;
+    position: relative;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: $standardBorderRadius;
+    overflow: hidden;
+
+    div {
+      position: absolute;
+      padding: $innerSpacing;
+      background-color: transparentize($color0, 0.05);
+      border-radius: $standardBorderRadius;
+    }
+
+    .WorldName {
+      text-align: center;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      font-size: 18px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      border-radius: 0;
+    }
+
+    .LeftWorldInfo,
+    .RightWorldInfo {
+      padding: 0;
+      position: absolute;
+      min-width: 40%;
+      max-width: 50%;
+      top: $tinySpacing;
+      left: $tinySpacing;
+      background-color: transparent;
+      display: grid;
+      grid-template-columns: minmax(50%, max-content);
+      grid-template-rows: repeat(4, autoSize());
+      grid-gap: $tinySpacing;
+
+      div {
+        text-align: center;
+        position: static;
+      }
+
+      .InstanceId {
+        top: $tinySpacing;
+        left: $tinySpacing;
+      }
+
+      .InstanceOwner {
+        left: $tinySpacing;
+        top: calc(#{$tinySpacing} * 2 + 41px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .InstanceType {
+        left: $tinySpacing;
+        top: calc(#{$tinySpacing} * 3 + 82px);
+      }
+
+      .Region {
+        left: $tinySpacing;
+        top: calc(#{$tinySpacing} * 4 + 123px);
+      }
+
+      .YouAreHere {
+        right: $tinySpacing;
+        top: $tinySpacing;
+      }
+
+      .HowManyInThere {
+        font-weight: bold;
+        display: grid;
+        align-items: center;
+        grid-auto-flow: column;
+        justify-content: center;
+      }
+    }
+
+    .RightWorldInfo {
+      right: $tinySpacing;
+      left: auto;
+      justify-content: flex-end;
+    }
+  }
 
   .UserList {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    height: 100%;
+    background-color: $color2;
     grid-gap: $innerSpacing;
   }
 }

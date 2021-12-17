@@ -20,14 +20,6 @@ export async function handleUserOfflineNotification(
           from: oldUserInfo?.location || 'offline',
           to: 'offline',
         },
-        state: {
-          from: oldUserInfo?.state || 'active',
-          to: 'offline',
-        },
-        status: {
-          from: oldUserInfo?.status || 'offline',
-          to: 'offline',
-        },
       },
     }),
   );

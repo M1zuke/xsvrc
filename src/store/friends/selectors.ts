@@ -6,16 +6,53 @@ import { Loadable } from '../reducer';
 import { FriendEntries, FriendFilter } from './state';
 
 export const selectFriendInfo = (appState: AppState): Loadable<FriendEntries> => appState.friends.friendInfo;
+
+const selectUserIfIdMatches =
+  (id: string) =>
+  (state: AppState): AuthenticatedUserInfo | null => {
+    if (isLoaded(state.user.userInfo) && state.user.userInfo.id === id) {
+      return state.user.userInfo;
+    }
+    return null;
+  };
+
+const selectFromFriendsById =
+  (id: string) =>
+  (state: AppState): UserInfo | null => {
+    if (isLoaded(state.friends.friendInfo)) {
+      return state.friends.friendInfo[id] || null;
+    }
+    return null;
+  };
+
+const selectFromNonFriendsById =
+  (id: string) =>
+  (state: AppState): UserInfo | null => {
+    if (isLoaded(state.friends.nonFriendInfo)) {
+      return state.friends.nonFriendInfo[id] || null;
+    }
+    return null;
+  };
+
 export const selectFriendInfoById =
   (id: string) =>
   (appState: AppState): Loadable<UserInfo> => {
-    if (isLoaded(appState.user.userInfo) && appState.user.userInfo.id === id) {
-      return appState.user.userInfo;
+    const userInfo = selectUserIfIdMatches(id)(appState);
+    const friendInfo = selectFromFriendsById(id)(appState);
+    const nonFriendInfo = selectFromNonFriendsById(id)(appState);
+
+    if (userInfo) {
+      return userInfo;
     }
 
-    if (isLoaded(appState.friends.friendInfo)) {
-      return appState.friends.friendInfo[id] ?? null;
+    if (friendInfo) {
+      return friendInfo;
     }
+
+    if (nonFriendInfo) {
+      return nonFriendInfo;
+    }
+
     return appState.friends.friendInfo === 'loading' ? 'loading' : null;
   };
 export const selectFriendInfoByLocation =

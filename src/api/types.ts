@@ -1,26 +1,29 @@
 import { TrustTag } from '../common/trust-system';
 
-export type UserInfo = {
-  username: string;
-  displayName: string;
-  id: string;
+export type ShortUserInfo = {
   bio: string;
+  currentAvatarImageUrl: string;
+  currentAvatarThumbnailImageUrl: string;
+  developerType: DeveloperType;
+  displayName: string;
+  fallbackAvatar: string;
+  id: string;
+  isFriend: boolean;
+  last_platform: keyof Platforms;
+  profilePicOverride: string;
+  tags: TrustTag[];
+  userIcon: string;
+  username: string;
+};
+
+export type UserInfo = ShortUserInfo & {
   bioLinks: string[];
   state: State;
   status: Status;
   statusDescription: string;
-  currentAvatarImageUrl: string;
-  currentAvatarThumbnailImageUrl: string;
-  fallbackAvatar: string;
-  userIcon: string;
-  profilePicOverride: string;
   last_activity: string;
   last_login: string;
-  last_platform: string;
   allowAvatarCopying: boolean;
-  tags: TrustTag[];
-  developerType: DeveloperType;
-  isFriend: boolean;
   friendKey: string;
   location: Location | ''; // can be empty for some reason
   worldId: string;
@@ -100,30 +103,101 @@ export type InstanceInfo = {
   location: string;
   n_users: number;
   name: string;
+  nonce: string;
   ownerId: string;
   permanent: boolean;
   photonRegion: unknown;
   platforms: Platforms;
+  private: string; // maybe optional
+  region: string;
   shortName: string;
   tags: string[];
-  type: 'hidden' | 'friends' | 'public';
+  type: 'hidden' | 'friends' | 'public' | 'private';
+  users?: UserInfo[];
   worldId: string;
 };
 
-export type WorldInfo = {
-  name: string;
-  description: string;
-  id: string;
-  authorName: string;
-  authorId: string;
-  tags: string[];
-  version: number;
-  featured: boolean;
+type InstanceArray = [string, number];
+
+type UnityPackages = {
+  assetUrl: string;
+  assetUrlObject: unknown;
+  assetVersion: number;
   created_at: string;
-  updated_at: string;
-  visits: number;
+  id: string;
+  platform: string;
+  pluginUrl: string;
+  pluginUrlObject: unknown;
+  unitySortNumber: number;
+  unityVersion: string;
+};
+
+export type WorldInfo = {
+  assetUrl: string;
+  assetUrlObject: unknown;
+  authorId: string;
+  authorName: string;
+  capacity: number;
+  created_at: string;
+  description: string;
+  favorites: number;
+  featured: boolean;
+  heat: number;
+  id: string;
+  imageUrl: string;
+  instances: InstanceArray[];
+  labsPublicationDate: string;
+  name: string;
+  namespace: string;
+  occupants: number;
+  organization: string;
+  popularity: number;
+  previewYoutubeId: string | null;
+  privateOccupants: number;
   publicOccupants: number;
+  publicationDate: string;
+  releaseStatus: 'public';
+  tags: string[];
   thumbnailImageUrl: string;
+  unityPackageUrlObject: unknown;
+  unityPackages: UnityPackages[];
+  updated_at: string;
+  version: number;
+  visits: number;
+};
+
+export type UserLocationUpdate = {
+  type: 'user-location';
+  content: {
+    instance: string;
+    location: string;
+    userId: string;
+    world: WorldInfo;
+  };
+};
+
+export type UserUpdate = {
+  type: 'user-update';
+  content: {
+    user: Pick<
+      AuthenticatedUserInfo,
+      | 'bio'
+      | 'currentAvatar'
+      | 'currentAvatarAssetUrl'
+      | 'currentAvatarImageUrl'
+      | 'currentAvatarThumbnailImageUrl'
+      | 'displayName'
+      | 'fallbackAvatar'
+      | 'id'
+      | 'profilePicOverride'
+      | 'status'
+      | 'statusDescription'
+      | 'tags'
+      | 'userIcon'
+      | 'username'
+    >;
+    userId: string;
+  };
 };
 
 export type FriendLocationUpdate = {
@@ -190,7 +264,8 @@ export type Notification = {
   content: NotificationContent;
 };
 export type FriendNotification = FriendLocationUpdate | FriendUpdatesUserId | FriendUpdateWithUser;
-export type WebSocketNotification = Notification | FriendNotification;
+export type UserNotification = UserLocationUpdate | UserUpdate;
+export type WebSocketNotification = Notification | FriendNotification | UserNotification;
 
 export function isFriendNotification(
   websocketNotification: WebSocketNotification,
@@ -204,6 +279,12 @@ export function isFriendNotification(
     websocketNotification.type === 'friend-location' ||
     websocketNotification.type === 'friend-delete'
   );
+}
+
+export function isUserNotification(
+  websocketNotification: WebSocketNotification,
+): websocketNotification is UserNotification {
+  return websocketNotification.type === 'user-location' || websocketNotification.type === 'user-update';
 }
 
 export function isNotification(websocketNotification: WebSocketNotification): websocketNotification is Notification {
@@ -235,15 +316,28 @@ export type MappedFavoritesToGroup = {
 };
 export type MappedFavoritesToType = Record<FavoriteType, MappedFavoritesToGroup>;
 
-export const FriendFavoriteGroups = ['group_0', 'group_1', 'group_2'] as const;
-export type FriendFavoriteGroup = typeof FriendFavoriteGroups[number];
-export type FavoriteType = 'world' | 'friend' | 'avatar';
+export const FavoriteTypes = ['world', 'friend', 'avatar'] as const;
+export type FavoriteType = typeof FavoriteTypes[number];
 
 export type Favorite = {
   type: FavoriteType;
   id: string;
   favoriteId: string;
-  tags: FriendFavoriteGroup[];
+  tags: string[];
+};
+
+const VisibilityTypes = ['private', 'friends', 'public'] as const;
+type Visibility = typeof VisibilityTypes[number];
+
+export type FavoriteGroup = {
+  displayName: string;
+  id: string;
+  name: string;
+  ownerDisplayName: string;
+  ownerId: string;
+  tags: string[];
+  type: FavoriteType;
+  visibility: Visibility;
 };
 
 export type NamedFavorite = Favorite & {

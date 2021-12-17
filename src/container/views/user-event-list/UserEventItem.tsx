@@ -1,14 +1,14 @@
 import { KeyboardArrowRight } from '@mui/icons-material';
 import classNames from 'classnames';
 import React, { ReactElement, useMemo, useState } from 'react';
-import { UserInfo } from '../../../api/types';
+import { AuthenticatedUserInfo, UserInfo } from '../../../api/types';
 import { useSettings } from '../../../common/use-settings';
 import { UserEvent } from '../../../store/user-events/state';
 import { PropsWithSubscription } from '../../subscription-service/SubscriptionService';
 import { UserEventDetail } from './UserEventDetail';
 import styles from './UserEventList.module.scss';
 
-const mappedKeys: Record<keyof UserInfo, string> = {
+const mappedKeys: Record<keyof AuthenticatedUserInfo, string> = {
   displayName: 'Username',
   location: 'Location',
   currentAvatarThumbnailImageUrl: 'Avatar Thumbnail',
@@ -33,6 +33,31 @@ const mappedKeys: Record<keyof UserInfo, string> = {
   bioLinks: 'Bio Links',
   bio: 'Bio',
   allowAvatarCopying: 'AvatarCloning',
+  currentAvatarAssetUrl: 'Avatar Asset Url',
+  currentAvatar: 'Avatar id',
+  friendGroupNames: 'Friend group names',
+  acceptedTOSVersion: 'Accepted TOS Version',
+  accountDeletionDate: 'Account deletion date',
+  activeFriends: 'Active friends',
+  email: 'Email',
+  emailVerified: 'Is Email verified',
+  feature: 'Feature',
+  friends: 'Friends',
+  hasBirthday: 'Has Birthday',
+  hasEmail: 'Has Email',
+  hasLoggedInFromClient: 'Has Logged in from client',
+  hasPendingEmail: 'Has pending email',
+  homeLocation: 'Home location',
+  obfuscatedEmail: 'Obfuscated E-Mail',
+  obfuscatedPendingEmail: 'Obfuscated pending E-Mail',
+  unsubscribe: 'Unsubscribed',
+  oculusId: 'Oculus ID',
+  offlineFriends: 'Offline Friends',
+  onlineFriends: 'Online Friends',
+  pastDisplayNames: 'Past display names',
+  steamDetails: 'Steam details',
+  steamId: 'Steam ID',
+  twoFactorAuthEnabled: 'Two Factor Auth enabled',
 };
 
 type UserEventItemProps = {

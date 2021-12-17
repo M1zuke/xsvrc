@@ -3,6 +3,7 @@ import { isLoaded } from '../../api/prepare';
 import {
   AuthenticatedUserInfo,
   Favorite,
+  FavoriteGroup,
   MappedFavoritesToType,
   Moderation,
   NamedFavorite,
@@ -15,6 +16,7 @@ import {
   AddNotification,
   RemoveFavorite,
   ResetUser,
+  SetFavoriteGroups,
   SetFavorites,
   SetModerations,
   SetNotifications,
@@ -69,32 +71,53 @@ export function removeFavorite(favorite: NamedFavorite | Favorite): RemoveFavori
   };
 }
 
-type MappedModeration = {
+type MappedAllModerationToUser = {
   [userId: string]: {
     [type: string]: Moderation;
   };
 };
 
+export type MappedModeration = {
+  created: string;
+  moderations: Moderation[];
+  displayName: string;
+  targetUserId: string;
+};
+
 export function setModerations(moderations: Loadable<Moderation[]>): SetModerations {
   if (isLoaded(moderations)) {
-    const mappedModeration: MappedModeration = merge(
+    const mappedModeration: MappedAllModerationToUser = merge(
       {},
       ...moderations.map((m) => ({
         [m.targetUserId]: { [m.type]: m },
       })),
     );
+
     const asArray: SortedModerations = Object.assign(
       {},
       ...Object.keys(mappedModeration).map((id) => {
-        const values = mappedModeration[id];
         return {
-          [id]: Object.values(values),
+          [id]: Object.values(mappedModeration[id]),
         };
       }),
     );
+
+    const sortedByDate: MappedModeration[] = Object.keys(asArray)
+      .map((id) => {
+        const entries = asArray[id].sort(sortByDate);
+        const getLatestTime = [...entries].shift();
+        return {
+          displayName: getLatestTime?.targetDisplayName || '',
+          created: getLatestTime?.created || '',
+          targetUserId: getLatestTime?.targetUserId || '',
+          moderations: entries,
+        } as MappedModeration;
+      })
+      .sort(sortByDate);
+
     return {
       type: 'user/set-moderations',
-      moderations: asArray,
+      moderations: sortedByDate,
     };
   }
 
@@ -102,4 +125,23 @@ export function setModerations(moderations: Loadable<Moderation[]>): SetModerati
     type: 'user/set-moderations',
     moderations,
   };
+}
+
+export function setFavoriteGroups(favoriteGroups: FavoriteGroup[]): SetFavoriteGroups {
+  return {
+    type: 'user/set-favorite-groups',
+    favoriteGroups: {
+      friend: favoriteGroups.filter((fg) => fg.type === 'friend').sort(sortByName),
+      world: favoriteGroups.filter((fg) => fg.type === 'world').sort(sortByName),
+      avatar: favoriteGroups.filter((fg) => fg.type === 'avatar').sort(sortByName),
+    },
+  };
+}
+
+function sortByName(a: FavoriteGroup, b: FavoriteGroup): number {
+  return a.name.localeCompare(b.name);
+}
+
+function sortByDate(a: Moderation | MappedModeration, b: Moderation | MappedModeration): number {
+  return +new Date(b.created) - +new Date(a.created);
 }

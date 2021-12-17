@@ -15,15 +15,9 @@
 
     .Moderation {
       display: grid;
-      grid-template-columns: repeat(2, autoSize());
+      grid-template-columns: repeat(3, autoSize());
       grid-gap: $smallSpacing;
       align-items: center;
-
-      .TimeStamp {
-        background-color: $color1;
-        padding: $smallSpacing;
-        border-radius: $standardBorderRadius;
-      }
     }
   }
 
@@ -35,7 +29,17 @@
       background-color: $colorBlue;
       font-weight: bold;
       padding: $smallSpacing;
-      border-radius: $standardBorderRadius;
+      border-radius: 0 $standardBorderRadius $standardBorderRadius 0;
     }
+
+    .TimeStamp {
+      border-radius: $standardBorderRadius 0 0 $standardBorderRadius;
+    }
+  }
+
+  .TimeStamp {
+    background-color: $color1;
+    padding: $smallSpacing;
+    border-radius: $standardBorderRadius;
   }
 }

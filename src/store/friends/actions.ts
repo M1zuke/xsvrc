@@ -1,16 +1,24 @@
 import { isLoaded } from '../../api/prepare';
-import { isFriendNotification, isNotification, UserInfo, WebSocketNotification } from '../../api/types';
+import {
+  isFriendNotification,
+  isNotification,
+  isUserNotification,
+  UserInfo,
+  WebSocketNotification,
+} from '../../api/types';
 import { handleUserActiveOrUpdateNotification } from '../../components/websockets/logics/active-update-online';
 import { handleUserAddNotification } from '../../components/websockets/logics/add';
 import { handleUserDeleteNotification } from '../../components/websockets/logics/delete';
 import { handleUserLocationNotification } from '../../components/websockets/logics/location';
 import { handleUserOfflineNotification } from '../../components/websockets/logics/offline';
+import { handleUserLocationUpdate } from '../../components/websockets/logics/user-location';
+import { handleUserUpdate } from '../../components/websockets/logics/user-update';
 import { CharacterFilter, CharacterFilters } from '../../container/views/friends/Friends';
 import { AppThunkAction } from '../../thunk';
 import { Loadable } from '../reducer';
 import { addNotification } from '../user/actions';
 import { FriendEntries, FriendFilter } from './state';
-import { ResetFriends, SetFriendFilter, SetFriendInfo } from './types';
+import { ResetFriends, SetFriendFilter, SetFriendInfo, SetNonFriendInfo } from './types';
 
 function compare<T extends keyof UserInfo, V = UserInfo[T]>(a: V, b: V): number {
   if (typeof a === 'number' && typeof b === 'number') {
@@ -71,6 +79,28 @@ export function setFriendInfo(friendInfo: Loadable<UserInfo[]>, updatedUser?: Us
   };
 }
 
+export function setNonFriendInfo(userInfo: Loadable<UserInfo[]>): SetNonFriendInfo {
+  if (isLoaded(userInfo)) {
+    const mappedUserInfo: FriendEntries = Object.assign(
+      {},
+      ...userInfo.map((ui) => {
+        return {
+          [ui.id]: ui,
+        };
+      }),
+    );
+    return {
+      type: 'friend/set-non-friend',
+      userInfo: mappedUserInfo,
+    };
+  }
+
+  return {
+    type: 'friend/set-non-friend',
+    userInfo: userInfo,
+  };
+}
+
 export function setFriendFilter(filter: Partial<FriendFilter>): SetFriendFilter {
   return {
     type: 'friend/set-filter',
@@ -99,6 +129,15 @@ export function updateFriend(websocketNotification: WebSocketNotification): AppT
       }
     } else if (isNotification(websocketNotification)) {
       dispatch(addNotification(websocketNotification.content));
+    } else if (isUserNotification(websocketNotification)) {
+      switch (websocketNotification.type) {
+        case 'user-update':
+          return handleUserUpdate(websocketNotification, state, dispatch);
+        case 'user-location':
+          return handleUserLocationUpdate(websocketNotification, state, dispatch);
+      }
+    } else {
+      console.error('new websocket type!', websocketNotification);
     }
   };
 }

@@ -7,7 +7,7 @@ import { Loading } from '../../../components/loading/Loading';
 import { ToolTip } from '../../../components/tool-tip/ToolTip';
 import { useMessages } from '../../../i18n';
 import { selectFriendInfoByLocation } from '../../../store/friends/selectors';
-import { selectInstance, selectWorldByLocation } from '../../../store/worlds/selectors';
+import { GetInstanceTypeInfo, selectInstanceByInstance, selectWorldByLocation } from '../../../store/worlds/selectors';
 import { PropsWithSubscription } from '../../subscription-service/SubscriptionService';
 import styles from './WorldDetail.module.scss';
 
@@ -25,8 +25,9 @@ export function WorldDetail({
   const [worldId, instanceId] = splitLocation[0].split(':');
 
   const worldInfo = useSelector(selectWorldByLocation(location));
-  const instanceInfo = useSelector(selectInstance(location));
+  const instanceInfo = useSelector(selectInstanceByInstance(location));
   const friendsInInstance = useSelector(selectFriendInfoByLocation(location));
+  const instanceTypeInfo = useSelector(GetInstanceTypeInfo(location));
   const messages = useMessages();
 
   useEffect(() => {
@@ -84,7 +85,7 @@ export function WorldDetail({
         </ToolTip>
         <div className={styles.WorldName}>{worldInfo.name}</div>
         <div className={styles.WorldInstanceId}>
-          {messages.Views.WorldDetail.InstanceId(instanceId)} - {messages.Views.WorldDetail.Type[instanceInfo.type]}
+          {messages.Views.WorldDetail.InstanceId(instanceId)} - {messages.Views.WorldDetail.Type[instanceTypeInfo]}
         </div>
       </div>
     );

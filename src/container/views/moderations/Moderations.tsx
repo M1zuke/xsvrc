@@ -36,8 +36,8 @@ export function Moderations(): ReactElement {
 
   const renderedModerations = useMemo(
     () =>
-      Object.keys(allModerations).map((id) => (
-        <ModerationItem key={`moderation-item-${id}`} moderations={allModerations[id]} />
+      allModerations.map((moderation) => (
+        <ModerationItem key={`moderation-item-${moderation.targetUserId}`} moderation={moderation} />
       )),
     [allModerations],
   );

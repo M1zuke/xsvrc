@@ -81,7 +81,7 @@ export function Pagination<T>({
   }, [data, page, pageBegin, pageEnd]);
 
   useEffect(() => {
-    if (page > pageCount - 1 && data.length > 0) {
+    if (page > pageCount && data.length > 0) {
       setLastPage();
     }
   }, [data.length, page, pageCount, setLastPage]);

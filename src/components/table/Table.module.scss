@@ -1,0 +1,15 @@
+@import '../../common/_spacing';
+@import '../../common/_colors';
+
+.TableComponent {
+  position: relative;
+  display: grid;
+  grid-gap: $tinySpacing;
+
+  .Header {
+    top: 0;
+    left: 0;
+    position: sticky;
+    background-color: $color0;
+  }
+}

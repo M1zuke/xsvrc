@@ -4,6 +4,9 @@ const Type = {
   hidden: 'Freunde +',
   public: 'Öffentlich',
   friends: 'Nur Freunde',
+  'private-plus': 'Privat+',
+  private: 'Privat',
+  unknown: '',
 };
 
 export const messages = {
@@ -60,6 +63,10 @@ export const messages = {
         n_user === 0 ? '1 Person in dieser Instanz' : `${n_user} Personen in dieser Instanz`,
       InstanceCapacity: (n_user: number, capacity: number): string => `${n_user}/${capacity}`,
       Type,
+      lastPlatform: {
+        standalonewindows: 'PC',
+        android: 'Oculus',
+      },
     },
     Notifications: {
       Message: {

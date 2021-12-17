@@ -18,6 +18,12 @@ export function reducer(state: FriendInfoState = INITIAL_FRIEND_INFO_STATE, acti
         },
       };
     }
+    case 'friend/set-non-friend': {
+      return {
+        ...state,
+        nonFriendInfo: action.userInfo,
+      };
+    }
     case 'friend/reset': {
       return INITIAL_FRIEND_INFO_STATE;
     }

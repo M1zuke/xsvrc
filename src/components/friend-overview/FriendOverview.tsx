@@ -17,7 +17,7 @@ import styles from './FriendOverview.module.scss';
 
 const defaultUserInfo: UserInfo = {
   id: 'unknown',
-  last_platform: '',
+  last_platform: 'standalonewindows',
   status: 'offline',
   displayName: 'unknown',
   location: 'offline',

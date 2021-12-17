@@ -11,7 +11,13 @@ export function api(path: string): string {
 }
 
 export function isLoaded<T>(object: Loadable<T>): object is T {
-  return !(object === null || object === 'loading' || object === 'not-found' || isErrorType(object));
+  return !(
+    object === null ||
+    object === undefined ||
+    object === 'loading' ||
+    object === 'not-found' ||
+    isErrorType(object)
+  );
 }
 
 function ensureApiKey(config: RequestConfig, key: string): RequestConfig {

@@ -1,10 +1,9 @@
 import React, { ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { getFavoriteGroupNames } from '../../api/friends-api';
 import { isLoaded } from '../../api/prepare';
 import { MappedFavoritesToGroupWithUser } from '../../api/types';
 import { TitleBox } from '../../container/views/home/TitleBox';
-import { selectUserInfo } from '../../store/user/selectors';
+import { GetFavoriteGroups, selectUserInfo } from '../../store/user/selectors';
 import { FriendOverview } from '../friend-overview/FriendOverview';
 import styles from './FriendFavoriteList.module.scss';
 
@@ -18,41 +17,38 @@ type FavoriteListProps = {
 
 export function FriendFavoriteList({ favorites }: FavoriteListProps): ReactElement {
   const userInfo = useSelector(selectUserInfo);
-  const groupNames = useMemo(
-    () => (isLoaded(userInfo) ? getFavoriteGroupNames(userInfo.friendGroupNames) : []),
-    [userInfo],
-  );
+  const favoriteGroupNames = useSelector(GetFavoriteGroups('friend'));
 
   const favoritesByGroup = useMemo<MappedToJSXElement>(() => {
     return Object.assign(
       {},
-      ...Object.keys(favorites).map((key) => {
-        const index = key.split('_').pop() ?? '0';
+      ...favoriteGroupNames.map((group) => {
         return {
-          [groupNames[parseInt(index)]]: favorites[key].map((user, userIndex) => {
-            if (user !== 'not-found') {
-              if (typeof user === 'string') {
-                return <FriendOverview key={user} friendId={user} />;
+          [group.name]:
+            favorites[group.name]?.map((user, userIndex) => {
+              if (user !== 'not-found') {
+                if (typeof user === 'string') {
+                  return <FriendOverview key={user} friendId={user} />;
+                }
+                return <FriendOverview key={user.id} friendId={user.id} />;
               }
-              return <FriendOverview key={user.id} friendId={user.id} />;
-            }
-            return <div key={`not-found-${userIndex}`}>-</div>;
-          }),
+              return <div key={`not-found-${userIndex}`}>-</div>;
+            }) ?? [],
         };
       }),
     );
-  }, [favorites, groupNames]);
+  }, [favorites, favoriteGroupNames]);
 
   const allFriendFavoriteGroups = useMemo(
     () =>
-      groupNames.flatMap((group) => {
+      favoriteGroupNames.flatMap((group) => {
         return (
-          <TitleBox key={group} title={group} className={styles.FavoritesList}>
-            {favoritesByGroup[group]}
+          <TitleBox key={group.name} title={group.displayName} className={styles.FavoritesList}>
+            {favoritesByGroup[group.name]}
           </TitleBox>
         );
       }),
-    [favoritesByGroup, groupNames],
+    [favoritesByGroup, favoriteGroupNames],
   );
 
   if (!isLoaded(userInfo)) {

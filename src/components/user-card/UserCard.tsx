@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { FriendFavoriteGroup, UserInfo } from '../../api/types';
+import { UserInfo } from '../../api/types';
 import { useApi } from '../../api/use-api';
 import { useTrustRank } from '../../common/trust-system';
 import { AssignToFavoriteDialog } from '../../container/dialog/AssignToFavoriteDialog';
@@ -70,7 +70,7 @@ export function UserCard({ user }: UserCardProps): ReactElement {
   );
 
   const handleOnFavoriteUser = useCallback(
-    (group: FriendFavoriteGroup) => {
+    (group: string) => {
       addToFavorites(user, group).finally();
     },
     [addToFavorites, user],

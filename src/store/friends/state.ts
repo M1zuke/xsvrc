@@ -13,6 +13,7 @@ export type FriendFilter = {
 export type FriendInfoState = {
   filter: FriendFilter;
   friendInfo: Loadable<FriendEntries>;
+  nonFriendInfo: Loadable<FriendEntries>;
 };
 
 export const INITIAL_FRIEND_INFO_STATE: FriendInfoState = {
@@ -22,4 +23,5 @@ export const INITIAL_FRIEND_INFO_STATE: FriendInfoState = {
     characterFilter: 'ALL',
   },
   friendInfo: null,
+  nonFriendInfo: null,
 };

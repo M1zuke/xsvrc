@@ -1,12 +1,9 @@
 import React, { ReactElement, useCallback, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { getFavoriteGroupNames } from '../../api/friends-api';
-import { isLoaded } from '../../api/prepare';
-import { FriendFavoriteGroup, FriendFavoriteGroups } from '../../api/types';
 import { Button } from '../../components/button/Button';
 import { Modal } from '../../components/dialog/Modal';
 import { useMessages } from '../../i18n';
-import { selectUserInfo } from '../../store/user/selectors';
+import { GetFavoriteGroups } from '../../store/user/selectors';
 import styles from './AssignToFavoriteDialog.module.scss';
 import { Dialog } from './Dialog';
 import { DialogContent } from './dialog-content/DialogContent';
@@ -14,31 +11,25 @@ import { DialogFooter } from './dialog-footer/DialogFooter';
 import { DialogHeader } from './dialog-header/DialogHeader';
 
 type AssignToFavoriteDialogProps = {
-  onConfirmed: (group: FriendFavoriteGroup) => void;
+  onConfirmed: (group: string) => void;
   onCanceled: () => void;
 };
 
 export function AssignToFavoriteDialog({ onConfirmed, onCanceled }: AssignToFavoriteDialogProps): ReactElement {
   const messages = useMessages().AssignToFavoriteDialog;
   const ref = useRef<HTMLSelectElement>(null);
-  const userInfo = useSelector(selectUserInfo);
+  const favoriteGroupNames = useSelector(GetFavoriteGroups('friend'));
+
   const options = useMemo(() => {
-    if (isLoaded(userInfo)) {
-      const friendGroupNames = getFavoriteGroupNames(userInfo.friendGroupNames);
-      console.log(friendGroupNames);
-      return friendGroupNames.map((g, i) => (
-        <option key={`${g}-${i}`} value={FriendFavoriteGroups[i]}>
-          {g}
-        </option>
-      ));
-    }
-    return [];
-  }, [userInfo]);
+    return favoriteGroupNames.map((g, i) => (
+      <option key={`${g.name}-${i}`} value={g.name}>
+        {g.displayName}
+      </option>
+    ));
+  }, [favoriteGroupNames]);
 
   const handleOnConfirm = useCallback(() => {
-    if (ref.current) {
-      onConfirmed(ref.current.value as FriendFavoriteGroup);
-    }
+    ref.current && onConfirmed(ref.current.value);
     onCanceled();
   }, [onCanceled, onConfirmed]);
 

@@ -28,20 +28,26 @@ export function reducer(state: UserState = INITIAL_USER_STATE, action: UserActio
     case 'user/set-favorites': {
       return {
         ...state,
-        favorites: action.favorites,
+        favorites: {
+          ...state.favorites,
+          favoriteUsers: action.favorites,
+        },
       };
     }
     case 'user/add-favorite': {
-      const favorites = state.favorites;
-      if (isLoaded(favorites)) {
-        const favoriteFromGroup = favorites.friend[action.favorite.tags[0]] || [];
+      const favoriteUsers = state.favorites.favoriteUsers;
+      if (isLoaded(favoriteUsers)) {
+        const favoriteFromGroup = favoriteUsers.friend[action.favorite.tags[0]] || [];
         return {
           ...state,
           favorites: {
-            ...favorites,
-            friend: {
-              ...favorites.friend,
-              [action.favorite.tags[0]]: [...favoriteFromGroup, action.favorite],
+            ...state.favorites,
+            favoriteUsers: {
+              ...favoriteUsers,
+              friend: {
+                ...favoriteUsers.friend,
+                [action.favorite.tags[0]]: [...favoriteFromGroup, action.favorite],
+              },
             },
           },
         };
@@ -49,16 +55,19 @@ export function reducer(state: UserState = INITIAL_USER_STATE, action: UserActio
       return state;
     }
     case 'user/remove-favorite': {
-      const favorites = state.favorites;
-      if (isLoaded(favorites)) {
-        const favoriteFromGroup = favorites.friend[action.favorite.tags[0]] || [];
+      const favoriteUsers = state.favorites.favoriteUsers;
+      if (isLoaded(favoriteUsers)) {
+        const favoriteFromGroup = favoriteUsers.friend[action.favorite.tags[0]] || [];
         return {
           ...state,
           favorites: {
-            ...favorites,
-            friend: {
-              ...favorites.friend,
-              [action.favorite.tags[0]]: favoriteFromGroup.filter((f) => f.id !== action.favorite.id),
+            ...state.favorites,
+            favoriteUsers: {
+              ...favoriteUsers,
+              friend: {
+                ...favoriteUsers.friend,
+                [action.favorite.tags[0]]: favoriteFromGroup.filter((f) => f.id !== action.favorite.id),
+              },
             },
           },
         };
@@ -69,6 +78,15 @@ export function reducer(state: UserState = INITIAL_USER_STATE, action: UserActio
       return {
         ...state,
         moderations: action.moderations,
+      };
+    }
+    case 'user/set-favorite-groups': {
+      return {
+        ...state,
+        favorites: {
+          ...state.favorites,
+          favoriteGroupNames: action.favoriteGroups,
+        },
       };
     }
     case 'user/reset': {

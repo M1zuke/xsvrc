@@ -16,7 +16,7 @@ import { isLoaded } from '../../api/prepare';
 import { useApi } from '../../api/use-api';
 import { routes } from '../../common/routes';
 import { selectFriendInfo } from '../../store/friends/selectors';
-import { selectFavorites, selectNotifications, selectUserInfo } from '../../store/user/selectors';
+import { selectFavoriteUsers, selectNotifications, selectUserInfo } from '../../store/user/selectors';
 import { Button } from '../button/Button';
 import { Content } from '../content/Content';
 import styles from './Navigation.module.scss';
@@ -25,7 +25,7 @@ export function Navigation(): ReactElement {
   const userInfo = useSelector(selectUserInfo);
   const notifications = useSelector(selectNotifications);
   const friendInfo = useSelector(selectFriendInfo);
-  const favorites = useSelector(selectFavorites);
+  const favorites = useSelector(selectFavoriteUsers);
   const history = useHistory();
   const { pathname } = useLocation();
   const { logout } = useApi();

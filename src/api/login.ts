@@ -1,7 +1,7 @@
 import { isErrorType } from '../store/reducer';
 import { setUserInfo } from '../store/user/actions';
 import { AppThunkAction } from '../thunk';
-import { getAllFavorites } from './favorites-api';
+import { getAllFavoriteGroups, getAllFavorites } from './favorites-api';
 import { getAllFriends } from './friends-api';
 import { logout } from './logout';
 import { getAllModerations } from './moderations';
@@ -29,6 +29,7 @@ export function login(username?: string, password?: string): AppThunkAction<Prom
         dispatch(setUserInfo(result.result));
         await dispatch(getAllFriends()).finally();
         await dispatch(getAllNotifications()).finally();
+        await dispatch(getAllFavoriteGroups()).finally();
         await dispatch(getAllFavorites()).finally();
         dispatch(getAllModerations()).finally();
       } else {

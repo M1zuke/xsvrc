@@ -1,28 +1,27 @@
-import { getFavoriteGroupNames } from '../../api/friends-api';
 import { isLoaded } from '../../api/prepare';
 import {
   AuthenticatedUserInfo,
-  Favorite,
-  FriendFavoriteGroup,
-  FriendFavoriteGroups,
+  FavoriteGroup,
+  FavoriteType,
   MappedFavoritesToGroupWithUser,
   MappedFavoritesToType,
   Moderation,
   NamedFavorite,
   NotificationContent,
-  SortedModerations,
   UserInfo,
 } from '../../api/types';
 import { isOffline } from '../../common/utils';
 import { AppState } from '../index';
 import { Loadable } from '../reducer';
+import { MappedModeration } from './actions';
 
 export const selectUserInfo = (state: AppState): Loadable<AuthenticatedUserInfo> => state.user.userInfo;
 export const selectNotifications = (state: AppState): Loadable<NotificationContent[]> => state.user.notifications;
-export const selectFavorites = (state: AppState): Loadable<MappedFavoritesToType> => state.user.favorites;
+export const selectFavoriteUsers = (state: AppState): Loadable<MappedFavoritesToType> =>
+  state.user.favorites.favoriteUsers;
 export const selectFriendFavorites = (state: AppState): Loadable<MappedFavoritesToGroupWithUser> => {
-  if (isLoaded(state.user.favorites)) {
-    const filteredByType = state.user.favorites['friend'];
+  if (isLoaded(state.user.favorites.favoriteUsers)) {
+    const filteredByType = state.user.favorites.favoriteUsers['friend'];
     if (filteredByType) {
       const keys = Object.keys(filteredByType);
       return Object.assign(
@@ -42,7 +41,7 @@ export const selectFriendFavorites = (state: AppState): Loadable<MappedFavorites
     }
   }
 
-  return state.user.favorites === 'loading' ? 'loading' : 'not-found';
+  return state.user.favorites.favoriteUsers === 'loading' ? 'loading' : 'not-found';
 };
 
 export const isLoggedIn = (state: AppState): boolean => {
@@ -87,28 +86,26 @@ function sortByName(a: UserOrNotFound, b: UserOrNotFound): number {
   return a.displayName.toLowerCase().localeCompare(b.displayName.toLowerCase());
 }
 
-export type IsUserInAFavoriteGroup = {
-  group: FriendFavoriteGroup;
-  favId: Favorite['id'];
-  uid: UserInfo['id'];
-  groupName: string;
-};
+// export type IsUserInAFavoriteGroup = {
+//   group: FriendFavoriteGroup;
+//   favId: Favorite['id'];
+//   uid: UserInfo['id'];
+//   groupName: string;
+// };
 
 export const GetFavoriteOfUser =
   (userId: string) =>
   (state: AppState): NamedFavorite | null => {
-    const favorites = state.user.favorites;
+    const favoriteUsers = state.user.favorites.favoriteUsers;
     const userInfo = state.user.userInfo;
-    if (isLoaded(favorites) && isLoaded(userInfo)) {
-      return Object.keys(favorites.friend)
+    if (isLoaded(favoriteUsers) && isLoaded(userInfo)) {
+      return Object.keys(favoriteUsers.friend)
         .flatMap((key) =>
-          (favorites.friend[key as FriendFavoriteGroup] ?? []).map((fav) => {
+          (favoriteUsers.friend[key] ?? []).map((fav) => {
             if (fav.favoriteId === userId) {
               return {
                 ...fav,
-                groupName: getFavoriteGroupNames(userInfo.friendGroupNames)[
-                  FriendFavoriteGroups.indexOf(key as FriendFavoriteGroup)
-                ],
+                groupName: GetFavoriteGroupNameByGroupTag('friend', key)(state),
               };
             }
             return null;
@@ -119,18 +116,35 @@ export const GetFavoriteOfUser =
     return null;
   };
 
-export const GetSortedModerations = (state: AppState): SortedModerations => {
+export const GetSortedModerations = (state: AppState): MappedModeration[] => {
   if (isLoaded(state.user.moderations)) {
     return state.user.moderations;
   }
-  return {};
+  return [];
 };
 
 export const GetModerationsByUserId =
   (id: Moderation['targetUserId']) =>
   (state: AppState): Moderation[] => {
     if (isLoaded(state.user.moderations)) {
-      return state.user.moderations[id] ?? [];
+      return state.user.moderations.find((m) => m.targetUserId === id)?.moderations ?? [];
     }
     return [];
+  };
+
+export const GetFavoriteGroups =
+  (favoriteType: FavoriteType) =>
+  (state: AppState): FavoriteGroup[] => {
+    const favoriteGroupNames = state.user.favorites.favoriteGroupNames;
+    if (isLoaded(favoriteGroupNames)) {
+      return favoriteGroupNames[favoriteType];
+    }
+    return [];
+  };
+
+export const GetFavoriteGroupNameByGroupTag =
+  (favoriteType: FavoriteType, tag: string) =>
+  (state: AppState): string => {
+    const favoriteGroups = GetFavoriteGroups(favoriteType)(state);
+    return favoriteGroups.find((fg) => fg.name === tag)?.displayName ?? '';
   };

@@ -1,12 +1,13 @@
 import { mergeWith } from 'lodash';
-import { addFavorite, removeFavorite, setFavorites } from '../store/user/actions';
+import { AppState } from '../store';
+import { addFavorite, removeFavorite, setFavoriteGroups, setFavorites } from '../store/user/actions';
 import { AppDispatch, AppThunkAction } from '../thunk';
-import { api, prepare } from './prepare';
+import { api, isLoaded, prepare } from './prepare';
 import {
   AddFavorite,
   Favorite,
+  FavoriteGroup,
   FavoriteType,
-  FriendFavoriteGroup,
   MappedFavoritesToGroup,
   MappedFavoritesToType,
   NamedFavorite,
@@ -36,12 +37,12 @@ export function getAllFavorites(favorites: Favorite[] = [], offset = 0): AppThun
       if (response.result.length > 0) {
         return dispatch(getAllFavorites(newFavorites, offset + limit));
       }
-      mapFavoritesToStore(newFavorites, dispatch);
+      mapFavoritesToStore(newFavorites, getState(), dispatch);
     }
   };
 }
 
-function mapFavoritesToStore(favorites: Favorite[], dispatch: AppDispatch): void {
+function mapFavoritesToStore(favorites: Favorite[], state: AppState, dispatch: AppDispatch): void {
   const mappedFavoritesToType = mapFavoritesToType(favorites);
   dispatch(setFavorites(mappedFavoritesToType));
 }
@@ -72,7 +73,7 @@ function customizer<T>(objValue: T[], srcValue: T[]): T[] | undefined {
   }
 }
 
-export function addToFavorites(user: UserInfo, favGroup: FriendFavoriteGroup): AppThunkAction<Promise<void>> {
+export function addToFavorites(user: UserInfo, favGroup: string): AppThunkAction<Promise<void>> {
   return async function (dispatch, getState) {
     const state = getState();
 
@@ -107,6 +108,37 @@ export function removeFromFavorites(favorite: Favorite | NamedFavorite): AppThun
       dispatch(removeFavorite(favorite));
     } else {
       console.error(response);
+    }
+  };
+}
+
+export function getAllFavoriteGroups(favorites: FavoriteGroup[] = [], offset = 0): AppThunkAction<Promise<void>> {
+  return async function (dispatch, getState) {
+    const state = getState();
+
+    // if (state.user.favorites === null) {
+    //   dispatch(setFavorites('loading'));
+    // }
+
+    if (isLoaded(state.user.userInfo)) {
+      const response = await prepare<FavoriteGroup[]>(state, dispatch, {
+        url: api(`favorite/groups`),
+        params: [
+          { key: 'offset', value: offset },
+          { key: 'n', value: limit },
+          { key: 'userId', value: state.user.userInfo.id },
+        ],
+      });
+
+      if (response.type === 'entity') {
+        const newFavoriteGroups = [...favorites, ...response.result];
+        if (response.result.length > 0) {
+          return dispatch(getAllFavoriteGroups(newFavoriteGroups, offset + limit));
+        }
+
+        dispatch(setFavoriteGroups(newFavoriteGroups));
+        console.log(newFavoriteGroups);
+      }
     }
   };
 }

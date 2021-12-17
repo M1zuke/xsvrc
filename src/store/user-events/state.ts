@@ -1,9 +1,9 @@
-import { FriendNotification, UserInfo } from '../../api/types';
+import { FriendNotification, UserInfo, UserNotification } from '../../api/types';
 import { UserComparison } from '../../components/websockets/common';
 
 export type UserEvent = {
   timestamp: Date;
-  eventType: FriendNotification['type'];
+  eventType: FriendNotification['type'] | UserNotification['type'];
   displayName: UserInfo['displayName'];
   comparison: UserComparison;
   eventKey: number;
