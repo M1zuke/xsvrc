@@ -104,7 +104,7 @@ export type InstanceInfo = {
   n_users: number;
   name: string;
   nonce: string;
-  ownerId: string;
+  ownerId: string | null;
   permanent: boolean;
   photonRegion: unknown;
   platforms: Platforms;

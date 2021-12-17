@@ -2,14 +2,13 @@ import { Person } from '@mui/icons-material';
 import React, { ReactElement, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { isLoaded } from '../../api/prepare';
-import { InstanceInfo, UserInfo } from '../../api/types';
+import { InstanceInfo, UserInfo, WorldInfo } from '../../api/types';
 import { useApi } from '../../api/use-api';
 import { useSubscribe } from '../../common/use-subscribe';
 import { useMessages } from '../../i18n';
 import { selectFriendInfoById } from '../../store/friends/selectors';
 import { selectUserInfo } from '../../store/user/selectors';
 import { GetInstanceTypeInfo, selectInstanceByInstance, selectWorldByLocation } from '../../store/worlds/selectors';
-import { WorldInfos } from '../../store/worlds/state';
 import { Content } from '../content/Content';
 import { Loading } from '../loading/Loading';
 import { ScrollableContent } from '../scrollable-content/ScrollableContent';
@@ -19,7 +18,7 @@ import styles from './WorldInstance.module.scss';
 
 type WorldInstanceInnerProps = {
   user: UserInfo;
-  worldInfo: WorldInfos;
+  worldInfo: WorldInfo;
   instanceInfo: InstanceInfo;
 };
 
@@ -29,20 +28,18 @@ export function WorldInstanceInner({ user, worldInfo, instanceInfo }: WorldInsta
   const userTableModel = useUserListTableModel(user.location, instanceInfo);
 
   const instanceTypeInfo = useSelector(GetInstanceTypeInfo(user.location));
-  const ownerUserInfo = useSelector(selectFriendInfoById(instanceInfo.ownerId));
+  const ownerUserInfo = useSelector(selectFriendInfoById(instanceInfo.ownerId || ''));
   const { getUser } = useApi();
 
   const splitLocation = user.location.split('~');
   const [, instanceId] = splitLocation[0].split(':');
 
-  const worldImage = useMemo(() => {
-    if (worldInfo !== 'private' && worldInfo !== 'offline') {
-      return {
-        backgroundImage: `url('${worldInfo.thumbnailImageUrl}')`,
-      };
-    }
-    return {};
-  }, [worldInfo]);
+  const worldImage = useMemo(
+    () => ({
+      backgroundImage: `url('${worldInfo.thumbnailImageUrl}')`,
+    }),
+    [worldInfo],
+  );
 
   const userIsInSameInstance = useMemo(
     () => (isLoaded(userInfo) ? userInfo.location === user.location : false),
@@ -51,14 +48,8 @@ export function WorldInstanceInner({ user, worldInfo, instanceInfo }: WorldInsta
 
   const ownerName = useMemo(
     () =>
-      isLoaded(ownerUserInfo)
-        ? ownerUserInfo.displayName
-        : isLoaded(instanceInfo) && instanceInfo.ownerId
-        ? instanceInfo.ownerId
-        : isLoaded(worldInfo) && worldInfo !== 'private' && worldInfo !== 'offline'
-        ? worldInfo.authorName
-        : 'Unknown',
-    [instanceInfo, ownerUserInfo, worldInfo],
+      isLoaded(ownerUserInfo) ? ownerUserInfo.displayName : instanceInfo.ownerId ? 'Loading...' : worldInfo.authorName,
+    [instanceInfo.ownerId, ownerUserInfo, worldInfo.authorName],
   );
 
   useEffect(() => {
@@ -66,18 +57,6 @@ export function WorldInstanceInner({ user, worldInfo, instanceInfo }: WorldInsta
       getUser(instanceInfo.ownerId).finally();
     }
   }, [getUser, instanceInfo]);
-
-  if (worldInfo === 'offline' || worldInfo === 'private' || user.location === '') {
-    return <ScrollableContent innerClassName={styles.CenterAll}>{worldInfo}</ScrollableContent>;
-  }
-
-  if (!isLoaded(worldInfo) || !isLoaded(instanceInfo)) {
-    return (
-      <ScrollableContent innerClassName={styles.WorldInstance}>
-        <Loading />
-      </ScrollableContent>
-    );
-  }
 
   return (
     <Content className={styles.WorldInstance}>
@@ -122,6 +101,14 @@ export function WorldInstance({ user }: WorldInstanceProps): ReactElement {
       getInstance(user.location).finally();
     }
   }, [getInstance, getWorld, user.location]);
+
+  if (user.location === '') {
+    return <ScrollableContent>Logged in through Website</ScrollableContent>;
+  }
+
+  if (worldInfo === 'private' || worldInfo === 'offline') {
+    return <ScrollableContent>{worldInfo}</ScrollableContent>;
+  }
 
   if (isLoaded(worldInfo) && isLoaded(instanceInfo)) {
     return <WorldInstanceInner user={user} instanceInfo={instanceInfo} worldInfo={worldInfo} />;

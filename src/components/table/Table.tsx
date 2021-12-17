@@ -30,7 +30,6 @@ export function Table({ config }: TableProps): ReactElement {
       return new Array(column.amount ?? 1).fill('').map(() => column.className);
     });
   }, [config.columns]);
-  console.log(columnClassNames);
 
   const cells = useMemo(() => {
     return [config.header, ...config.values].flatMap((row, rowIndex) => {
