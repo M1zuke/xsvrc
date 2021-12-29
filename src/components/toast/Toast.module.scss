@@ -1,0 +1,15 @@
+@import '../../common/_spacing';
+@import '../../common/_colors';
+
+.ToastWrapper {
+  position: absolute;
+  bottom: $innerSpacing;
+  right: $innerSpacing;
+
+  .Toast {
+    padding: $innerSpacing;
+    background-color: transparentize($color0, 0.1);
+    margin-top: $smallSpacing;
+    font-size: 18px;
+  }
+}

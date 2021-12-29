@@ -12,6 +12,7 @@ import { useMessages } from '../../../i18n';
 import { setFriendFilter } from '../../../store/friends/actions';
 import { selectFriendFilter, selectFriendInfo } from '../../../store/friends/selectors';
 import { FriendFilter } from '../../../store/friends/state';
+import { TitleBox } from '../home/TitleBox';
 import styles from './Friends.module.scss';
 
 export const CharacterFilters = [
@@ -128,7 +129,7 @@ export function Friends(): ReactElement {
 
   return (
     <div className={styles.Component}>
-      <Content className={styles.FriendsCountWrapper}>
+      <TitleBox className={styles.FriendsCountWrapper} title="Friends">
         <div className={styles.ShortOverview}>
           <div className={styles.AllOnlineFriendsCount}>{friendsCount}</div>
           <div className={styles.FilteredFriendsCount}>{filteredFriendsCount}</div>
@@ -154,7 +155,7 @@ export function Friends(): ReactElement {
             value={showPrivate}
           />
         </div>
-      </Content>
+      </TitleBox>
       <Content className={styles.FilterButtons}>
         <div className={styles.NormalFilter}>{filterButtons}</div>
       </Content>

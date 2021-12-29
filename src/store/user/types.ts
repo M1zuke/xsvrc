@@ -1,6 +1,7 @@
 import { Action } from 'redux';
 import {
   AuthenticatedUserInfo,
+  AvatarInfo,
   Favorite,
   MappedFavoritesToType,
   NamedFavorite,
@@ -19,7 +20,9 @@ export type UserActionType = `user/${
   | 'add-favorite'
   | 'remove-favorite'
   | 'set-moderations'
-  | 'set-favorite-groups'}`;
+  | 'set-favorite-groups'
+  | 'set-avatars'
+  | 'update-avatar'}`;
 
 export type UserAction<T extends UserActionType> = Action<T>;
 
@@ -55,6 +58,13 @@ export type SetFavoriteGroups = UserAction<'user/set-favorite-groups'> & {
   favoriteGroups: Loadable<FavoriteGroupByType>;
 };
 
+export type SetAvatars = UserAction<'user/set-avatars'> & {
+  avatarInfo: Loadable<AvatarInfo[]>;
+};
+export type UpdateAvatar = UserAction<'user/update-avatar'> & {
+  avatarInfo: AvatarInfo;
+};
+
 export type ResetUser = UserAction<'user/reset'>;
 
 export type UserActions =
@@ -66,4 +76,6 @@ export type UserActions =
   | AddFavorite
   | RemoveFavorite
   | SetModerations
-  | SetFavoriteGroups;
+  | SetFavoriteGroups
+  | SetAvatars
+  | UpdateAvatar;

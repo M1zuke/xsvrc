@@ -3,5 +3,13 @@
 
 .Cell {
   padding: $innerSpacing;
-  background-color: $color1;
+  background-color: $color0;
+
+  .Editable {
+    border-bottom: 2px solid $color3;
+
+    &:focus {
+      outline: none;
+    }
+  }
 }

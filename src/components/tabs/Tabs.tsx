@@ -7,7 +7,7 @@ type TabsProps = {
 };
 
 export function Tabs({ title, children }: PropsWithChildren<TabsProps>): ReactElement {
-  const childs = useMemo(() => React.Children.toArray(children), [children]);
+  const childrenAsArray = useMemo(() => React.Children.toArray(children), [children]);
   const [tabIndex, setIndex] = useState(0);
 
   const isActive = useCallback((i: number) => tabIndex === i, [tabIndex]);
@@ -27,7 +27,7 @@ export function Tabs({ title, children }: PropsWithChildren<TabsProps>): ReactEl
   return (
     <div className={styles.Component}>
       <div className={styles.Tabs}>{tabs}</div>
-      <div className={styles.Content}>{childs[tabIndex]}</div>
+      <div className={styles.Content}>{childrenAsArray[tabIndex]}</div>
     </div>
   );
 }

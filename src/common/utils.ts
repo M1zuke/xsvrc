@@ -5,7 +5,11 @@ export function isOnline(userInfo: UserInfo | AuthenticatedUserInfo): boolean {
 }
 
 export function isActive(userInfo: UserInfo | AuthenticatedUserInfo): boolean {
-  return userInfo.location === '' || userInfo.state === 'active';
+  return (
+    (userInfo.location === '' || userInfo.state === 'active') &&
+    userInfo.state !== 'online' &&
+    userInfo.state !== 'offline'
+  );
 }
 
 export function isLoggedIn(userInfo: UserInfo | AuthenticatedUserInfo): boolean {

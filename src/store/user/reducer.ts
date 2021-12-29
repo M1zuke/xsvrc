@@ -4,6 +4,22 @@ import { UserActions } from './types';
 
 export function reducer(state: UserState = INITIAL_USER_STATE, action: UserActions): UserState {
   switch (action.type) {
+    case 'user/set-avatars': {
+      return {
+        ...state,
+        avatars: action.avatarInfo,
+      };
+    }
+    case 'user/update-avatar': {
+      const avatars = state.avatars;
+      if (isLoaded(avatars)) {
+        return {
+          ...state,
+          avatars: avatars.map((a) => (a.id === action.avatarInfo.id ? action.avatarInfo : a)),
+        };
+      }
+      return state;
+    }
     case 'user/set-user-info': {
       return {
         ...state,

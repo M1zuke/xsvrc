@@ -1,14 +1,15 @@
 import { useMemo } from 'react';
 import { useAppDispatch } from '../thunk/dispatch';
+import { getAllAvatars, getAvatar, updateAvatar } from './avatars-api';
 import { addToFavorites, removeFromFavorites } from './favorites-api';
 import { getAllFriends, sendUnfriendRequest } from './friends-api';
 import { getUser } from './getUser';
-import { getInstance, getWorld } from './getWorld';
 import { info } from './info';
+import { getInstance, getWorld, selfInvite } from './instance-api';
 import { login } from './login';
 import { logout } from './logout';
 import { getAllModerations } from './moderations';
-import { Favorite, NamedFavorite, UserInfo } from './types';
+import { AvatarInfo, Favorite, NamedFavorite, UserInfo } from './types';
 
 export type API = {
   info(): Promise<void>;
@@ -22,6 +23,10 @@ export type API = {
   addToFavorites(user: UserInfo, group: string): Promise<void>;
   removeFromFavorites(favorite: Favorite | NamedFavorite): Promise<void>;
   getAllModerations(): Promise<void>;
+  selfInvite(location: string): Promise<void>;
+  getAllAvatars(): Promise<void>;
+  updateAvatar(avatarInfo: AvatarInfo, changeVersion?: boolean): Promise<void>;
+  getAvatar(avatarId: string): Promise<void>;
 };
 
 export function useApi(): API {
@@ -61,6 +66,18 @@ export function useApi(): API {
       },
       getAllModerations: () => {
         return dispatch(getAllModerations());
+      },
+      selfInvite: (location) => {
+        return dispatch(selfInvite(location));
+      },
+      getAllAvatars: () => {
+        return dispatch(getAllAvatars());
+      },
+      updateAvatar: (avatarInfo, changeVersion) => {
+        return dispatch(updateAvatar(avatarInfo, changeVersion));
+      },
+      getAvatar: (avatarInfo) => {
+        return dispatch(getAvatar(avatarInfo));
       },
     }),
     [dispatch],

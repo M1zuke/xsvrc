@@ -120,15 +120,18 @@ export type InstanceInfo = {
 type InstanceArray = [string, number];
 
 type UnityPackages = {
-  assetUrl: string;
-  assetUrlObject: unknown;
+  assetUrl?: string;
+  /**
+   * @deprecated Always returns as empty use assetUrl instead
+   */
+  assetUrlObject?: unknown;
   assetVersion: number;
-  created_at: string;
+  created_at?: string;
   id: string;
   platform: string;
-  pluginUrl: string;
-  pluginUrlObject: unknown;
-  unitySortNumber: number;
+  pluginUrl?: string;
+  pluginUrlObject?: unknown;
+  unitySortNumber?: number;
   unityVersion: string;
 };
 
@@ -364,4 +367,31 @@ export type Moderation = {
 
 export type SortedModerations = {
   [userId: string]: Moderation[];
+};
+
+export type AvatarInfo = {
+  assetUrl?: string;
+  /**
+   * @deprecated Always returns as empty use assetUrl instead
+   */
+  assetUrlObject?: unknown;
+  authorId: string;
+  authorName: string;
+  created_at: string; // date-time
+  description: string;
+  featured: boolean;
+  id: string;
+  imageUrl: string;
+  name: string;
+  releaseStatus: 'public' | 'private' | 'hidden';
+  tags: string[];
+  thumbnailImageUrl: string;
+  unityPackageUrl: string;
+  /**
+   * @deprecated Always returns as empty use unityPackageUrl instead
+   */
+  unityPackageUrlObject: unknown;
+  unityPackages: UnityPackages[];
+  updated_at: string; // date-time
+  version: number;
 };

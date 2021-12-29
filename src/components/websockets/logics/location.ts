@@ -18,14 +18,16 @@ export async function handleUserLocationNotification(
     worldId: websocketNotification.content.world.id,
     instanceId: websocketNotification.content.instance,
   };
-  if ((oldUserInfo?.location || 'private') !== websocketNotification.content.location) {
+  const userLocation = oldUserInfo?.location === '' ? 'Logged in through website' : oldUserInfo?.location || 'private';
+
+  if (userLocation !== websocketNotification.content.location) {
     dispatch(
       addUserEvent({
         eventType: websocketNotification.type,
         displayName: websocketNotification.content.user.displayName,
         comparison: {
           location: {
-            from: oldUserInfo?.location || 'private',
+            from: userLocation,
             to: websocketNotification.content.location,
           },
         },

@@ -1,6 +1,7 @@
 import { isLoaded } from '../../api/prepare';
 import {
   AuthenticatedUserInfo,
+  AvatarInfo,
   FavoriteGroup,
   FavoriteType,
   MappedFavoritesToGroupWithUser,
@@ -15,6 +16,7 @@ import { AppState } from '../index';
 import { Loadable } from '../reducer';
 import { MappedModeration } from './actions';
 
+export const selectAvatars = (state: AppState): Loadable<AvatarInfo[]> => state.user.avatars;
 export const selectUserInfo = (state: AppState): Loadable<AuthenticatedUserInfo> => state.user.userInfo;
 export const selectNotifications = (state: AppState): Loadable<NotificationContent[]> => state.user.notifications;
 export const selectFavoriteUsers = (state: AppState): Loadable<MappedFavoritesToType> =>

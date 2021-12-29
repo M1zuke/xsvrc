@@ -6,7 +6,8 @@
   padding: 0;
   display: grid;
   grid-template-columns: autoSize() auto;
-  grid-gap: $innerSpacing;
+  grid-template-rows: autoSize() auto;
+  grid-gap: $smallSpacing;
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -104,8 +105,19 @@
   }
 
   .UserList {
+    grid-row: span 2;
     height: 100%;
     background-color: $color2;
-    grid-gap: $innerSpacing;
+  }
+
+  .InstanceActions {
+    display: grid;
+    grid-template-columns: repeat(2, autoSize());
+    grid-gap: $smallSpacing;
+    align-items: start;
+
+    .ButtonOverwrite {
+      padding: 30px;
+    }
   }
 }

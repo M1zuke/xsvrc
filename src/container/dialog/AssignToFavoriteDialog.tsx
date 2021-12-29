@@ -1,7 +1,7 @@
 import React, { ReactElement, useCallback, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Button } from '../../components/button/Button';
-import { Modal } from '../../components/dialog/Modal';
+import { Modal } from '../../components/modal/Modal';
 import { useMessages } from '../../i18n';
 import { GetFavoriteGroups } from '../../store/user/selectors';
 import styles from './AssignToFavoriteDialog.module.scss';

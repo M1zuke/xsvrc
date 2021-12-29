@@ -1,5 +1,6 @@
 import {
   AuthenticatedUserInfo,
+  AvatarInfo,
   FavoriteGroup,
   FavoriteType,
   MappedFavoritesToType,
@@ -20,6 +21,7 @@ export type UserState = {
   notifications: Loadable<NotificationContent[]>;
   favorites: Favorites;
   moderations: Loadable<MappedModeration[]>;
+  avatars: Loadable<AvatarInfo[]>;
 };
 
 export const INITIAL_USER_STATE: UserState = {
@@ -30,4 +32,5 @@ export const INITIAL_USER_STATE: UserState = {
     favoriteGroupNames: null,
   },
   moderations: null,
+  avatars: null,
 };

@@ -11,6 +11,7 @@
   padding: $tinySpacing $tinySpacing $tinySpacing $innerSpacing;
   background-color: $colorBlack;
   -webkit-app-region: drag;
+  z-index: 99999;
 
   .ApplicationTitle {
     font-weight: bold;

@@ -1,4 +1,4 @@
-import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material';
+import classNames from 'classnames';
 import React, { ReactElement, useCallback, useState } from 'react';
 import styles from './Checkbox.module.scss';
 
@@ -17,9 +17,10 @@ export function Checkbox({ label, onChange, value }: CheckboxProps): ReactElemen
   }, [checked, onChange]);
 
   return (
-    <div onClick={handleClick} className={styles.Component}>
-      {checked && <CheckBox />}
-      {!checked && <CheckBoxOutlineBlank />}
+    <div className={styles.Component}>
+      <div onClick={handleClick} className={styles.Switch}>
+        <span className={classNames(styles.Slider, { [styles.Checked]: checked })} />
+      </div>
       {label}
     </div>
   );

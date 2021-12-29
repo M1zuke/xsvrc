@@ -1,23 +1,42 @@
 import classNames from 'classnames';
 import React, { ReactElement, useMemo } from 'react';
-import { TextCell } from './fields/TextCell';
+import { SwitchCell } from './SwitchCell';
 import styles from './Table.module.scss';
 
-type CellOptions = TextCellOptions;
+export type CellTypes = string | number;
+
+export type CellOptions<T extends CellTypes = CellTypes> = TextCellOptions | DropDownOption<T>;
 export type TextCellOptions = {
+  type?: 'text';
   className?: string;
   value: string | number;
+  editable?: boolean;
+  onChange?: (value: string) => void;
+  disabled?: boolean;
 };
 
-type RowOption = {
+export type DropDownOption<T extends CellTypes> = {
+  type: 'dropdown';
+  className?: string;
+  value: T;
+  onChange: (value: T) => string;
+  options: DropDownOptionItem<T>[];
+};
+
+export type DropDownOptionItem<T extends CellTypes> = {
+  value: T;
+  label: string;
+};
+
+export type RowOption = {
   id: string;
   values: CellOptions[];
 };
 
 export type TableConfig = {
   columns: { amount?: number; className?: string }[];
-  header: RowOption;
-  values: RowOption[];
+  header?: RowOption;
+  rows: RowOption[];
 };
 
 type TableProps = {
@@ -32,22 +51,24 @@ export function Table({ config }: TableProps): ReactElement {
   }, [config.columns]);
 
   const cells = useMemo(() => {
-    return [config.header, ...config.values].flatMap((row, rowIndex) => {
+    return (config.header ? [config?.header, ...config.rows] : config.rows).flatMap((row, rowIndex) => {
       return row.values.map((cell, cellIndex) => {
-        return (
-          <TextCell
-            key={`Table-${rowIndex}-${cellIndex}`}
-            className={classNames(columnClassNames[cellIndex], { [styles.Header]: rowIndex === 0 }, cell.className)}
-            value={cell.value}
-          />
-        );
+        const newOptions: CellOptions = {
+          ...cell,
+          className: classNames(
+            columnClassNames[cellIndex],
+            { [styles.Header]: rowIndex === 0 && config.header },
+            cell.className,
+          ),
+        };
+        return <SwitchCell key={`Table-${rowIndex}-${cellIndex}`} options={newOptions} />;
       });
     });
-  }, [columnClassNames, config.header, config.values]);
+  }, [columnClassNames, config.header, config.rows]);
 
   const tableStyle = useMemo(
     () => ({
-      gridTemplateColumns: `repeat(${columnClassNames.length}, auto)`,
+      gridTemplateColumns: `repeat(${columnClassNames.length}, minmax(min-content, auto)`,
     }),
     [columnClassNames.length],
   );

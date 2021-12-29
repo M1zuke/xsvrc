@@ -1,6 +1,6 @@
-@import "../../common/_spacing";
+@import '../../common/_spacing';
 
 .Component {
   display: grid;
-  grid-gap: $innerSpacing;
+  grid-gap: $smallSpacing;
 }

@@ -18,6 +18,10 @@ export const messages = {
       Cancel: 'Cancel',
     },
   },
+  EditAvatarDialog: {
+    Save: 'Save',
+    Cancel: 'Cancel',
+  },
   ConfirmDialog: {
     Confirm: 'Confirm',
     Cancel: 'Cancel',

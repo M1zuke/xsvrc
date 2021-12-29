@@ -1,0 +1,17 @@
+@import '../../common/_spacing';
+@import '../../common/_mixins';
+
+.Component {
+  .Content {
+    display: grid;
+    grid-gap: $innerSpacing;
+  }
+
+  .Footer {
+    display: grid;
+    grid-template-columns: repeat(2, autoSize());
+    grid-gap: $innerSpacing;
+    align-items: center;
+    justify-content: end;
+  }
+}

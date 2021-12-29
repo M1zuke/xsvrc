@@ -1,6 +1,6 @@
 import React, { ReactElement, useCallback } from 'react';
 import { Button } from '../../components/button/Button';
-import { Modal } from '../../components/dialog/Modal';
+import { Modal } from '../../components/modal/Modal';
 import { useMessages } from '../../i18n';
 import styles from './ConfirmDialog.module.scss';
 import { Dialog, DialogWithProps } from './Dialog';

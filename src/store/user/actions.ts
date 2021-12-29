@@ -2,6 +2,7 @@ import merge from 'lodash.merge';
 import { isLoaded } from '../../api/prepare';
 import {
   AuthenticatedUserInfo,
+  AvatarInfo,
   Favorite,
   FavoriteGroup,
   MappedFavoritesToType,
@@ -16,11 +17,13 @@ import {
   AddNotification,
   RemoveFavorite,
   ResetUser,
+  SetAvatars,
   SetFavoriteGroups,
   SetFavorites,
   SetModerations,
   SetNotifications,
   SetUserInfo,
+  UpdateAvatar,
 } from './types';
 
 export function setUserInfo(vrcUserInfo: Loadable<AuthenticatedUserInfo>): SetUserInfo {
@@ -144,4 +147,18 @@ function sortByName(a: FavoriteGroup, b: FavoriteGroup): number {
 
 function sortByDate(a: Moderation | MappedModeration, b: Moderation | MappedModeration): number {
   return +new Date(b.created) - +new Date(a.created);
+}
+
+export function setAvatars(avatarInfo: Loadable<AvatarInfo[]>): SetAvatars {
+  return {
+    type: 'user/set-avatars',
+    avatarInfo,
+  };
+}
+
+export function updateAvatarInfo(avatarInfo: AvatarInfo): UpdateAvatar {
+  return {
+    type: 'user/update-avatar',
+    avatarInfo,
+  };
 }

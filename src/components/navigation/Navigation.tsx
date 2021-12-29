@@ -1,4 +1,5 @@
 import {
+  Face,
   Home,
   List,
   Notifications,
@@ -72,6 +73,14 @@ export function Navigation(): ReactElement {
           icon
         >
           <PeopleAlt />
+        </Button>
+        <Button
+          aria-label="navigate to avatars"
+          active={isActiveRoute(routes.avatar.path)}
+          onClick={() => navigateTo(routes.avatar.path)}
+          icon
+        >
+          <Face />
         </Button>
         <Button
           aria-label="navigate to moderations"

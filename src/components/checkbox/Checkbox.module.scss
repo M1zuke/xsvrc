@@ -1,5 +1,10 @@
-@import "../../common/_mixins";
-@import "../../common/_spacing";
+@import '../../common/_mixins';
+@import '../../common/_spacing';
+@import '../../common/_colors';
+
+$height: 24px;
+$innerPadding: 4px;
+$width: 50px;
 
 .Component {
   display: grid;
@@ -9,4 +14,47 @@
   user-select: none;
   grid-gap: $smallSpacing;
   white-space: nowrap;
+}
+
+.Switch {
+  position: relative;
+  display: inline-block;
+  width: $width;
+  height: $height;
+}
+
+.Slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $color2;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+$calculatedHeightOfBulb: calc(#{$height} - #{$innerPadding} * 2);
+
+.Slider:before {
+  position: absolute;
+  content: '';
+  height: $calculatedHeightOfBulb;
+  width: $calculatedHeightOfBulb;
+  left: $innerPadding;
+  bottom: $innerPadding;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.Checked {
+  background-color: $colorBlue;
+}
+
+.Checked:before {
+  transform: translateX(calc(#{$width} - #{$height}));
 }

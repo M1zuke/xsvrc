@@ -16,7 +16,7 @@ export function useUserListTableModel(location: string, instanceInfo: InstanceIn
 
     return {
       columns: [{ amount: 3 }],
-      values: users.map((user) => {
+      rows: users.map((user) => {
         return {
           id: user.id,
           values: [

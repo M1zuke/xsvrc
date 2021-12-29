@@ -6,12 +6,13 @@ export function useSubscribe<T extends string>(
   func: (params: T) => void,
   params: T | null | undefined,
   timeInSeconds = 30,
+  dontPrefetch?: boolean,
 ): void {
   const loggedIn = useSelector(isLoggedIn);
 
   useEffect(() => {
     if (params !== null && loggedIn) {
-      func(params as T);
+      !dontPrefetch && func(params as T);
       const interval = setInterval(() => {
         func(params as T);
       }, timeInSeconds * 1000);
@@ -19,5 +20,5 @@ export function useSubscribe<T extends string>(
         clearInterval(interval);
       };
     }
-  }, [func, loggedIn, params, timeInSeconds]);
+  }, [dontPrefetch, func, loggedIn, params, timeInSeconds]);
 }

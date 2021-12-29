@@ -1,0 +1,23 @@
+@import '../../../common/_mixins';
+@import '../../../common/_spacing';
+
+.Avatars {
+  display: grid;
+  height: 100%;
+  grid-gap: $innerSpacing;
+  grid-template-rows: autoSize() auto;
+
+  .AvatarList {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-gap: $smallSpacing;
+  }
+}
+
+@media only screen and (max-width: 1610px) {
+  .Avatars {
+    .AvatarList {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+}

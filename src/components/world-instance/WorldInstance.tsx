@@ -1,18 +1,21 @@
 import { Person } from '@mui/icons-material';
-import React, { ReactElement, useEffect, useMemo } from 'react';
+import React, { ReactElement, useCallback, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { isLoaded } from '../../api/prepare';
 import { InstanceInfo, UserInfo, WorldInfo } from '../../api/types';
 import { useApi } from '../../api/use-api';
 import { useSubscribe } from '../../common/use-subscribe';
+import { isActive } from '../../common/utils';
 import { useMessages } from '../../i18n';
 import { selectFriendInfoById } from '../../store/friends/selectors';
 import { selectUserInfo } from '../../store/user/selectors';
 import { GetInstanceTypeInfo, selectInstanceByInstance, selectWorldByLocation } from '../../store/worlds/selectors';
+import { Button } from '../button/Button';
 import { Content } from '../content/Content';
 import { Loading } from '../loading/Loading';
 import { ScrollableContent } from '../scrollable-content/ScrollableContent';
 import { Table } from '../table/Table';
+import { useToast } from '../toast/Toast';
 import { useUserListTableModel } from './user-list-table-model';
 import styles from './WorldInstance.module.scss';
 
@@ -26,10 +29,11 @@ export function WorldInstanceInner({ user, worldInfo, instanceInfo }: WorldInsta
   const messages = useMessages();
   const userInfo = useSelector(selectUserInfo);
   const userTableModel = useUserListTableModel(user.location, instanceInfo);
+  const [toasts, show] = useToast();
 
   const instanceTypeInfo = useSelector(GetInstanceTypeInfo(user.location));
   const ownerUserInfo = useSelector(selectFriendInfoById(instanceInfo.ownerId || ''));
-  const { getUser } = useApi();
+  const { getUser, selfInvite } = useApi();
 
   const splitLocation = user.location.split('~');
   const [, instanceId] = splitLocation[0].split(':');
@@ -52,6 +56,17 @@ export function WorldInstanceInner({ user, worldInfo, instanceInfo }: WorldInsta
     [instanceInfo.ownerId, ownerUserInfo, worldInfo.authorName],
   );
 
+  const inviteSelf = useCallback(() => {
+    selfInvite(user.location).then(() => {
+      show('Self invite send');
+    });
+  }, [selfInvite, show, user.location]);
+  const copyLocation = useCallback(() => {
+    navigator.clipboard.writeText(user.location).then(() => {
+      show('Instance location copied');
+    });
+  }, [show, user.location]);
+
   useEffect(() => {
     if (isLoaded(instanceInfo) && instanceInfo.ownerId) {
       getUser(instanceInfo.ownerId).finally();
@@ -60,6 +75,7 @@ export function WorldInstanceInner({ user, worldInfo, instanceInfo }: WorldInsta
 
   return (
     <Content className={styles.WorldInstance}>
+      {toasts}
       <div className={styles.WorldImage} style={worldImage}>
         <div className={styles.LeftWorldInfo}>
           <div className={styles.InstanceId}>#{instanceId}</div>
@@ -81,6 +97,14 @@ export function WorldInstanceInner({ user, worldInfo, instanceInfo }: WorldInsta
       <ScrollableContent className={styles.UserList}>
         <Table config={userTableModel} />
       </ScrollableContent>
+      <Content className={styles.InstanceActions} noPadding translucent>
+        <Button onClick={inviteSelf} className={styles.ButtonOverwrite}>
+          Invite me
+        </Button>
+        <Button onClick={copyLocation} className={styles.ButtonOverwrite}>
+          Copy Instance Location
+        </Button>
+      </Content>
     </Content>
   );
 }
@@ -93,16 +117,17 @@ export function WorldInstance({ user }: WorldInstanceProps): ReactElement {
   const worldInfo = useSelector(selectWorldByLocation(user.location));
   const instanceInfo = useSelector(selectInstanceByInstance(user.location));
   const { getWorld, getInstance } = useApi();
-  useSubscribe(getWorld, user.location);
+  useSubscribe(getInstance, user.location);
 
   useEffect(() => {
     if (user.location !== 'private' && user.location !== '' && user.location !== 'offline') {
-      getWorld(user.location).finally();
-      getInstance(user.location).finally();
+      if (!isLoaded(worldInfo)) {
+        getWorld(user.location).finally();
+      }
     }
-  }, [getInstance, getWorld, user.location]);
+  }, [getWorld, user.location, worldInfo]);
 
-  if (user.location === '') {
+  if (isActive(user)) {
     return <ScrollableContent>Logged in through Website</ScrollableContent>;
   }
 

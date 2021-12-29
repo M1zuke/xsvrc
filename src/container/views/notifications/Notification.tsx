@@ -58,17 +58,10 @@ export function Notification(props: NotificationContent): ReactElement {
         {showDetail && <div className={styles.Detail}>{showDetail}</div>}
       </div>
       <div className={styles.Actions}>
-        <Button
-          onClick={noOp}
-          aria-label="delete notification"
-          disabled={props.type !== 'friendRequest'}
-          icon
-          light
-          className={styles.Accept}
-        >
+        <Button onClick={noOp} aria-label="Accept notification" disabled icon light className={styles.Accept}>
           <Check />
         </Button>
-        <Button onClick={noOp} aria-label="delete notification" icon light className={styles.Delete}>
+        <Button onClick={noOp} aria-label="delete notification" icon light className={styles.Delete} disabled>
           <Delete />
         </Button>
       </div>

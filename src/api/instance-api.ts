@@ -57,3 +57,18 @@ export function getInstance(location: string): AppThunkAction<Promise<void>> {
     }
   };
 }
+
+export function selfInvite(location: string): AppThunkAction<Promise<void>> {
+  return async function (dispatch, getState) {
+    const response = await prepare(getState, dispatch, {
+      url: api(`instances/${location}/invite`),
+      method: 'POST',
+    });
+
+    if (response.type === 'entity') {
+      console.log('success');
+    } else {
+      console.log('failed');
+    }
+  };
+}

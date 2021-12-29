@@ -1,0 +1,63 @@
+@import '../../../common/_spacing';
+@import '../../../common/_colors';
+@import '../../../common/_mixins';
+
+.AvatarItem {
+  display: grid;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  border-radius: $standardBorderRadius;
+  padding-bottom: calc(100% - 6px);
+  position: relative;
+  overflow: hidden;
+
+  .BottomWrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: grid;
+    grid-template-columns: auto repeat(2, autoSize());
+    align-items: center;
+    background-color: transparentize($color0, 0.1);
+
+    .DeleteButton {
+      background-color: $colorRed;
+    }
+
+    .Name {
+      font-size: 16px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-weight: bold;
+      padding: $tinySpacing $smallSpacing;
+      text-align: center;
+    }
+  }
+
+  .Version {
+    position: absolute;
+    background-color: transparentize($color0, 0.1);
+    padding: $tinySpacing $smallSpacing;
+    top: 0;
+    right: 0;
+    border-radius: 0 0 0 $standardBorderRadius;
+    font-size: 12px;
+    color: $colorRed;
+  }
+
+  .Private {
+    position: absolute;
+    background-color: transparentize($color0, 0.1);
+    padding: $tinySpacing $smallSpacing;
+    top: 0;
+    left: 0;
+    border-radius: 0 0 $standardBorderRadius 0;
+
+    .IconOverwrite {
+      font-size: 14px;
+    }
+  }
+}

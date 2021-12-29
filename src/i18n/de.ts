@@ -18,6 +18,10 @@ export const messages = {
       Cancel: 'Abbrechen',
     },
   },
+  EditAvatarDialog: {
+    Save: 'Speichern',
+    Cancel: 'Abbrechen',
+  },
   ConfirmDialog: {
     Confirm: 'Bestätigen',
     Cancel: 'Abbrechen',

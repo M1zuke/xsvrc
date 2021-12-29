@@ -137,7 +137,6 @@ export function getAllFavoriteGroups(favorites: FavoriteGroup[] = [], offset = 0
         }
 
         dispatch(setFavoriteGroups(newFavoriteGroups));
-        console.log(newFavoriteGroups);
       }
     }
   };
