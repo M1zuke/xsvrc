@@ -23,6 +23,10 @@
   width: 100%;
   overflow: hidden;
 
+  .TagSearch {
+    text-align: left;
+  }
+
   .ScrollableContent {
     height: 100%;
     width: 100%;
@@ -58,6 +62,7 @@
           padding: $smallSpacing;
           font-weight: bold;
           white-space: nowrap;
+          cursor: pointer;
         }
 
         .Key {

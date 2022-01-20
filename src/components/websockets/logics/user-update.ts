@@ -13,6 +13,7 @@ export function handleUserUpdate(websocketNotification: UserUpdate, state: AppSt
     if (Object.keys(userComparison).length !== 0) {
       dispatch(
         addUserEvent({
+          userId: websocketNotification.content.userId,
           eventType: websocketNotification.type,
           displayName: websocketNotification.content.user.displayName,
           comparison: userComparison,

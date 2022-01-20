@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useAppDispatch } from '../thunk/dispatch';
-import { getAllAvatars, getAvatar, updateAvatar } from './avatars-api';
+import { deleteAvatar, getAllAvatars, getAvatar, updateAvatar } from './avatars-api';
 import { addToFavorites, removeFromFavorites } from './favorites-api';
 import { getAllFriends, sendUnfriendRequest } from './friends-api';
 import { getUser } from './getUser';
@@ -9,7 +9,8 @@ import { getInstance, getWorld, selfInvite } from './instance-api';
 import { login } from './login';
 import { logout } from './logout';
 import { getAllModerations } from './moderations';
-import { AvatarInfo, Favorite, NamedFavorite, UserInfo } from './types';
+import { handleNotification, NotificationsAnswerPossibility } from './notifications-api';
+import { AvatarInfo, Favorite, NamedFavorite, NotificationContent, UserInfo } from './types';
 
 export type API = {
   info(): Promise<void>;
@@ -26,7 +27,9 @@ export type API = {
   selfInvite(location: string): Promise<void>;
   getAllAvatars(): Promise<void>;
   updateAvatar(avatarInfo: AvatarInfo, changeVersion?: boolean): Promise<void>;
+  deleteAvatar(avatarId: string): Promise<void>;
   getAvatar(avatarId: string): Promise<void>;
+  handleNotification(notificationId: NotificationContent, method: NotificationsAnswerPossibility): Promise<void>;
 };
 
 export function useApi(): API {
@@ -78,6 +81,12 @@ export function useApi(): API {
       },
       getAvatar: (avatarInfo) => {
         return dispatch(getAvatar(avatarInfo));
+      },
+      deleteAvatar: (avatarId: AvatarInfo['id']) => {
+        return dispatch(deleteAvatar(avatarId));
+      },
+      handleNotification: (notificationId, method) => {
+        return dispatch(handleNotification(notificationId, method));
       },
     }),
     [dispatch],

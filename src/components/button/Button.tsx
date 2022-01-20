@@ -30,7 +30,7 @@ export function Button(props: PropsWithChildren<ButtonProps>): ReactElement {
       [styles.HeaderIcon]: props.headerIcon,
       [styles.Light]: props.light,
       [styles.Dark]: props.dark,
-      [styles.Padding]: props.padding !== false,
+      [styles.Padding]: props.padding !== true,
     },
     props.className,
   );

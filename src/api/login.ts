@@ -5,11 +5,11 @@ import { getAllFavoriteGroups, getAllFavorites } from './favorites-api';
 import { getAllFriends } from './friends-api';
 import { logout } from './logout';
 import { getAllModerations } from './moderations';
-import { getAllNotifications } from './notifications';
+import { getAllNotifications } from './notifications-api';
 import { api, prepare } from './prepare';
 import { AuthenticatedUserInfo } from './types';
 
-export function login(username?: string, password?: string): AppThunkAction<Promise<void>> {
+export function login(username?: string, password?: string): AppThunkAction {
   return async function (dispatch, getState) {
     const state = getState();
     if (state.user.userInfo === null || isErrorType(state.user.userInfo)) {

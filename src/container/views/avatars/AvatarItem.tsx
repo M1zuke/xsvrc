@@ -1,6 +1,7 @@
 import { Delete, Edit, Lock } from '@mui/icons-material';
 import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { AvatarInfo } from '../../../api/types';
+import { useApi } from '../../../api/use-api';
 import { Button } from '../../../components/button/Button';
 import { ConfirmDialog } from '../../dialog/ConfirmDialog';
 import { EditAvatarDialog } from '../../dialog/EditAvatarDialog';
@@ -13,6 +14,7 @@ export type AvatarItemProps = {
 export function AvatarItem({ avatarInfo }: AvatarItemProps): ReactElement {
   const [showEditAvatarDialog, setShowAvatarDialog] = useState(false);
   const [showConfirmDeleteAvatar, setShowConfirmDeleteAvatar] = useState(false);
+  const { deleteAvatar } = useApi();
   const imageStyle = useMemo(
     () => ({
       backgroundImage: `url('${avatarInfo.thumbnailImageUrl}')`,
@@ -21,8 +23,8 @@ export function AvatarItem({ avatarInfo }: AvatarItemProps): ReactElement {
   );
 
   const handleConfirmDelete = useCallback(() => {
-    console.log('confirmed');
-  }, []);
+    deleteAvatar(avatarInfo.id).finally();
+  }, [avatarInfo.id, deleteAvatar]);
 
   return (
     <>
@@ -43,7 +45,7 @@ export function AvatarItem({ avatarInfo }: AvatarItemProps): ReactElement {
           <Button icon onClick={() => setShowAvatarDialog(true)}>
             <Edit />
           </Button>
-          <Button icon className={styles.DeleteButton} onClick={() => setShowConfirmDeleteAvatar(true)} disabled>
+          <Button icon className={styles.DeleteButton} onClick={() => setShowConfirmDeleteAvatar(true)}>
             <Delete />
           </Button>
         </div>

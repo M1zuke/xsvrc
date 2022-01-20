@@ -93,3 +93,6 @@ export const IsLoggedInUser =
   (state: AppState): boolean => {
     return isLoaded(state.user.userInfo) ? state.user.userInfo.id === id : false;
   };
+
+export const GetFriends = (state: AppState): UserInfo[] =>
+  isLoaded(state.friends.friendInfo) ? Object.values(state.friends.friendInfo) : [];

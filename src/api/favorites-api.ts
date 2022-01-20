@@ -16,7 +16,7 @@ import {
 
 const limit = 100;
 
-export function getAllFavorites(favorites: Favorite[] = [], offset = 0): AppThunkAction<Promise<void>> {
+export function getAllFavorites(favorites: Favorite[] = [], offset = 0): AppThunkAction {
   return async function (dispatch, getState) {
     const state = getState();
 
@@ -73,7 +73,7 @@ function customizer<T>(objValue: T[], srcValue: T[]): T[] | undefined {
   }
 }
 
-export function addToFavorites(user: UserInfo, favGroup: string): AppThunkAction<Promise<void>> {
+export function addToFavorites(user: UserInfo, favGroup: string): AppThunkAction {
   return async function (dispatch, getState) {
     const state = getState();
 
@@ -97,7 +97,7 @@ export function addToFavorites(user: UserInfo, favGroup: string): AppThunkAction
   };
 }
 
-export function removeFromFavorites(favorite: Favorite | NamedFavorite): AppThunkAction<Promise<void>> {
+export function removeFromFavorites(favorite: Favorite | NamedFavorite): AppThunkAction {
   return async function (dispatch, getState) {
     const response = await prepare(getState, dispatch, {
       url: api(`favorites/${favorite.id}`),
@@ -112,7 +112,7 @@ export function removeFromFavorites(favorite: Favorite | NamedFavorite): AppThun
   };
 }
 
-export function getAllFavoriteGroups(favorites: FavoriteGroup[] = [], offset = 0): AppThunkAction<Promise<void>> {
+export function getAllFavoriteGroups(favorites: FavoriteGroup[] = [], offset = 0): AppThunkAction {
   return async function (dispatch, getState) {
     const state = getState();
 

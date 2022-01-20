@@ -8,6 +8,7 @@ import { IsUpdateAvailable } from '../../store/view/selectors';
 import { Button } from '../button/Button';
 import { Content } from '../content/Content';
 import styles from './Header.module.scss';
+import appLogo from '../../images/xsvrc-logo.png';
 
 type ApplicationCommands = 'close' | 'minimize' | 'maximize' | 'unmaximize';
 
@@ -21,6 +22,7 @@ export function Header(): ReactElement {
   return (
     <>
       <Content className={styles.Component}>
+        <img alt="" src={appLogo} />
         <div className={styles.ApplicationTitle}>
           {messages.Application.Title} - {process.env['REACT_APP_VERSION']}
         </div>

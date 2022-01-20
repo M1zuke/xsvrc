@@ -50,6 +50,7 @@ export const messages = {
       },
     },
     UserEventList: {
+      Title: 'Event-list',
       SearchUsername: 'Nach Usernamen suchen',
     },
     Settings: {

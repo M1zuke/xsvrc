@@ -15,6 +15,7 @@ export async function handleUserActiveOrUpdateNotification(
   if (Object.keys(userComparison).length !== 0) {
     dispatch(
       addUserEvent({
+        userId: websocketNotification.content.userId,
         eventType: websocketNotification.type,
         displayName: websocketNotification.content.user.displayName,
         comparison: userComparison,

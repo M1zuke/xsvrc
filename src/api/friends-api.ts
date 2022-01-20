@@ -8,11 +8,7 @@ import { UserInfo } from './types';
 
 const limit = 100;
 
-export function getFriends(
-  offline?: boolean,
-  friendsInfo: UserInfo[] = [],
-  offset = 0,
-): AppThunkAction<Promise<UserInfo[]>> {
+export function getFriends(offline?: boolean, friendsInfo: UserInfo[] = [], offset = 0): AppThunkAction<UserInfo[]> {
   return async function (dispatch, getState) {
     const state = getState();
 
@@ -42,7 +38,7 @@ export function getFriends(
   };
 }
 
-export function getAllFriends(): AppThunkAction<Promise<void>> {
+export function getAllFriends(): AppThunkAction {
   return async function (dispatch, getState) {
     const state = getState();
     if (state.friends.friendInfo === null) {
@@ -62,7 +58,7 @@ export function getAllFriends(): AppThunkAction<Promise<void>> {
   };
 }
 
-export function sendFriendRequest(id: string): AppThunkAction<Promise<void>> {
+export function sendFriendRequest(id: string): AppThunkAction {
   return async function (dispatch, getState) {
     const response = await prepare(getState, dispatch, {
       url: api(`user/${id}/friendRequest`),
@@ -77,7 +73,7 @@ export function sendFriendRequest(id: string): AppThunkAction<Promise<void>> {
   };
 }
 
-export function sendUnfriendRequest(id: string): AppThunkAction<Promise<void>> {
+export function sendUnfriendRequest(id: string): AppThunkAction {
   return async function (dispatch, getState) {
     const response = await prepare(getState, dispatch, {
       url: api(`auth/user/friends/${id}`),

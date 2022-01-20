@@ -4,7 +4,7 @@ import { isErrorType } from '../store/reducer';
 import { AppThunkAction } from '../thunk';
 import { api, prepare } from './prepare';
 
-export function info(): AppThunkAction<Promise<void>> {
+export function info(): AppThunkAction {
   return async function (dispatch, getState) {
     const state = getState();
 

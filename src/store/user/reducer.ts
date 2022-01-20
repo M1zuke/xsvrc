@@ -10,6 +10,16 @@ export function reducer(state: UserState = INITIAL_USER_STATE, action: UserActio
         avatars: action.avatarInfo,
       };
     }
+    case 'user/remove-avatar': {
+      const avatars = state.avatars;
+      if (isLoaded(avatars)) {
+        return {
+          ...state,
+          avatars: [...avatars.filter((a) => a.id !== action.avatarId)],
+        };
+      }
+      return state;
+    }
     case 'user/update-avatar': {
       const avatars = state.avatars;
       if (isLoaded(avatars)) {
@@ -37,6 +47,15 @@ export function reducer(state: UserState = INITIAL_USER_STATE, action: UserActio
         return {
           ...state,
           notifications: [action.notification, ...state.notifications],
+        };
+      }
+      return state;
+    }
+    case 'user/remove-notification': {
+      if (isLoaded(state.notifications)) {
+        return {
+          ...state,
+          notifications: [...state.notifications.filter((not) => not.id !== action.notificationId)],
         };
       }
       return state;

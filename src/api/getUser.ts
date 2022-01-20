@@ -5,7 +5,7 @@ import { AppThunkAction } from '../thunk';
 import { api, isLoaded, prepare } from './prepare';
 import { UserInfo } from './types';
 
-export function getUser(id: string): AppThunkAction<Promise<void>> {
+export function getUser(id: string): AppThunkAction {
   return async function (dispatch, getState) {
     const state = getState();
     if (!isLoggedIn(state)) {

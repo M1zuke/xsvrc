@@ -15,6 +15,7 @@ export type UserActionType = `user/${
   | 'set-user-info'
   | 'set-notifications'
   | 'add-notification'
+  | 'remove-notification'
   | 'reset'
   | 'set-favorites'
   | 'add-favorite'
@@ -22,6 +23,7 @@ export type UserActionType = `user/${
   | 'set-moderations'
   | 'set-favorite-groups'
   | 'set-avatars'
+  | 'remove-avatar'
   | 'update-avatar'}`;
 
 export type UserAction<T extends UserActionType> = Action<T>;
@@ -36,6 +38,9 @@ export type SetNotifications = UserAction<'user/set-notifications'> & {
 
 export type AddNotification = UserAction<'user/add-notification'> & {
   notification: NotificationContent;
+};
+export type RemoveNotification = UserAction<'user/remove-notification'> & {
+  notificationId: NotificationContent['id'];
 };
 
 export type SetFavorites = UserAction<'user/set-favorites'> & {
@@ -61,8 +66,13 @@ export type SetFavoriteGroups = UserAction<'user/set-favorite-groups'> & {
 export type SetAvatars = UserAction<'user/set-avatars'> & {
   avatarInfo: Loadable<AvatarInfo[]>;
 };
+
 export type UpdateAvatar = UserAction<'user/update-avatar'> & {
   avatarInfo: AvatarInfo;
+};
+
+export type RemoveAvatar = UserAction<'user/remove-avatar'> & {
+  avatarId: AvatarInfo['id'];
 };
 
 export type ResetUser = UserAction<'user/reset'>;
@@ -78,4 +88,6 @@ export type UserActions =
   | SetModerations
   | SetFavoriteGroups
   | SetAvatars
-  | UpdateAvatar;
+  | UpdateAvatar
+  | RemoveAvatar
+  | RemoveNotification;

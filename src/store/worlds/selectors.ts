@@ -1,5 +1,5 @@
 import { isLoaded } from '../../api/prepare';
-import { InstanceInfo } from '../../api/types';
+import { InstanceInfo, WorldInfo } from '../../api/types';
 import { AppState } from '../index';
 import { Loadable } from '../reducer';
 import { WorldInfos } from './state';
@@ -10,6 +10,12 @@ export const selectWorldByLocation =
     const [id] = location.split(':');
     return state.worlds.worlds[id] ?? null;
   };
+
+export const getAllKnownWorlds = (state: AppState): WorldInfo[] => {
+  return Object.values(state.worlds.worlds)
+    .map((wi) => (isLoaded(wi) && wi !== 'private' && wi !== 'offline' ? wi : null))
+    .filter((wi) => wi !== null) as WorldInfo[];
+};
 
 export const selectInstanceByInstance =
   (location: string) =>

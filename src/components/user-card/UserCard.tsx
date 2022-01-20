@@ -132,7 +132,7 @@ export function UserCard({ user }: UserCardProps): ReactElement {
                 [styles.AlreadyFavorite]: !!isFavorite,
               })}
               icon={!isFavorite}
-              disabled={isLoggedInUser}
+              disabled={isLoggedInUser || !user.isFriend}
             >
               <Star />
               {isFavorite?.groupName}
@@ -141,7 +141,7 @@ export function UserCard({ user }: UserCardProps): ReactElement {
               icon
               onClick={() => handleOnUnfriendClick()}
               className={styles.DeleteUser}
-              disabled={isLoggedInUser}
+              disabled={isLoggedInUser || !user.isFriend}
             >
               <Delete />
             </Button>

@@ -4,18 +4,23 @@
 
 .Component {
   display: grid;
-  grid-template-columns: repeat(2, autoSize());
-  justify-content: space-between;
+  grid-template-columns: autoSize() auto autoSize();
+  grid-gap: $innerSpacing;
   border-radius: 0;
   align-items: center;
-  padding: $tinySpacing $tinySpacing $tinySpacing $innerSpacing;
+  padding: $tinySpacing;
   background-color: $colorBlack;
   -webkit-app-region: drag;
   z-index: 99999;
 
+  img {
+    width: 24px;
+  }
+
   .ApplicationTitle {
     font-weight: bold;
     font-size: 16px;
+    line-height: 16px;
     text-transform: uppercase;
   }
 

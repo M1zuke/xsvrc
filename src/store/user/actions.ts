@@ -15,7 +15,9 @@ import { Loadable } from '../reducer';
 import {
   AddFavorite,
   AddNotification,
+  RemoveAvatar,
   RemoveFavorite,
+  RemoveNotification,
   ResetUser,
   SetAvatars,
   SetFavoriteGroups,
@@ -160,5 +162,18 @@ export function updateAvatarInfo(avatarInfo: AvatarInfo): UpdateAvatar {
   return {
     type: 'user/update-avatar',
     avatarInfo,
+  };
+}
+export function removeAvatarInfo(avatarId: AvatarInfo['id']): RemoveAvatar {
+  return {
+    type: 'user/remove-avatar',
+    avatarId,
+  };
+}
+
+export function removeNotification(notificationId: NotificationContent['id']): RemoveNotification {
+  return {
+    type: 'user/remove-notification',
+    notificationId,
   };
 }

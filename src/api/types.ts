@@ -262,6 +262,18 @@ export type NotificationDTO = Omit<NotificationContent, 'details'> & {
   details: string;
 };
 
+export const WebsocketNotificationTypes = [
+  'friend-active',
+  'friend-add',
+  'friend-online',
+  'friend-update',
+  'friend-offline',
+  'friend-location',
+  'friend-delete',
+  'user-location',
+  'user-update',
+] as const;
+
 export type Notification = {
   type: 'notification';
   content: NotificationContent;
