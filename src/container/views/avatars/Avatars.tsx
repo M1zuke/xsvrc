@@ -19,7 +19,11 @@ function AvatarsInner({ avatars }: AvatarsInnerProps): ReactElement {
     return avatars.map((item) => <AvatarItem key={`AvatarItem-${item.id}`} avatarInfo={item} />);
   }, [avatars]);
 
-  return <ScrollableContent innerClassName={styles.AvatarList}>{elements}</ScrollableContent>;
+  return (
+    <ScrollableContent>
+      <div className={styles.AvatarList}>{elements}</div>
+    </ScrollableContent>
+  );
 }
 
 export function Avatars(): ReactElement {

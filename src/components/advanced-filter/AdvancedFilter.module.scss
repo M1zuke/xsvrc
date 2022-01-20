@@ -1,0 +1,77 @@
+@import '../../common/_spacing';
+@import '../../common/_colors';
+@import '../../common/_mixins';
+
+.AdvancedFilter {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: $innerSpacing;
+  align-items: center;
+
+  .Filter {
+    cursor: pointer;
+    position: relative;
+    z-index: 222;
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    grid-gap: $tinySpacing;
+    background-color: $color2;
+    padding: $tinySpacing;
+    border-radius: $standardBorderRadius;
+
+    .DeleteButton {
+      color: $colorRed;
+    }
+
+    .FilterButton {
+      background-color: $color0;
+      border-radius: $standardBorderRadius;
+      padding: $buttonPadding;
+      user-select: none;
+    }
+
+    .FilterOptions {
+      background-color: $color0;
+      padding: $smallSpacing;
+      border: 2px solid $colorBlack;
+      position: absolute;
+      top: calc(100% + #{$tinySpacing});
+      left: 0;
+      max-height: 50vh;
+      max-width: 50vw;
+      border-radius: $standardBorderRadius;
+      box-shadow: 0 0 3px 0 $colorBlack;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 999;
+
+      .FilterOption {
+        padding: $smallSpacing;
+        display: grid;
+        grid-auto-flow: column;
+        grid-gap: $innerSpacing;
+        align-items: center;
+        white-space: nowrap;
+        grid-template-columns: autoSize() auto;
+
+        transition: background-color 100ms linear;
+
+        &:nth-child(2n) {
+          background-color: $color2;
+        }
+
+        &:hover {
+          background-color: $color3;
+        }
+      }
+    }
+  }
+}
+
+.Sticky {
+  background-color: $color0;
+  position: sticky;
+  top: calc(#{$smallSpacing} * -1);
+  left: 0;
+}

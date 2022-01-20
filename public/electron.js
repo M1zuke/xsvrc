@@ -21,7 +21,7 @@ let mainWindow;
 let tray;
 
 function createTray() {
-  const appIcon = new Tray(path.join(__dirname, 'favicon.ico'));
+  const appIcon = new Tray(path.join(__dirname, '../src/images', 'xsvrc-logo.png'));
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Show',
@@ -41,7 +41,7 @@ function createTray() {
   appIcon.on('double-click', function () {
     mainWindow.show();
   });
-  appIcon.setToolTip('xsvrc');
+  appIcon.setToolTip('XSVRC - Manage your VRC');
   appIcon.setContextMenu(contextMenu);
   return appIcon;
 }
@@ -49,6 +49,7 @@ function createTray() {
 function createWindow() {
   try {
     const options = {
+      icon: path.join(__dirname, '../src/images', 'xsvrc-logo.png'),
       width: 1280,
       height: 800,
       minWidth: 1280,

@@ -15,6 +15,7 @@ export function handleUserLocationUpdate(
   if (isLoaded(userInfo)) {
     dispatch(
       addUserEvent({
+        userId: websocketNotification.content.userId,
         eventType: websocketNotification.type,
         displayName: userInfo.displayName,
         comparison: {

@@ -13,6 +13,7 @@ export async function handleUserOfflineNotification(
   const [, oldUserInfo] = await getFriendsAndOldUser(state, dispatch, websocketNotification.content.userId);
   dispatch(
     addUserEvent({
+      userId: websocketNotification.content.userId,
       eventType: websocketNotification.type,
       displayName: oldUserInfo?.displayName ?? websocketNotification.content.userId,
       comparison: {

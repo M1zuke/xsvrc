@@ -127,6 +127,12 @@ export function Friends(): ReactElement {
     [filteredFriendsInfo.length, friends],
   );
 
+  const friendOverviews = useMemo(() => {
+    return filteredFriendsInfo.map((friendInfo) => (
+      <FriendOverview friendId={friendInfo.id} key={`Friends-Overview-${friendInfo.id}`} />
+    ));
+  }, [filteredFriendsInfo]);
+
   return (
     <div className={styles.Component}>
       <TitleBox className={styles.FriendsCountWrapper} title="Friends">
@@ -138,7 +144,6 @@ export function Friends(): ReactElement {
         <div className={styles.SpecialFilter}>
           <div className={styles.SearchByName}>
             <TextInput
-              aria-label="enter username"
               value={userNameFilter}
               onChange={(value) => setUserNameFilter(value)}
               placeholder={messages.Views.Login.View.Username}
@@ -160,11 +165,7 @@ export function Friends(): ReactElement {
         <div className={styles.NormalFilter}>{filterButtons}</div>
       </Content>
       <ScrollableContent>
-        <div className={styles.FriendsList}>
-          {filteredFriendsInfo.map((friendInfo) => (
-            <FriendOverview friendId={friendInfo.id} key={`Friends-Overview-${friendInfo.id}`} />
-          ))}
-        </div>
+        <div className={styles.FriendsList}>{friendOverviews}</div>
       </ScrollableContent>
     </div>
   );

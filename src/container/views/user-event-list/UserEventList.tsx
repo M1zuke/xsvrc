@@ -1,7 +1,6 @@
-import React, { ReactElement, useCallback, useState } from 'react';
+import React, { ReactElement, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { Content } from '../../../components/content/Content';
-import { TextInput } from '../../../components/input/TextInput';
+import { useAdvancedFilter } from '../../../components/advanced-filter/AdvancedFilter';
 import { Pagination } from '../../../components/pagination/Pagination';
 import { useMessages } from '../../../i18n';
 import { selectUserEvents } from '../../../store/user-events/selectors';
@@ -10,20 +9,32 @@ import {
   SubscriptionService,
   UnsubscribeFunction,
 } from '../../subscription-service/SubscriptionService';
+import { TitleBox } from '../home/TitleBox';
+import { useUserEventListAdvancedList } from './user-event-list-advanced-list';
 import { UserEventItem } from './UserEventItem';
 import styles from './UserEventList.module.scss';
 
 export function UserEventList(): ReactElement {
   const messages = useMessages();
   const userEvents = useSelector(selectUserEvents);
-  const [usernameFilter, setUsernameFiler] = useState('');
+  const advancedFilterConfig = useUserEventListAdvancedList();
+  const [config, advancedFilter] = useAdvancedFilter(advancedFilterConfig);
 
   const listItems = useCallback(
     (subscribe: SubscribeFunction, unsubscribe: UnsubscribeFunction) => {
-      const filteredItems =
-        usernameFilter !== ''
-          ? userEvents.filter((i) => i.displayName.toLowerCase().includes(usernameFilter.toLowerCase()))
-          : userEvents;
+      const filteredItems = userEvents.filter((ue) => {
+        let doesMatch = true;
+        config.forEach((c) => {
+          if (doesMatch) {
+            if (c.filter.length === 0) {
+              doesMatch = true;
+            } else if (!c.filter.includes(ue[c.key].toString())) {
+              doesMatch = false;
+            }
+          }
+        });
+        return doesMatch;
+      });
 
       if (filteredItems.length === 0) {
         return [
@@ -43,7 +54,7 @@ export function UserEventList(): ReactElement {
         );
       });
     },
-    [userEvents, usernameFilter],
+    [config, userEvents],
   );
 
   const style = useCallback(
@@ -57,13 +68,9 @@ export function UserEventList(): ReactElement {
     <SubscriptionService>
       {(subscribe, unsubscribe) => (
         <div className={styles.Component}>
-          <Content className={styles.TagSearch}>
-            <TextInput
-              aria-label="tag-search"
-              placeholder={messages.Views.UserEventList.SearchUsername}
-              onChange={setUsernameFiler}
-            />
-          </Content>
+          <TitleBox title={messages.Views.UserEventList.Title}>
+            <div className={styles.TagSearch}>{advancedFilter}</div>
+          </TitleBox>
           <Pagination data={listItems(subscribe, unsubscribe)} pageSize={25}>
             {(records) => (
               <div className={styles.ScrollableContent} style={style(records.length)}>

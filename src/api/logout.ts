@@ -5,7 +5,7 @@ import { resetUser } from '../store/user/actions';
 import { AppThunkAction } from '../thunk';
 import { api, prepare } from './prepare';
 
-export function logout(): AppThunkAction<Promise<void>> {
+export function logout(): AppThunkAction {
   return async function (dispatch, getState) {
     dispatch(resetStoredCookies());
     dispatch(resetFriends());

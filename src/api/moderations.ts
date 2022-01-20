@@ -3,7 +3,7 @@ import { AppThunkAction } from '../thunk';
 import { api, prepare } from './prepare';
 import { Moderation } from './types';
 
-export function getAllModerations(): AppThunkAction<Promise<void>> {
+export function getAllModerations(): AppThunkAction {
   return async function (dispatch, getState) {
     const state = getState();
 

@@ -23,6 +23,7 @@ export async function handleUserLocationNotification(
   if (userLocation !== websocketNotification.content.location) {
     dispatch(
       addUserEvent({
+        userId: websocketNotification.content.userId,
         eventType: websocketNotification.type,
         displayName: websocketNotification.content.user.displayName,
         comparison: {

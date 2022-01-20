@@ -1,7 +1,9 @@
 import { KeyboardArrowRight } from '@mui/icons-material';
 import classNames from 'classnames';
-import React, { ReactElement, useMemo, useState } from 'react';
+import React, { ReactElement, useCallback, useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { AuthenticatedUserInfo, UserInfo } from '../../../api/types';
+import { routes } from '../../../common/routes';
 import { useSettings } from '../../../common/use-settings';
 import { UserEvent } from '../../../store/user-events/state';
 import { PropsWithSubscription } from '../../subscription-service/SubscriptionService';
@@ -70,6 +72,7 @@ export function UserEventItem({
   unsubscribe,
 }: PropsWithSubscription<UserEventItemProps>): ReactElement {
   const [collapsed, setCollapsed] = useState(true);
+  const history = useHistory();
   const { settings } = useSettings();
 
   const timestamp = useMemo(
@@ -115,11 +118,18 @@ export function UserEventItem({
     });
   }, [subscribe, unsubscribe, userEvent.comparison, userEvent.eventKey]);
 
+  const routeToProfile = useCallback(
+    () => history.push(`${routes.friendsProfile.path}/${userEvent.userId}`),
+    [history, userEvent.userId],
+  );
+
   return (
     <div className={classes} onClick={() => setCollapsed(!collapsed)}>
       <div className={styles.InfoBox}>
         <div className={styles.Timestamp}>{timestamp}</div>
-        <div className={styles.DisplayName}>{userEvent.displayName}</div>
+        <div className={styles.DisplayName} onClick={routeToProfile}>
+          {userEvent.displayName}
+        </div>
         <div className={styles.Key}>{userEvent.eventType}</div>
       </div>
       <div className={styles.Comparison}>{comparisons}</div>

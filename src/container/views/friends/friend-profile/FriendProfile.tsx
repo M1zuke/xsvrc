@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useApi } from '../../../../api/use-api';
@@ -25,6 +25,17 @@ export function FriendProfile(): ReactElement {
   const samePeopleInInstance = useSelector(selectFriendInfoByLocation(cachedUser));
   const { getUser } = useApi();
 
+  const tabTitles = useMemo(() => {
+    if (samePeopleInInstance.length === 0) {
+      return [FriendsProfile.Tabs.Overview, FriendsProfile.Tabs.JSON];
+    }
+    return [
+      FriendsProfile.Tabs.Overview,
+      FriendsProfile.Tabs.Instance(samePeopleInInstance.length),
+      FriendsProfile.Tabs.JSON,
+    ];
+  }, [FriendsProfile.Tabs, samePeopleInInstance.length]);
+
   useEffect(() => {
     getUser(id).finally();
   }, [getUser, id]);
@@ -36,17 +47,11 @@ export function FriendProfile(): ReactElement {
           <>
             <UserCard user={user} />
             <Content>
-              <Tabs
-                title={[
-                  FriendsProfile.Tabs.Overview,
-                  FriendsProfile.Tabs.Instance(samePeopleInInstance.length),
-                  FriendsProfile.Tabs.JSON,
-                ]}
-              >
+              <Tabs title={tabTitles}>
                 <ScrollableContent innerClassName={styles.ScrollableContent}>
                   <UserOverview user={user} />
                 </ScrollableContent>
-                <WorldInstance user={user} />
+                {samePeopleInInstance.length !== 0 && <WorldInstance user={user} />}
                 <ScrollableContent innerClassName={styles.Content}>
                   <RenderJSON json={user} />
                 </ScrollableContent>

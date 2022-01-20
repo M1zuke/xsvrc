@@ -13,6 +13,7 @@ export async function handleUserAddNotification(
   const [friends, oldUserInfo] = await getFriendsAndOldUser(state, dispatch, websocketNotification.content.userId);
   dispatch(
     addUserEvent({
+      userId: websocketNotification.content.userId,
       eventType: websocketNotification.type,
       displayName: websocketNotification.content.user.displayName,
       comparison: {
@@ -23,5 +24,5 @@ export async function handleUserAddNotification(
       },
     }),
   );
-  dispatch(setFriendInfo(friends, websocketNotification.content.user));
+  dispatch(setFriendInfo([...friends, websocketNotification.content.user]));
 }

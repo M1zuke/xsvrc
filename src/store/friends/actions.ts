@@ -20,20 +20,20 @@ import { addNotification } from '../user/actions';
 import { FriendEntries, FriendFilter } from './state';
 import { ResetFriends, SetFriendFilter, SetFriendInfo, SetNonFriendInfo } from './types';
 
-function compare<T extends keyof UserInfo, V = UserInfo[T]>(a: V, b: V): number {
+export function compare<T extends keyof UserInfo, V = UserInfo[T]>(a: V, b: V): number {
   if (typeof a === 'number' && typeof b === 'number') {
     return a - b;
   }
 
   if (typeof a === 'string' && typeof b === 'string') {
-    return a.localeCompare(b, 'en');
+    return a.toLowerCase().localeCompare(b.toLowerCase(), 'en');
   }
 
   return 0;
 }
 
 function sortFunction(a: UserInfo, b: UserInfo): number {
-  return compare(a.displayName.toLowerCase(), b.displayName.toLowerCase());
+  return compare(a.displayName, b.displayName);
 }
 
 function sortFriendInfo(friendInfo: UserInfo[]): UserInfo[] {
@@ -108,7 +108,7 @@ export function setFriendFilter(filter: Partial<FriendFilter>): SetFriendFilter 
   };
 }
 
-export function updateFriend(websocketNotification: WebSocketNotification): AppThunkAction<Promise<void>> {
+export function updateFriend(websocketNotification: WebSocketNotification): AppThunkAction {
   return async function (dispatch, getState) {
     const state = getState();
 

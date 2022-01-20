@@ -1,0 +1,72 @@
+@import '../../common/_spacing';
+@import '../../common/_colors';
+
+.MultipleChoiceComboBox {
+  position: relative;
+
+  .Buttons {
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: $tinySpacing;
+    padding: $tinySpacing;
+    border-radius: $standardBorderRadius;
+    background-color: $color2;
+    position: relative;
+
+    .ClearFilterButton {
+      color: $colorRed;
+    }
+
+    &.OptionsVisible {
+      z-index: 333;
+    }
+  }
+
+  .Options {
+    position: absolute;
+    top: calc(100% + #{$tinySpacing});
+    padding: $smallSpacing;
+    border: 2px solid $colorBlack;
+    border-radius: $standardBorderRadius;
+    background-color: $color0;
+    box-shadow: 0 0 3px 0 $colorBlack;
+    z-index: 999;
+    max-width: 50vw;
+    max-height: 50vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .Option {
+      display: grid;
+      grid-auto-flow: column;
+      grid-gap: $smallSpacing;
+      white-space: nowrap;
+      padding: $smallSpacing;
+      cursor: pointer;
+      align-items: center;
+      justify-content: start;
+
+      &:nth-child(2n) {
+        background-color: $color2;
+      }
+
+      &:hover {
+        background-color: $color3;
+      }
+
+      &.Disabled {
+        color: $color1;
+      }
+    }
+  }
+}
+
+.BackDrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 111;
+  background-color: transparentize($colorBlack, 0.4);
+}

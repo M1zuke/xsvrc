@@ -48,8 +48,8 @@ export function Navigation(): ReactElement {
   }
 
   return (
-    <Content className={styles.Component}>
-      <div className={styles.Navigation}>
+    <Content className={styles.Component} translucent noPadding>
+      <Content className={styles.NavigationTop}>
         <Button
           aria-label="navigate to home"
           active={isActiveRoute(routes.home.path)}
@@ -59,45 +59,12 @@ export function Navigation(): ReactElement {
           <Home />
         </Button>
         <Button
-          aria-label="navigate to friends-profile"
-          active={isActiveRoute(`${routes.friendsProfile.path}/${userId}`)}
-          onClick={() => navigateTo(`${routes.friendsProfile.path}/${userId}`)}
-          icon
-        >
-          <Person />
-        </Button>
-        <Button
           aria-label="navigate to friends"
           active={isActiveRoute(routes.friends.path)}
           onClick={() => navigateTo(routes.friends.path)}
           icon
         >
           <PeopleAlt />
-        </Button>
-        <Button
-          aria-label="navigate to avatars"
-          active={isActiveRoute(routes.avatar.path)}
-          onClick={() => navigateTo(routes.avatar.path)}
-          icon
-        >
-          <Face />
-        </Button>
-        <Button
-          aria-label="navigate to moderations"
-          active={isActiveRoute(routes.moderation.path)}
-          onClick={() => navigateTo(routes.moderation.path)}
-          icon
-        >
-          <Shield />
-        </Button>
-        <Button
-          aria-label="navigate to notifications"
-          active={isActiveRoute(routes.notifications.path)}
-          onClick={() => navigateTo(routes.notifications.path)}
-          badge={notificationsBadge}
-          icon
-        >
-          <Notifications />
         </Button>
         <Button
           aria-label="navigate to event-list"
@@ -116,8 +83,44 @@ export function Navigation(): ReactElement {
         >
           <Search />
         </Button>
-      </div>
-      <div className={styles.Settings}>
+      </Content>
+
+      <Content className={styles.NavigationCenter}>
+        <Button
+          aria-label="navigate to friends-profile"
+          active={isActiveRoute(`${routes.friendsProfile.path}/${userId}`)}
+          onClick={() => navigateTo(`${routes.friendsProfile.path}/${userId}`)}
+          icon
+        >
+          <Person />
+        </Button>
+        <Button
+          aria-label="navigate to notifications"
+          active={isActiveRoute(routes.notifications.path)}
+          onClick={() => navigateTo(routes.notifications.path)}
+          badge={notificationsBadge}
+          icon
+        >
+          <Notifications />
+        </Button>
+        <Button
+          aria-label="navigate to avatars"
+          active={isActiveRoute(routes.avatar.path)}
+          onClick={() => navigateTo(routes.avatar.path)}
+          icon
+        >
+          <Face />
+        </Button>
+        <Button
+          aria-label="navigate to moderations"
+          active={isActiveRoute(routes.moderation.path)}
+          onClick={() => navigateTo(routes.moderation.path)}
+          icon
+        >
+          <Shield />
+        </Button>
+      </Content>
+      <Content className={styles.Settings}>
         <Button
           aria-label="navigate to settings"
           active={isActiveRoute(routes.settings.path)}
@@ -129,7 +132,7 @@ export function Navigation(): ReactElement {
         <Button aria-label="navigate to settings" onClick={() => doLogout()} icon>
           <PowerSettingsNew className={styles.LogoutButton} />
         </Button>
-      </div>
+      </Content>
     </Content>
   );
 }

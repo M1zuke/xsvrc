@@ -1,11 +1,11 @@
-import { setAvatars, updateAvatarInfo } from '../store/user/actions';
+import { removeAvatarInfo, setAvatars, updateAvatarInfo } from '../store/user/actions';
 import { AppThunkAction } from '../thunk';
 import { api, prepare } from './prepare';
 import { AvatarInfo } from './types';
 
 const limit = 100;
 
-export function getAllAvatars(avatars: AvatarInfo[] = [], offset = 0): AppThunkAction<Promise<void>> {
+export function getAllAvatars(avatars: AvatarInfo[] = [], offset = 0): AppThunkAction {
   return async function (dispatch, getState) {
     const state = getState();
     if (state.user.avatars === null) {
@@ -36,7 +36,7 @@ export function getAllAvatars(avatars: AvatarInfo[] = [], offset = 0): AppThunkA
   };
 }
 
-export function getAvatar(avatarId: string): AppThunkAction<Promise<void>> {
+export function getAvatar(avatarId: string): AppThunkAction {
   return async function (dispatch, getState) {
     const response = await prepare<AvatarInfo>(getState, dispatch, {
       url: api(`avatars/${avatarId}`),
@@ -50,7 +50,7 @@ export function getAvatar(avatarId: string): AppThunkAction<Promise<void>> {
   };
 }
 
-export function updateAvatar(avatarInfo: AvatarInfo, changeVersion?: boolean): AppThunkAction<Promise<void>> {
+export function updateAvatar(avatarInfo: AvatarInfo, changeVersion?: boolean): AppThunkAction {
   return async function (dispatch, getState) {
     const requestBody: Partial<AvatarInfo> = {
       name: avatarInfo.name,
@@ -58,8 +58,6 @@ export function updateAvatar(avatarInfo: AvatarInfo, changeVersion?: boolean): A
       releaseStatus: avatarInfo.releaseStatus,
       version: changeVersion ? undefined : avatarInfo.version,
     };
-
-    console.log(requestBody);
 
     const response = await prepare<AvatarInfo>(getState, dispatch, {
       url: api(`avatars/${avatarInfo.id}`),
@@ -75,13 +73,15 @@ export function updateAvatar(avatarInfo: AvatarInfo, changeVersion?: boolean): A
   };
 }
 
-export function deleteAvatar(avatarId: string): AppThunkAction<Promise<void>> {
+export function deleteAvatar(avatarId: string): AppThunkAction {
   return async function (dispatch, getState) {
     const response = await prepare<unknown>(getState, dispatch, {
       url: api(`avatars/${avatarId}`),
       method: 'DELETE',
     });
 
-    console.error(response);
+    if (response.type === 'entity') {
+      dispatch(removeAvatarInfo(avatarId));
+    }
   };
 }

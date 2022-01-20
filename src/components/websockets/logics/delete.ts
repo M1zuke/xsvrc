@@ -12,6 +12,7 @@ export async function handleUserDeleteNotification(
   const [, oldUserInfo] = await getFriendsAndOldUser(state, dispatch, websocketNotification.content.userId, true);
   dispatch(
     addUserEvent({
+      userId: websocketNotification.content.userId,
       eventType: websocketNotification.type,
       displayName: oldUserInfo?.displayName ?? websocketNotification.content.userId,
       comparison: {

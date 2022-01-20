@@ -1,9 +1,16 @@
-@import "../../common/_colors";
+@import '../../common/_colors';
 
 .LoadingComponent {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
+  width: 100%;
+
+  img {
+    width: 200px;
+  }
 
   &.Small > .LdsEllipsis {
     height: 30px;
