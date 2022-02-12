@@ -1,11 +1,11 @@
 import { KeyboardArrowRight } from '@mui/icons-material';
 import classNames from 'classnames';
 import React, { ReactElement, useCallback, useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { AuthenticatedUserInfo, UserInfo } from '../../../api/types';
-import { routes } from '../../../common/routes';
 import { useSettings } from '../../../common/use-settings';
 import { UserEvent } from '../../../store/user-events/state';
+import { setModal } from '../../../store/view/actions';
+import { useAppDispatch } from '../../../thunk/dispatch';
 import { PropsWithSubscription } from '../../subscription-service/SubscriptionService';
 import { UserEventDetail } from './UserEventDetail';
 import styles from './UserEventList.module.scss';
@@ -72,7 +72,7 @@ export function UserEventItem({
   unsubscribe,
 }: PropsWithSubscription<UserEventItemProps>): ReactElement {
   const [collapsed, setCollapsed] = useState(true);
-  const history = useHistory();
+  const dispatch = useAppDispatch();
   const { settings } = useSettings();
 
   const timestamp = useMemo(
@@ -119,8 +119,8 @@ export function UserEventItem({
   }, [subscribe, unsubscribe, userEvent.comparison, userEvent.eventKey]);
 
   const routeToProfile = useCallback(
-    () => history.push(`${routes.friendsProfile.path}/${userEvent.userId}`),
-    [history, userEvent.userId],
+    () => dispatch(setModal({ type: 'friend-profile', userId: userEvent.userId })),
+    [dispatch, userEvent.userId],
   );
 
   return (

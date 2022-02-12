@@ -5,7 +5,7 @@
 .AdvancedFilter {
   display: grid;
   grid-auto-flow: column;
-  grid-gap: $innerSpacing;
+  grid-gap: $smallSpacing;
   align-items: center;
 
   .Filter {

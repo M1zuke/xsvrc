@@ -31,7 +31,7 @@ export function getUser(id: string): AppThunkAction {
         dispatch(setFriendInfo(friends, response.result));
       }
     } else {
-      console.log(response);
+      console.error(response);
     }
   };
 }

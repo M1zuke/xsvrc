@@ -1,4 +1,4 @@
-import { MultipleChoiceOption } from '../combo-box/MulipleChoiceComboBox';
+import { MultipleChoiceOption } from '../combo-box/MultipleChoiceComboBox';
 
 export type AdvancedFilterConfig<T> = {
   id: string;
@@ -14,7 +14,6 @@ export type FilterConfig<T, K extends keyof T = keyof T> = {
   label: string;
   key: K;
   show?: boolean;
-  searchFilter?: string;
   options: MultipleChoiceOption[];
 };
 

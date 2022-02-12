@@ -1,20 +1,20 @@
 import { Check, Delete } from '@mui/icons-material';
 import React, { ReactElement, useCallback, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
 import { NotificationsAnswerPossibility } from '../../../api/notifications-api';
 import { NotificationContent } from '../../../api/types';
 import { useApi } from '../../../api/use-api';
-import { routes } from '../../../common/routes';
 import { useSettings } from '../../../common/use-settings';
 import { Button } from '../../../components/button/Button';
 import { useMessages } from '../../../i18n';
+import { setModal } from '../../../store/view/actions';
+import { useAppDispatch } from '../../../thunk/dispatch';
 import styles from './Notifications.module.scss';
 
 export function Notification(props: NotificationContent): ReactElement {
   const messages = useMessages();
   const { settings } = useSettings();
   const { handleNotification } = useApi();
-  const history = useHistory();
+  const dispatch = useAppDispatch();
   const formattedTime = useMemo(
     () =>
       Intl.DateTimeFormat(settings.localization, {
@@ -58,8 +58,8 @@ export function Notification(props: NotificationContent): ReactElement {
     [handleNotification, props],
   );
   const routeToProfile = useCallback(
-    () => history.push(`${routes.friendsProfile.path}/${props.senderUserId}`),
-    [history, props.senderUserId],
+    () => dispatch(setModal({ type: 'friend-profile', userId: props.senderUserId })),
+    [dispatch, props.senderUserId],
   );
 
   return (

@@ -46,6 +46,13 @@
       align-items: center;
       justify-content: start;
 
+      &.Sticky {
+        position: sticky;
+        top: calc(#{$smallSpacing} * -1);
+        left: 0;
+        background-color: $color0;
+      }
+
       &:nth-child(2n) {
         background-color: $color2;
       }

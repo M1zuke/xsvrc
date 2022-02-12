@@ -26,7 +26,9 @@ export function Tabs({ title, children }: PropsWithChildren<TabsProps>): ReactEl
 
   return (
     <div className={styles.Component}>
-      <div className={styles.Tabs}>{tabs}</div>
+      <div className={styles.Tabs}>
+        <div className={styles.TabsInner}>{tabs}</div>
+      </div>
       <div className={styles.Content}>{childrenAsArray[tabIndex]}</div>
     </div>
   );

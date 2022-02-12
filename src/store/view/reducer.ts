@@ -9,6 +9,9 @@ export function reducer(state: ViewState = INITIAL_VIEW_STATE, action: ViewActio
     case 'view/set-i18n': {
       return { ...state, i18n: action.i18n };
     }
+    case 'view/set-modal': {
+      return { ...state, modal: action.modal };
+    }
   }
   return state;
 }

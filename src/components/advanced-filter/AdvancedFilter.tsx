@@ -1,7 +1,7 @@
 import { Add } from '@mui/icons-material';
 import { isEqual } from 'lodash';
 import React, { ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { MultipleChoiceComboBox, MultipleChoiceOption } from '../combo-box/MulipleChoiceComboBox';
+import { MultipleChoiceComboBox, MultipleChoiceOption } from '../combo-box/MultipleChoiceComboBox';
 import { AdvancedFilterConfig, ContentFilter, FilterConfig, VisibleFilter } from './advanced-filter-types';
 import styles from './AdvancedFilter.module.scss';
 
@@ -11,7 +11,6 @@ export function useAdvancedFilter<T>({ config, id }: AdvancedFilterConfig<T>): [
   const [visibleFilter, setVisibleFilter] = useState<VisibleFilter<T>>(
     Object.assign({}, ...config.map((fi) => ({ [fi.key]: !!fi.show }))),
   );
-  console.log(visibleFilter);
 
   const changeVisibleFilter = useCallback((options: MultipleChoiceOption[]) => {
     setVisibleFilter({
@@ -89,6 +88,7 @@ export function useAdvancedFilter<T>({ config, id }: AdvancedFilterConfig<T>): [
                 key={`Advanced-Filter-${fi.key}`}
                 options={fi.options}
                 onChange={changeConfigOptions(fi.key)}
+                searchPlaceholder={`Search ${fi.label}`}
               >
                 {fi.label}
               </MultipleChoiceComboBox>

@@ -76,7 +76,7 @@ export function MultipleChoiceComboBox({
         </div>
         {showOptions && (
           <div className={styles.Options}>
-            <div className={styles.Option}>
+            <div className={classNames(styles.Option, styles.Sticky)}>
               <TextInput onChange={setOptionFilter} placeholder={searchPlaceholder} value={optionFilter} />
             </div>
             {renderedOptions}

@@ -18,7 +18,7 @@
     right: 0;
     bottom: 0;
     filter: blur(50px);
-    z-index: -1;
+    z-index: 0;
   }
 
   .AvatarThumbnail {
@@ -27,6 +27,7 @@
     border-radius: $standardBorderRadius;
     border-width: $tinySpacing;
     border-style: solid;
+    z-index: 1;
   }
 
   .AvatarThumbnail,
@@ -37,6 +38,7 @@
   }
 
   .Overview {
+    z-index: 1;
     display: grid;
     grid-template-rows: auto autoSize();
 

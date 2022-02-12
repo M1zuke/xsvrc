@@ -1,14 +1,26 @@
-@import "../../common/_mixins";
-@import "../../common/_spacing";
+@import '../../common/_mixins';
+@import '../../common/_spacing';
+@import '../../common/_colors';
 
 .Component {
   height: 100%;
   display: grid;
-  grid-gap: $innerSpacing;
   grid-template-rows: autoSize() auto;
   overflow: hidden;
 
+  .Tabs {
+    display: grid;
+    grid-template-columns: autoSize();
+  }
+
+  .TabsInner {
+    padding: $tinySpacing;
+    border-radius: $standardBorderRadius $standardBorderRadius 0 0;
+    background-color: $color2;
+  }
+
   .Content {
+    background-color: $color2;
     height: 100%;
     overflow: hidden;
     display: grid;

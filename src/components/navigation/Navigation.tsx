@@ -18,11 +18,14 @@ import { useApi } from '../../api/use-api';
 import { routes } from '../../common/routes';
 import { selectFriendInfo } from '../../store/friends/selectors';
 import { selectFavoriteUsers, selectNotifications, selectUserInfo } from '../../store/user/selectors';
+import { setModal } from '../../store/view/actions';
+import { useAppDispatch } from '../../thunk/dispatch';
 import { Button } from '../button/Button';
 import { Content } from '../content/Content';
 import styles from './Navigation.module.scss';
 
 export function Navigation(): ReactElement {
+  const dispatch = useAppDispatch();
   const userInfo = useSelector(selectUserInfo);
   const notifications = useSelector(selectNotifications);
   const friendInfo = useSelector(selectFriendInfo);
@@ -88,8 +91,7 @@ export function Navigation(): ReactElement {
       <Content className={styles.NavigationCenter}>
         <Button
           aria-label="navigate to friends-profile"
-          active={isActiveRoute(`${routes.friendsProfile.path}/${userId}`)}
-          onClick={() => navigateTo(`${routes.friendsProfile.path}/${userId}`)}
+          onClick={() => dispatch(setModal({ type: 'friend-profile', userId: userId }))}
           icon
         >
           <Person />

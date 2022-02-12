@@ -2,15 +2,15 @@ import { Home, Lock, Person } from '@mui/icons-material';
 import classNames from 'classnames';
 import React, { ReactElement, useCallback, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { isLoaded } from '../../api/prepare';
 import { UserInfo } from '../../api/types';
 import { useApi } from '../../api/use-api';
-import { routes } from '../../common/routes';
 import { useTrustRank } from '../../common/trust-system';
 import { isActive, isLoggedIn, isOffline } from '../../common/utils';
 import { useMessages } from '../../i18n';
 import { IsLoggedInUser, selectFriendInfoById, selectFriendInfoByLocation } from '../../store/friends/selectors';
+import { setModal } from '../../store/view/actions';
+import { useAppDispatch } from '../../thunk/dispatch';
 import { Loading } from '../loading/Loading';
 import { ToolTip } from '../tool-tip/ToolTip';
 import styles from './FriendOverview.module.scss';
@@ -48,8 +48,8 @@ type FriendOverviewProps = {
 };
 
 export function FriendOverview({ friendId, small }: FriendOverviewProps): ReactElement {
-  const history = useHistory();
   const { getUser } = useApi();
+  const dispatch = useAppDispatch();
   const isLoggedInUser = useSelector(IsLoggedInUser(friendId));
   const friendInfo = useSelector(selectFriendInfoById(friendId));
   const friendsInSameLobby = useSelector(selectFriendInfoByLocation(friendInfo));
@@ -83,8 +83,8 @@ export function FriendOverview({ friendId, small }: FriendOverviewProps): ReactE
   });
 
   const routeToProfile = useCallback(
-    () => history.push(`${routes.friendsProfile.path}/${$friendInfo.id}`),
-    [$friendInfo.id, history],
+    () => dispatch(setModal({ type: 'friend-profile', userId: $friendInfo.id })),
+    [$friendInfo.id, dispatch],
   );
 
   useEffect(() => {

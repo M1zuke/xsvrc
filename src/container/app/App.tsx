@@ -12,13 +12,11 @@ import { Navigation } from '../../components/navigation/Navigation';
 import { Secured } from '../../components/secured/Secured';
 import { WebSockets } from '../../components/websockets/WebSockets';
 import { selectUserInfo } from '../../store/user/selectors';
+import { GlobalModals } from '../dialog/global/GlobalModals';
 import styles from './App.module.scss';
 
 const HomeComponent = lazy(() => import('../views/home/Home').then(({ Home }) => ({ default: Home })));
 const FriendComponent = lazy(() => import('../views/friends/Friends').then(({ Friends }) => ({ default: Friends })));
-const FriendProfile = lazy(() =>
-  import('../views/friends/friend-profile/FriendProfile').then(({ FriendProfile }) => ({ default: FriendProfile })),
-);
 const EventList = lazy(() =>
   import('../views/user-event-list/UserEventList').then(({ UserEventList }) => ({ default: UserEventList })),
 );
@@ -59,6 +57,7 @@ const App: React.FC = () => {
     <div className={styles.Component}>
       <Header />
       <WebSockets />
+      <GlobalModals />
       <div className={styles.Application}>
         <Navigation />
         <Secured>
@@ -67,7 +66,6 @@ const App: React.FC = () => {
               <Switch>
                 <Route {...routes.home.config} component={HomeComponent} />
                 <Route {...routes.friends.config} component={FriendComponent} />
-                <Route {...routes.friendsProfile.config} component={FriendProfile} />
                 <Route {...routes.eventList.config} component={EventList} />
                 <Route {...routes.notifications.config} component={Notifications} />
                 <Route {...routes.settings.config} component={Settings} />

@@ -1,7 +1,8 @@
 import { messages as de } from '../../i18n/de';
 import { messages as en } from '../../i18n/en';
 import { Localization } from '../persisted/state';
-import { SetI18N, UpdateAvailable } from './types';
+import { ModalConfig } from './state';
+import { SetI18N, SetModal, UpdateAvailable } from './types';
 
 export function updateAvailable(): UpdateAvailable {
   return {
@@ -14,5 +15,12 @@ export function setI18N(i18n: Localization): SetI18N {
   return {
     type: 'view/set-i18n',
     i18n: messages,
+  };
+}
+
+export function setModal(modal: ModalConfig): SetModal {
+  return {
+    type: 'view/set-modal',
+    modal,
   };
 }

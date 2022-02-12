@@ -162,7 +162,7 @@ function createWindow() {
         };
       })
       .catch((e) => {
-        console.log(e.error);
+        console.error(e.error);
         return Promise.resolve({
           type: 'error',
           error: e.error.error,

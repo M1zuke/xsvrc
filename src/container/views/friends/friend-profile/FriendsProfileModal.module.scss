@@ -3,13 +3,19 @@
 @import '../../../../common/_colors';
 
 .Component {
-  display: grid;
-  grid-gap: $innerSpacing;
-  height: 100%;
   position: relative;
+  display: grid;
+  height: 100%;
   overflow: hidden;
+  width: 100%;
+  grid-template-rows: repeat(2, autoSize()) auto;
 
-  grid-template-rows: autoSize() auto;
+  .CloseButton {
+    position: absolute;
+    right: $smallSpacing;
+    top: $smallSpacing;
+    z-index: 2;
+  }
 
   .Content,
   .Overview {

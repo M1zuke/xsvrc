@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { isLoaded } from '../../../api/prepare';
 import { isOnline } from '../../../common/utils';
 import { Button } from '../../../components/button/Button';
@@ -12,6 +12,7 @@ import { useMessages } from '../../../i18n';
 import { setFriendFilter } from '../../../store/friends/actions';
 import { selectFriendFilter, selectFriendInfo } from '../../../store/friends/selectors';
 import { FriendFilter } from '../../../store/friends/state';
+import { useAppDispatch } from '../../../thunk/dispatch';
 import { TitleBox } from '../home/TitleBox';
 import styles from './Friends.module.scss';
 
@@ -53,7 +54,7 @@ export function Friends(): ReactElement {
   const messages = useMessages();
   const friends = useSelector(selectFriendInfo);
   const { characterFilter, showOffline, showPrivate } = useSelector(selectFriendFilter);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [userNameFilter, setUserNameFilter] = useState('');
 
   const handleFilterUpdate: FriendFilterUpdate = useMemo(
