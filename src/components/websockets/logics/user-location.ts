@@ -8,10 +8,10 @@ import { AppDispatch } from '../../../thunk';
 
 export function handleUserLocationUpdate(
   websocketNotification: UserLocationUpdate,
-  state: AppState,
+  getState: () => AppState,
   dispatch: AppDispatch,
 ): void {
-  const userInfo = state.user.userInfo;
+  const userInfo = getState().user.userInfo;
   if (isLoaded(userInfo)) {
     dispatch(
       addUserEvent({

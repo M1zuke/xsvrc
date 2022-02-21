@@ -1,0 +1,46 @@
+@import '../../common/_colors';
+@import '../../common/_mixins';
+@import '../../common/_spacing';
+
+.Tag {
+  display: inline-grid;
+  grid-template-columns: repeat(2, autoSize());
+  grid-gap: $smallSpacing;
+  background-color: $color0;
+  align-items: center;
+  border-radius: $standardBorderRadius;
+  padding: $smallSpacing;
+
+  .Label {
+    font-weight: bold;
+  }
+
+  .Children {
+    background-color: $color2;
+    border-radius: $standardBorderRadius;
+    padding: $tinySpacing $smallSpacing;
+
+    &.Translucent {
+      background-color: transparent;
+    }
+  }
+
+  .Checked {
+    display: grid;
+    align-items: center;
+    color: $colorRed;
+
+    &.IsChecked {
+      color: $colorGreen;
+    }
+  }
+
+  &.FullWidth {
+    width: 100%;
+    grid-template-columns: 1fr;
+
+    > .Children {
+      padding: $smallSpacing;
+    }
+  }
+}

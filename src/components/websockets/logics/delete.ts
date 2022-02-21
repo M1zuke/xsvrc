@@ -6,10 +6,10 @@ import { getFriendsAndOldUser } from '../common';
 
 export async function handleUserDeleteNotification(
   websocketNotification: FriendUpdatesUserId,
-  state: AppState,
+  getState: () => AppState,
   dispatch: AppDispatch,
 ): Promise<void> {
-  const [, oldUserInfo] = await getFriendsAndOldUser(state, dispatch, websocketNotification.content.userId, true);
+  const [, oldUserInfo] = await getFriendsAndOldUser(getState, dispatch, websocketNotification.content.userId, true);
   dispatch(
     addUserEvent({
       userId: websocketNotification.content.userId,

@@ -8,10 +8,10 @@ import { getFriendsAndOldUser } from '../common';
 
 export async function handleUserLocationNotification(
   websocketNotification: FriendLocationUpdate,
-  state: AppState,
+  getState: () => AppState,
   dispatch: AppDispatch,
 ): Promise<void> {
-  const [friends, oldUserInfo] = await getFriendsAndOldUser(state, dispatch, websocketNotification.content.userId);
+  const [friends, oldUserInfo] = await getFriendsAndOldUser(getState, dispatch, websocketNotification.content.userId);
   const enrichedUser: UserInfo = {
     ...websocketNotification.content.user,
     location: websocketNotification.content.location,

@@ -1,11 +1,98 @@
+@import '../../../../common/_mixins';
+@import '../../../../common/_colors';
+@import '../../../../common/_spacing';
+
 .Component {
-  .UserBio {
-    pre {
-      margin: 0;
-      padding: 0;
-      display: block;
-      width: 100%;
-      white-space: break-spaces;
+  display: grid;
+  grid-template-columns: auto autoSize();
+  grid-gap: $smallSpacing;
+
+  .LeftRow {
+    display: grid;
+    grid-template-rows: repeat(3, autoSize()) auto;
+    grid-gap: $smallSpacing;
+
+    .VisualizedTags {
+      > div {
+        margin-right: $smallSpacing;
+        margin-bottom: $smallSpacing;
+      }
     }
+
+    .LanguageTags {
+      display: grid;
+      grid-template-columns: repeat(3, autoSize());
+      grid-gap: $smallSpacing;
+    }
+
+    .UserStatusIcon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background-color: $color2;
+
+      &.Green {
+        background-color: $colorGreen;
+      }
+
+      &.Blue {
+        background-color: $colorBlue;
+      }
+
+      &.Orange {
+        background-color: $colorYellow;
+      }
+
+      &.Red {
+        background-color: $colorRed;
+      }
+    }
+  }
+
+  .PremiumUser {
+    display: grid;
+    grid-auto-flow: row;
+    grid-gap: $smallSpacing;
+
+    &.NoSupporter {
+      display: none;
+    }
+
+    .Card {
+      border-radius: $standardBorderRadius;
+      background-color: $color0;
+      padding: $smallSpacing;
+      text-align: center;
+      display: grid;
+      grid-auto-flow: row;
+      grid-gap: $smallSpacing;
+
+      .CardTitle {
+        font-weight: bold;
+      }
+    }
+
+    .Image {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      display: grid;
+      justify-content: center;
+      align-items: center;
+
+      &.Quad {
+        border-radius: $standardBorderRadius;
+      }
+    }
+  }
+
+  pre {
+    margin: 0;
+    display: block;
+    width: 100%;
+    white-space: break-spaces;
   }
 }

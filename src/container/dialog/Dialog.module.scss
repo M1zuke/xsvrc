@@ -9,12 +9,6 @@
   grid-template-areas: 'DialogHeader' 'DialogContent' 'DialogFooter';
   grid-template-rows: autoSize() auto autoSize();
   max-height: 90vh;
-  max-width: calc(min(900px, 90vw));
-  min-width: calc(min(400px, 90vw));
-
-  z-index: var(--dialog-layer);
-
-  * {
-    //z-index: var(--dialog-layer);
-  }
+  max-width: calc(min(70vw, 90vw));
+  min-width: calc(min(70vh, 90vw));
 }

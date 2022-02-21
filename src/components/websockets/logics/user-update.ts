@@ -6,8 +6,12 @@ import { setUserInfo } from '../../../store/user/actions';
 import { AppDispatch } from '../../../thunk';
 import { compareUsers } from '../common';
 
-export function handleUserUpdate(websocketNotification: UserUpdate, state: AppState, dispatch: AppDispatch): void {
-  const userInfo = state.user.userInfo;
+export function handleUserUpdate(
+  websocketNotification: UserUpdate,
+  getState: () => AppState,
+  dispatch: AppDispatch,
+): void {
+  const userInfo = getState().user.userInfo;
   if (isLoaded(userInfo)) {
     const userComparison = compareUsers(userInfo, websocketNotification.content.user as unknown as UserInfo);
     if (Object.keys(userComparison).length !== 0) {

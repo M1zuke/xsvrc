@@ -1,8 +1,9 @@
+import { AppState } from '../store';
 import { setFriendInfo } from '../store/friends/actions';
 import { resetStoredCookies } from '../store/persisted/actions';
-import { removeFavorite } from '../store/user/actions';
+import { removeFavorite, setUserInfo } from '../store/user/actions';
 import { GetFavoriteOfUser } from '../store/user/selectors';
-import { AppThunkAction } from '../thunk';
+import { AppDispatch, AppThunkAction } from '../thunk';
 import { api, isLoaded, prepare } from './prepare';
 import { UserInfo } from './types';
 
@@ -50,10 +51,10 @@ export function getAllFriends(): AppThunkAction {
     const newState = getState();
     if (isLoaded(newState.friends.friendInfo)) {
       const allFriends = [...Object.values(newState.friends.friendInfo), ...offlineFriends, ...onlineFriends];
-      dispatch(setFriendInfo(allFriends));
+      dispatch(setFriendInfo(mapStateToUsers(getState, allFriends)));
     } else {
       const allFriends = [...offlineFriends, ...onlineFriends];
-      dispatch(setFriendInfo(allFriends));
+      dispatch(setFriendInfo(mapStateToUsers(getState, allFriends)));
     }
   };
 }
@@ -93,4 +94,49 @@ export function sendUnfriendRequest(id: string): AppThunkAction {
       console.error(response);
     }
   };
+}
+
+export function mapStateToUsers(getState: () => AppState, friendInfos: UserInfo[]): UserInfo[] {
+  return friendInfos.map((fi) => mapStateToUserInfo(getState, fi));
+}
+
+export function mapStateToUserInfo(getState: () => AppState, friendInfo: UserInfo): UserInfo {
+  const state = getState();
+  const userInfo = state.user.userInfo;
+  if (isLoaded(userInfo)) {
+    const activeIds = userInfo.activeFriends;
+
+    if (activeIds.includes(friendInfo.id)) {
+      return {
+        ...friendInfo,
+        state: 'active',
+        location: '',
+      };
+    }
+  }
+  return friendInfo;
+}
+
+export function moveFriendStateInUserInfo(
+  getState: () => AppState,
+  dispatch: AppDispatch,
+  userId: string,
+  moveTo: UserInfo['state'],
+): void {
+  const state = getState();
+  const userInfo = state.user.userInfo;
+  if (isLoaded(userInfo)) {
+    const onlineIds = userInfo.onlineFriends.filter((id) => id !== userId);
+    const activeIds = userInfo.onlineFriends.filter((id) => id !== userId);
+    const offlineIds = userInfo.onlineFriends.filter((id) => id !== userId);
+
+    dispatch(
+      setUserInfo({
+        ...userInfo,
+        onlineFriends: moveTo === 'online' ? [...onlineIds, userId] : [...onlineIds],
+        activeFriends: moveTo === 'active' ? [...activeIds, userId] : [...activeIds],
+        offlineFriends: moveTo === 'offline' ? [...offlineIds, userId] : [...offlineIds],
+      }),
+    );
+  }
 }

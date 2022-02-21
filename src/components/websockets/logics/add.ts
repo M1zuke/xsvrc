@@ -7,10 +7,10 @@ import { getFriendsAndOldUser } from '../common';
 
 export async function handleUserAddNotification(
   websocketNotification: FriendUpdateWithUser | FriendLocationUpdate,
-  state: AppState,
+  getState: () => AppState,
   dispatch: AppDispatch,
 ): Promise<void> {
-  const [friends, oldUserInfo] = await getFriendsAndOldUser(state, dispatch, websocketNotification.content.userId);
+  const [friends, oldUserInfo] = await getFriendsAndOldUser(getState, dispatch, websocketNotification.content.userId);
   dispatch(
     addUserEvent({
       userId: websocketNotification.content.userId,

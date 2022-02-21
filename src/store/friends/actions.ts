@@ -110,31 +110,29 @@ export function setFriendFilter(filter: Partial<FriendFilter>): SetFriendFilter 
 
 export function updateFriend(websocketNotification: WebSocketNotification): AppThunkAction {
   return async function (dispatch, getState) {
-    const state = getState();
-
     if (isFriendNotification(websocketNotification)) {
       switch (websocketNotification.type) {
         case 'friend-active':
         case 'friend-update':
         case 'friend-online':
-          return handleUserActiveOrUpdateNotification(websocketNotification, state, dispatch);
+          return handleUserActiveOrUpdateNotification(websocketNotification, getState, dispatch);
         case 'friend-add':
-          return handleUserAddNotification(websocketNotification, state, dispatch);
+          return handleUserAddNotification(websocketNotification, getState, dispatch);
         case 'friend-delete':
-          return handleUserDeleteNotification(websocketNotification, state, dispatch);
+          return handleUserDeleteNotification(websocketNotification, getState, dispatch);
         case 'friend-offline':
-          return handleUserOfflineNotification(websocketNotification, state, dispatch);
+          return handleUserOfflineNotification(websocketNotification, getState, dispatch);
         case 'friend-location':
-          return handleUserLocationNotification(websocketNotification, state, dispatch);
+          return handleUserLocationNotification(websocketNotification, getState, dispatch);
       }
     } else if (isNotification(websocketNotification)) {
       dispatch(addNotification(websocketNotification.content));
     } else if (isUserNotification(websocketNotification)) {
       switch (websocketNotification.type) {
         case 'user-update':
-          return handleUserUpdate(websocketNotification, state, dispatch);
+          return handleUserUpdate(websocketNotification, getState, dispatch);
         case 'user-location':
-          return handleUserLocationUpdate(websocketNotification, state, dispatch);
+          return handleUserLocationUpdate(websocketNotification, getState, dispatch);
       }
     } else {
       console.error('new websocket type!', websocketNotification);

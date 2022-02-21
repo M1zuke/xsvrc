@@ -9,7 +9,29 @@ const Type = {
   unknown: '',
 };
 
+const Format = {
+  FullDate:
+    (settings: SettingsState) =>
+    (value?: number | string): string => {
+      console.log(value);
+      if (value) {
+        const date = new Date(value);
+
+        return Intl.DateTimeFormat(settings.localization, {
+          hour: 'numeric',
+          minute: 'numeric',
+          day: 'numeric',
+          month: 'numeric',
+          year: 'numeric',
+          hourCycle: settings.use12hours ? 'h12' : 'h23',
+        }).format(date);
+      }
+      return '';
+    },
+};
+
 export const messages = {
+  Format,
   AssignToFavoriteDialog: {
     Header: 'Assign to one of your Groups',
     Content: 'Group:',

@@ -1,4 +1,4 @@
-import { FriendLocationUpdate, FriendUpdateWithUser } from '../../../api/types';
+import { FriendLocationUpdate, FriendUpdateWithUser, UserInfo } from '../../../api/types';
 import { AppState } from '../../../store';
 import { setFriendInfo } from '../../../store/friends/actions';
 import { addUserEvent } from '../../../store/user-events/action';
@@ -7,20 +7,25 @@ import { compareUsers, getFriendsAndOldUser } from '../common';
 
 export async function handleUserActiveOrUpdateNotification(
   websocketNotification: FriendUpdateWithUser | FriendLocationUpdate,
-  state: AppState,
+  getState: () => AppState,
   dispatch: AppDispatch,
 ): Promise<void> {
-  const [friends, oldUserInfo] = await getFriendsAndOldUser(state, dispatch, websocketNotification.content.userId);
-  const userComparison = compareUsers(oldUserInfo, websocketNotification.content.user);
+  const [friends, oldUserInfo] = await getFriendsAndOldUser(getState, dispatch, websocketNotification.content.userId);
+  const enrichedUser: UserInfo =
+    websocketNotification.type === 'friend-active'
+      ? { ...websocketNotification.content.user, state: 'active', location: 'offline' }
+      : websocketNotification.content.user;
+
+  const userComparison = compareUsers(oldUserInfo, enrichedUser);
   if (Object.keys(userComparison).length !== 0) {
     dispatch(
       addUserEvent({
         userId: websocketNotification.content.userId,
         eventType: websocketNotification.type,
-        displayName: websocketNotification.content.user.displayName,
+        displayName: enrichedUser.displayName,
         comparison: userComparison,
       }),
     );
   }
-  dispatch(setFriendInfo(friends, websocketNotification.content.user));
+  dispatch(setFriendInfo(friends, enrichedUser));
 }

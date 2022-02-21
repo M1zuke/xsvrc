@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 
 export const TrustTags = [
+  'system_avatar_access',
+  'system_world_access',
   'system_trust_basic',
   'system_trust_intermediate',
   'system_trust_known',
@@ -8,8 +10,13 @@ export const TrustTags = [
   'system_trust_veteran',
   'system_trust_legend',
   'system_legend',
+  'system_supporter',
+  'system_early_adopter',
+  'language_deu',
+  'language_eng',
 ] as const;
 export type TrustTag = typeof TrustTags[number];
+
 export const TrustRanks = [
   'Visitor',
   'New User',

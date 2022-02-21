@@ -11,12 +11,15 @@
   .Tabs {
     display: grid;
     grid-template-columns: autoSize();
-  }
 
-  .TabsInner {
-    padding: $tinySpacing;
-    border-radius: $standardBorderRadius $standardBorderRadius 0 0;
-    background-color: $color2;
+    .TabsInner {
+      display: grid;
+      grid-auto-flow: column;
+      grid-gap: $tinySpacing;
+      padding: $tinySpacing;
+      border-radius: $standardBorderRadius $standardBorderRadius 0 0;
+      background-color: $color2;
+    }
   }
 
   .Content {

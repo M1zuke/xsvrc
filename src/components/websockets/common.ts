@@ -72,11 +72,12 @@ function compareArray<T extends string = string>(a: T[], b: T[]): ArrayCompariso
 }
 
 export async function getFriendsAndOldUser(
-  state: AppState,
+  getState: () => AppState,
   dispatch: AppDispatch,
   userId: string,
   suppressFetchingUser?: boolean,
 ): Promise<[UserInfo[], UserInfo | null]> {
+  const state = getState();
   if (isLoaded(state.friends.friendInfo)) {
     if (!suppressFetchingUser && !state.friends.friendInfo[userId]) {
       await dispatch(getUser(userId));
