@@ -1,21 +1,22 @@
 import { FriendLocationUpdate, FriendUpdateWithUser } from '../../../api/types';
 import { AppState } from '../../../store';
-import { setFriendInfo } from '../../../store/friends/actions';
 import { addUserEvent } from '../../../store/user-events/action';
 import { AppDispatch } from '../../../thunk';
-import { getFriendsAndOldUser } from '../common';
+import { fetchNewUserInfo, getOldUser } from '../common';
 
 export async function handleUserAddNotification(
   websocketNotification: FriendUpdateWithUser | FriendLocationUpdate,
   getState: () => AppState,
   dispatch: AppDispatch,
 ): Promise<void> {
-  const [friends, oldUserInfo] = await getFriendsAndOldUser(getState, dispatch, websocketNotification.content.userId);
+  const oldUserInfo = await getOldUser(getState, dispatch, websocketNotification.content.userId);
+  const userInfo = await fetchNewUserInfo(websocketNotification.content.userId, getState, dispatch).finally();
+
   dispatch(
     addUserEvent({
       userId: websocketNotification.content.userId,
       eventType: websocketNotification.type,
-      displayName: websocketNotification.content.user.displayName,
+      displayName: userInfo.displayName,
       comparison: {
         isFriend: {
           from: oldUserInfo?.isFriend ?? false,
@@ -24,5 +25,4 @@ export async function handleUserAddNotification(
       },
     }),
   );
-  dispatch(setFriendInfo([...friends, websocketNotification.content.user]));
 }

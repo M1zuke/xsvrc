@@ -15,7 +15,7 @@ import { Loading } from '../loading/Loading';
 import { ToolTip } from '../tool-tip/ToolTip';
 import styles from './FriendOverview.module.scss';
 
-const defaultUserInfo: UserInfo = {
+export const defaultUserInfo: UserInfo = {
   id: 'unknown',
   last_platform: 'standalonewindows',
   status: 'offline',
@@ -40,6 +40,7 @@ const defaultUserInfo: UserInfo = {
   isFriend: false,
   state: 'offline',
   currentAvatarImageUrl: '',
+  date_joined: '',
 };
 
 type FriendOverviewProps = {

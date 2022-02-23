@@ -1,31 +1,26 @@
-import { FriendLocationUpdate, FriendUpdateWithUser, UserInfo } from '../../../api/types';
+import { FriendLocationUpdate, FriendUpdateWithUser } from '../../../api/types';
 import { AppState } from '../../../store';
-import { setFriendInfo } from '../../../store/friends/actions';
 import { addUserEvent } from '../../../store/user-events/action';
 import { AppDispatch } from '../../../thunk';
-import { compareUsers, getFriendsAndOldUser } from '../common';
+import { compareUsers, fetchNewUserInfo, getOldUser } from '../common';
 
 export async function handleUserActiveOrUpdateNotification(
   websocketNotification: FriendUpdateWithUser | FriendLocationUpdate,
   getState: () => AppState,
   dispatch: AppDispatch,
 ): Promise<void> {
-  const [friends, oldUserInfo] = await getFriendsAndOldUser(getState, dispatch, websocketNotification.content.userId);
-  const enrichedUser: UserInfo =
-    websocketNotification.type === 'friend-active'
-      ? { ...websocketNotification.content.user, state: 'active', location: 'offline' }
-      : websocketNotification.content.user;
+  const oldUserInfo = await getOldUser(getState, dispatch, websocketNotification.content.userId);
+  const userInfo = await fetchNewUserInfo(websocketNotification.content.userId, getState, dispatch).finally();
 
-  const userComparison = compareUsers(oldUserInfo, enrichedUser);
+  const userComparison = compareUsers(oldUserInfo, userInfo);
   if (Object.keys(userComparison).length !== 0) {
     dispatch(
       addUserEvent({
         userId: websocketNotification.content.userId,
         eventType: websocketNotification.type,
-        displayName: enrichedUser.displayName,
+        displayName: userInfo?.displayName ?? websocketNotification.content.user.displayName,
         comparison: userComparison,
       }),
     );
   }
-  dispatch(setFriendInfo(friends, enrichedUser));
 }

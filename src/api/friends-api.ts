@@ -43,7 +43,7 @@ export function getAllFriends(): AppThunkAction {
   return async function (dispatch, getState) {
     const state = getState();
     if (state.friends.friendInfo === null) {
-      dispatch(setFriendInfo('loading'));
+      dispatch(setFriendInfo(getState, 'loading'));
     }
     const onlineFriends = await dispatch(getFriends());
     const offlineFriends = await dispatch(getFriends(true));
@@ -51,10 +51,10 @@ export function getAllFriends(): AppThunkAction {
     const newState = getState();
     if (isLoaded(newState.friends.friendInfo)) {
       const allFriends = [...Object.values(newState.friends.friendInfo), ...offlineFriends, ...onlineFriends];
-      dispatch(setFriendInfo(mapStateToUsers(getState, allFriends)));
+      dispatch(setFriendInfo(getState, mapStateToUsers(getState, allFriends)));
     } else {
       const allFriends = [...offlineFriends, ...onlineFriends];
-      dispatch(setFriendInfo(mapStateToUsers(getState, allFriends)));
+      dispatch(setFriendInfo(getState, mapStateToUsers(getState, allFriends)));
     }
   };
 }
@@ -88,7 +88,7 @@ export function sendUnfriendRequest(id: string): AppThunkAction {
         if (favorite) {
           dispatch(removeFavorite(favorite));
         }
-        dispatch(setFriendInfo([...Object.values(state.friends.friendInfo).filter((ui) => ui.id !== id)]));
+        // dispatch(setFriendInfo([...Object.values(state.friends.friendInfo).filter((ui) => ui.id !== id)]));
       }
     } else {
       console.error(response);

@@ -2,7 +2,9 @@ import { getUser } from '../../api/getUser';
 import { isLoaded } from '../../api/prepare';
 import { UserInfo } from '../../api/types';
 import { AppState } from '../../store';
+import { selectFriendInfoById } from '../../store/friends/selectors';
 import { AppDispatch } from '../../thunk';
+import { defaultUserInfo } from '../friend-overview/FriendOverview';
 
 export type Comparison<V> = {
   from: V;
@@ -71,19 +73,34 @@ function compareArray<T extends string = string>(a: T[], b: T[]): ArrayCompariso
   return { added: differencesToA, removed: differencesToB };
 }
 
-export async function getFriendsAndOldUser(
+export async function getOldUser(
   getState: () => AppState,
   dispatch: AppDispatch,
   userId: string,
   suppressFetchingUser?: boolean,
-): Promise<[UserInfo[], UserInfo | null]> {
+): Promise<UserInfo | null> {
   const state = getState();
   if (isLoaded(state.friends.friendInfo)) {
     if (!suppressFetchingUser && !state.friends.friendInfo[userId]) {
       await dispatch(getUser(userId));
     }
-
-    return [Object.values(state.friends.friendInfo), state.friends.friendInfo[userId] || null];
+    const newState = getState();
+    return Promise.resolve(isLoaded(newState.friends.friendInfo) ? newState.friends.friendInfo[userId] || null : null);
   }
-  return Promise.resolve([[], null]);
+  return Promise.resolve(null);
+}
+
+export async function fetchNewUserInfo(
+  userId: UserInfo['id'],
+  getState: () => AppState,
+  dispatch: AppDispatch,
+): Promise<UserInfo> {
+  await dispatch(getUser(userId));
+  const state = getState();
+  const newUserInfo = selectFriendInfoById(userId)(state);
+
+  if (isLoaded(newUserInfo)) {
+    return Promise.resolve(newUserInfo || defaultUserInfo);
+  }
+  return Promise.resolve(defaultUserInfo);
 }

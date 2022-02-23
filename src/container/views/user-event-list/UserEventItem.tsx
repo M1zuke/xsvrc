@@ -1,8 +1,11 @@
 import { KeyboardArrowRight } from '@mui/icons-material';
 import classNames from 'classnames';
 import React, { ReactElement, useCallback, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { isLoaded } from '../../../api/prepare';
 import { AuthenticatedUserInfo, UserInfo } from '../../../api/types';
 import { useSettings } from '../../../common/use-settings';
+import { selectFriendInfoById } from '../../../store/friends/selectors';
 import { UserEvent } from '../../../store/user-events/state';
 import { setModal } from '../../../store/view/actions';
 import { useAppDispatch } from '../../../thunk/dispatch';
@@ -60,6 +63,7 @@ const mappedKeys: Record<keyof AuthenticatedUserInfo, string> = {
   steamDetails: 'Steam details',
   steamId: 'Steam ID',
   twoFactorAuthEnabled: 'Two Factor Auth enabled',
+  date_joined: 'Date joined',
 };
 
 type UserEventItemProps = {
@@ -73,6 +77,7 @@ export function UserEventItem({
 }: PropsWithSubscription<UserEventItemProps>): ReactElement {
   const [collapsed, setCollapsed] = useState(true);
   const dispatch = useAppDispatch();
+  const userInfo = useSelector(selectFriendInfoById(userEvent.userId));
   const { settings } = useSettings();
 
   const timestamp = useMemo(
@@ -123,12 +128,19 @@ export function UserEventItem({
     [dispatch, userEvent.userId],
   );
 
+  const displayName = useMemo(() => {
+    if (isLoaded(userInfo)) {
+      return userInfo.displayName;
+    }
+    return userEvent.displayName;
+  }, [userEvent.displayName, userInfo]);
+
   return (
     <div className={classes} onClick={() => setCollapsed(!collapsed)}>
       <div className={styles.InfoBox}>
         <div className={styles.Timestamp}>{timestamp}</div>
         <div className={styles.DisplayName} onClick={routeToProfile}>
-          {userEvent.displayName}
+          {displayName}
         </div>
         <div className={styles.Key}>{userEvent.eventType}</div>
       </div>

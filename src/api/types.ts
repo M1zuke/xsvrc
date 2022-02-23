@@ -18,7 +18,7 @@ export type ShortUserInfo = {
 
 export type UserInfo = ShortUserInfo & {
   bioLinks: string[];
-  state: State;
+  state?: State;
   status: Status;
   statusDescription: string;
   last_activity: string;
@@ -28,6 +28,7 @@ export type UserInfo = ShortUserInfo & {
   location: Location | ''; // can be empty for some reason
   worldId: string;
   instanceId: string;
+  date_joined: string;
 };
 
 type Location = string;
@@ -261,18 +262,6 @@ export type NotificationContent = NotificationDetails & {
 export type NotificationDTO = Omit<NotificationContent, 'details'> & {
   details: string;
 };
-
-export const WebsocketNotificationTypes = [
-  'friend-active',
-  'friend-add',
-  'friend-online',
-  'friend-update',
-  'friend-offline',
-  'friend-location',
-  'friend-delete',
-  'user-location',
-  'user-update',
-] as const;
 
 export type Notification = {
   type: 'notification';

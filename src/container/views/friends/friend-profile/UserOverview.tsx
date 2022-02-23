@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { ReactElement, useMemo } from 'react';
 import { UserInfo } from '../../../../api/types';
 import { useSettings } from '../../../../common/use-settings';
-import { isLoggedIn } from '../../../../common/utils';
+import { isActive, isLoggedIn } from '../../../../common/utils';
 import { Tag } from '../../../../components/tag/Tag';
 import { useMessages } from '../../../../i18n';
 import styles from './UserOverview.module.scss';
@@ -52,6 +52,8 @@ export function UserOverview({ user }: UserBioProps): ReactElement {
               })}
             />
           </Tag>
+          <Tag label="Online through website" checked={isActive(user)} />
+          <Tag label="Account creation date">{Format(user.date_joined)}</Tag>
         </div>
         <Tag label="Biography" fullWidth>
           <pre>{user.bio || 'No Bio entered'}</pre>
@@ -67,18 +69,16 @@ export function UserOverview({ user }: UserBioProps): ReactElement {
         </Tag>
       </div>
       <div className={classNames(styles.PremiumUser, { [styles.NoSupporter]: !isSupporter })}>
-        <div className={styles.Card}>
-          <div className={styles.CardTitle}>Usericon</div>
+        <Tag label="Usericon" translucent fullWidth>
           <div className={styles.Image} style={iconStyle}>
             {!user.userIcon && <div>None</div>}
           </div>
-        </div>
-        <div className={styles.Card}>
-          <div className={styles.CardTitle}>Profile Pic Overwrite</div>
+        </Tag>
+        <Tag label="Profile Pic Overwrite" translucent fullWidth>
           <div className={classNames(styles.Image, styles.Quad)} style={overwriteStyle}>
             {!user.profilePicOverride && <div>None</div>}
           </div>
-        </div>
+        </Tag>
       </div>
     </div>
   );

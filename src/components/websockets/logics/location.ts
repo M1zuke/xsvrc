@@ -1,31 +1,26 @@
-import { FriendLocationUpdate, UserInfo } from '../../../api/types';
+import { FriendLocationUpdate } from '../../../api/types';
 import { AppState } from '../../../store';
-import { setFriendInfo } from '../../../store/friends/actions';
 import { addUserEvent } from '../../../store/user-events/action';
 import { setWorldInfo } from '../../../store/worlds/actions';
 import { AppDispatch } from '../../../thunk';
-import { getFriendsAndOldUser } from '../common';
+import { fetchNewUserInfo, getOldUser } from '../common';
 
 export async function handleUserLocationNotification(
   websocketNotification: FriendLocationUpdate,
   getState: () => AppState,
   dispatch: AppDispatch,
 ): Promise<void> {
-  const [friends, oldUserInfo] = await getFriendsAndOldUser(getState, dispatch, websocketNotification.content.userId);
-  const enrichedUser: UserInfo = {
-    ...websocketNotification.content.user,
-    location: websocketNotification.content.location,
-    worldId: websocketNotification.content.world.id,
-    instanceId: websocketNotification.content.instance,
-  };
-  const userLocation = oldUserInfo?.location === '' ? 'Logged in through website' : oldUserInfo?.location || 'private';
+  const oldUserInfo = await getOldUser(getState, dispatch, websocketNotification.content.userId);
+  const userInfo = await fetchNewUserInfo(websocketNotification.content.userId, getState, dispatch).finally();
+
+  const userLocation = oldUserInfo?.location || 'private';
 
   if (userLocation !== websocketNotification.content.location) {
     dispatch(
       addUserEvent({
         userId: websocketNotification.content.userId,
         eventType: websocketNotification.type,
-        displayName: websocketNotification.content.user.displayName,
+        displayName: userInfo.displayName,
         comparison: {
           location: {
             from: userLocation,
@@ -38,5 +33,4 @@ export async function handleUserLocationNotification(
   if (websocketNotification.content.location !== 'private' && websocketNotification.content.location !== '') {
     dispatch(setWorldInfo(websocketNotification.content.world.id, websocketNotification.content.world));
   }
-  dispatch(setFriendInfo(friends, enrichedUser));
 }

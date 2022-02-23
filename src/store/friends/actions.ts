@@ -15,6 +15,7 @@ import { handleUserLocationUpdate } from '../../components/websockets/logics/use
 import { handleUserUpdate } from '../../components/websockets/logics/user-update';
 import { CharacterFilter, CharacterFilters } from '../../container/views/friends/Friends';
 import { AppThunkAction } from '../../thunk';
+import { AppState } from '../index';
 import { Loadable } from '../reducer';
 import { addNotification } from '../user/actions';
 import { FriendEntries, FriendFilter } from './state';
@@ -53,29 +54,50 @@ export function resetFriends(): ResetFriends {
   };
 }
 
-export function setFriendInfo(friendInfo: Loadable<UserInfo[]>, updatedUser?: UserInfo): SetFriendInfo {
-  if (isLoaded(friendInfo)) {
-    const sortedFriends: FriendEntries = Object.assign(
-      {},
-      ...sortFriendInfo(friendInfo).map((fi) => {
-        if (updatedUser && updatedUser.id === fi.id) {
-          return {
-            [fi.id]: { ...fi, ...updatedUser },
-          };
-        }
+function convertToFriendEntries(userInfos: UserInfo[]): FriendEntries {
+  return Object.assign({}, ...userInfos.map((ui) => ({ [ui.id]: ui })));
+}
+
+export function convertAndSortFriendEntries(userInfos: UserInfo[]): FriendEntries {
+  return convertToFriendEntries(sortFriendInfo(userInfos));
+}
+
+export function setFriendInfo(getState: () => AppState, newFriendInfo: Loadable<UserInfo[]>): SetFriendInfo {
+  const state = getState();
+  const oldFriendInfo = state.friends.friendInfo;
+  if (isLoaded(newFriendInfo) && isLoaded(oldFriendInfo)) {
+    const mergedArray = [...Object.values(oldFriendInfo)];
+    newFriendInfo.forEach((ui) => {
+      if (!mergedArray.find((u) => u.id === ui.id)) {
+        mergedArray.push(ui);
+      }
+    });
+
+    const mergedFriendInfo = mergedArray.map((ui) => {
+      const newUserInfo = newFriendInfo.find((fi) => fi.id === ui.id);
+      if (newUserInfo) {
         return {
-          [fi.id]: fi,
+          ...ui,
+          ...newUserInfo,
         };
-      }),
-    );
+      }
+      return { ...ui };
+    });
+
     return {
       type: 'friend/setFriendInfo',
-      friendInfo: sortedFriends,
+      friendInfo: convertAndSortFriendEntries(mergedFriendInfo),
+    };
+  }
+  if (isLoaded(newFriendInfo)) {
+    return {
+      type: 'friend/setFriendInfo',
+      friendInfo: convertAndSortFriendEntries(newFriendInfo),
     };
   }
   return {
     type: 'friend/setFriendInfo',
-    friendInfo: friendInfo,
+    friendInfo: newFriendInfo,
   };
 }
 
@@ -110,6 +132,7 @@ export function setFriendFilter(filter: Partial<FriendFilter>): SetFriendFilter 
 
 export function updateFriend(websocketNotification: WebSocketNotification): AppThunkAction {
   return async function (dispatch, getState) {
+    console.log(websocketNotification.content);
     if (isFriendNotification(websocketNotification)) {
       switch (websocketNotification.type) {
         case 'friend-active':

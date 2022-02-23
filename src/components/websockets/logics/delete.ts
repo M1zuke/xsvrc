@@ -2,14 +2,15 @@ import { FriendUpdatesUserId } from '../../../api/types';
 import { AppState } from '../../../store';
 import { addUserEvent } from '../../../store/user-events/action';
 import { AppDispatch } from '../../../thunk';
-import { getFriendsAndOldUser } from '../common';
+import { getOldUser } from '../common';
 
 export async function handleUserDeleteNotification(
   websocketNotification: FriendUpdatesUserId,
   getState: () => AppState,
   dispatch: AppDispatch,
 ): Promise<void> {
-  const [, oldUserInfo] = await getFriendsAndOldUser(getState, dispatch, websocketNotification.content.userId, true);
+  const oldUserInfo = await getOldUser(getState, dispatch, websocketNotification.content.userId, true);
+
   dispatch(
     addUserEvent({
       userId: websocketNotification.content.userId,

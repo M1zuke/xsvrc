@@ -12,7 +12,15 @@
     grid-template-rows: repeat(3, autoSize()) auto;
     grid-gap: $smallSpacing;
 
+    .UserStatus {
+      display: grid;
+      grid-template-columns: repeat(3, autoSize());
+      grid-gap: $smallSpacing;
+    }
+
     .VisualizedTags {
+      padding-bottom: 0;
+
       > div {
         margin-right: $smallSpacing;
         margin-bottom: $smallSpacing;
@@ -51,7 +59,7 @@
 
   .PremiumUser {
     display: grid;
-    grid-auto-flow: row;
+    grid-template-rows: repeat(2, autoSize());
     grid-gap: $smallSpacing;
 
     &.NoSupporter {

@@ -27,8 +27,7 @@ export function getUser(id: string): AppThunkAction {
           : [];
         dispatch(setNonFriendInfo([...nonFriends, response.result]));
       } else {
-        const friends = isLoaded(newState.friends.friendInfo) ? Object.values(newState.friends.friendInfo) : [];
-        dispatch(setFriendInfo(friends, response.result));
+        dispatch(setFriendInfo(getState, [response.result]));
       }
     } else {
       console.error(response);
