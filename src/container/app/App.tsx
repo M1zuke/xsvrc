@@ -28,6 +28,9 @@ const Moderations = lazy(() =>
   import('../views/moderations/Moderations').then(({ Moderations }) => ({ default: Moderations })),
 );
 const Avatars = lazy(() => import('../views/avatars/Avatars').then(({ Avatars }) => ({ default: Avatars })));
+const Transactions = lazy(() =>
+  import('../views/transactions/Transactions').then(({ Transactions }) => ({ default: Transactions })),
+);
 
 const App: React.FC = () => {
   const userInfo = useSelector(selectUserInfo);
@@ -71,6 +74,7 @@ const App: React.FC = () => {
                 <Route {...routes.settings.config} component={Settings} />
                 <Route {...routes.moderation.config} component={Moderations} />
                 <Route {...routes.avatar.config} component={Avatars} />
+                <Route {...routes.transactions.config} component={Transactions} />
               </Switch>
             </Suspense>
           </div>

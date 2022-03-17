@@ -16,6 +16,7 @@ export type Routes = {
   moderation: RouteDefinition;
   avatar: RouteDefinition;
   userSearch: RouteDefinition;
+  transactions: RouteDefinition;
 };
 
 export const routes: Routes = {
@@ -28,4 +29,5 @@ export const routes: Routes = {
   moderation: { path: '/moderation', config: { path: '/moderation', exact: true } },
   avatar: { path: '/avatar', config: { path: '/avatar', exact: true } },
   userSearch: { path: '/user-search', config: { path: '/user-search', exact: true } },
+  transactions: { path: '/transactions', config: { path: '/transactions', exact: true } },
 };

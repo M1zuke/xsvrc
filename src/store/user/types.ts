@@ -4,11 +4,13 @@ import {
   AvatarInfo,
   Favorite,
   MappedFavoritesToType,
+  Moderation,
+  ModerationType,
   NamedFavorite,
   NotificationContent,
+  UserInfo,
 } from '../../api/types';
 import { Loadable } from '../reducer';
-import { MappedModeration } from './actions';
 import { FavoriteGroupByType } from './state';
 
 export type UserActionType = `user/${
@@ -21,6 +23,8 @@ export type UserActionType = `user/${
   | 'add-favorite'
   | 'remove-favorite'
   | 'set-moderations'
+  | 'add-moderation'
+  | 'delete-moderation'
   | 'set-favorite-groups'
   | 'set-avatars'
   | 'remove-avatar'
@@ -56,7 +60,14 @@ export type RemoveFavorite = UserAction<'user/remove-favorite'> & {
 };
 
 export type SetModerations = UserAction<'user/set-moderations'> & {
-  moderations: Loadable<MappedModeration[]>;
+  moderations: Loadable<Moderation[]>;
+};
+export type AddModeration = UserAction<'user/add-moderation'> & {
+  moderation: Moderation;
+};
+export type DeleteModeration = UserAction<'user/delete-moderation'> & {
+  userId: UserInfo['id'];
+  moderationType: ModerationType;
 };
 
 export type SetFavoriteGroups = UserAction<'user/set-favorite-groups'> & {
@@ -86,6 +97,8 @@ export type UserActions =
   | AddFavorite
   | RemoveFavorite
   | SetModerations
+  | AddModeration
+  | DeleteModeration
   | SetFavoriteGroups
   | SetAvatars
   | UpdateAvatar

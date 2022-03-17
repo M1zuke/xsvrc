@@ -1,11 +1,11 @@
-import { FriendLocationUpdate, FriendUpdateWithUser } from '../../../api/types';
+import { FriendLocationUpdate, FriendUpdatesUserId, FriendUpdateWithUser } from '../../../api/types';
 import { AppState } from '../../../store';
 import { addUserEvent } from '../../../store/user-events/action';
 import { AppDispatch } from '../../../thunk';
 import { compareUsers, fetchNewUserInfo, getOldUser } from '../common';
 
 export async function handleUserActiveOrUpdateNotification(
-  websocketNotification: FriendUpdateWithUser | FriendLocationUpdate,
+  websocketNotification: FriendUpdateWithUser | FriendLocationUpdate | FriendUpdatesUserId,
   getState: () => AppState,
   dispatch: AppDispatch,
 ): Promise<void> {
@@ -18,7 +18,7 @@ export async function handleUserActiveOrUpdateNotification(
       addUserEvent({
         userId: websocketNotification.content.userId,
         eventType: websocketNotification.type,
-        displayName: userInfo?.displayName ?? websocketNotification.content.user.displayName,
+        displayName: userInfo.displayName,
         comparison: userComparison,
       }),
     );

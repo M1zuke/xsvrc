@@ -8,9 +8,10 @@ import { info } from './info';
 import { getInstance, getWorld, selfInvite } from './instance-api';
 import { login } from './login';
 import { logout } from './logout';
-import { getAllModerations } from './moderations';
+import { getAllModerations, moderateUser, unModerateUser } from './moderations';
 import { handleNotification, NotificationsAnswerPossibility } from './notifications-api';
-import { AvatarInfo, Favorite, NamedFavorite, NotificationContent, UserInfo } from './types';
+import { getTransactions } from './transactions';
+import { AvatarInfo, Favorite, ModerationType, NamedFavorite, NotificationContent, UserInfo } from './types';
 
 export type API = {
   info(): Promise<void>;
@@ -30,6 +31,9 @@ export type API = {
   deleteAvatar(avatarId: string): Promise<void>;
   getAvatar(avatarId: string): Promise<void>;
   handleNotification(notificationId: NotificationContent, method: NotificationsAnswerPossibility): Promise<void>;
+  moderateUser(userId: UserInfo['id'], type: ModerationType): Promise<void>;
+  unModerateUser(userId: UserInfo['id'], type: ModerationType): Promise<void>;
+  getTransactions(): Promise<void>;
 };
 
 export function useApi(): API {
@@ -37,25 +41,25 @@ export function useApi(): API {
 
   return useMemo<API>(
     () => ({
-      info: async (): Promise<void> => {
+      info: (): Promise<void> => {
         return dispatch(info());
       },
-      login: async (username?: string, password?: string) => {
+      login: (username?: string, password?: string) => {
         return dispatch(login(username, password));
       },
-      logout: async () => {
+      logout: () => {
         return dispatch(logout());
       },
-      getWorld: async (location) => {
+      getWorld: (location) => {
         return dispatch(getWorld(location));
       },
-      getInstance: async (location) => {
+      getInstance: (location) => {
         return dispatch(getInstance(location));
       },
-      getUser: async (userId) => {
+      getUser: (userId) => {
         return dispatch(getUser(userId));
       },
-      getAllFriends: async () => {
+      getAllFriends: () => {
         return dispatch(getAllFriends());
       },
       unfriendUser: (id) => {
@@ -87,6 +91,15 @@ export function useApi(): API {
       },
       handleNotification: (notificationId, method) => {
         return dispatch(handleNotification(notificationId, method));
+      },
+      moderateUser: (userId, type) => {
+        return dispatch(moderateUser(userId, type));
+      },
+      unModerateUser: (userId, type) => {
+        return dispatch(unModerateUser(userId, type));
+      },
+      getTransactions: () => {
+        return dispatch(getTransactions());
       },
     }),
     [dispatch],

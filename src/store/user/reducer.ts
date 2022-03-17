@@ -115,6 +115,26 @@ export function reducer(state: UserState = INITIAL_USER_STATE, action: UserActio
         moderations: action.moderations,
       };
     }
+    case 'user/add-moderation': {
+      if (isLoaded(state.moderations)) {
+        return {
+          ...state,
+          moderations: [action.moderation, ...state.moderations],
+        };
+      }
+      return state;
+    }
+    case 'user/delete-moderation': {
+      if (isLoaded(state.moderations)) {
+        return {
+          ...state,
+          moderations: state.moderations.filter(
+            (m) => !(m.targetUserId === action.userId && m.type === action.moderationType),
+          ),
+        };
+      }
+      return state;
+    }
     case 'user/set-favorite-groups': {
       return {
         ...state,

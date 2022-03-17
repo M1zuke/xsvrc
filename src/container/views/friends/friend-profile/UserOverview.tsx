@@ -1,10 +1,13 @@
 import classNames from 'classnames';
 import React, { ReactElement, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { UserInfo } from '../../../../api/types';
 import { useSettings } from '../../../../common/use-settings';
 import { isActive, isLoggedIn } from '../../../../common/utils';
 import { Tag } from '../../../../components/tag/Tag';
 import { useMessages } from '../../../../i18n';
+import { IsLoggedInUser } from '../../../../store/friends/selectors';
+import { ModerationsTab } from './moderations/ModerationsTab';
 import styles from './UserOverview.module.scss';
 
 type UserBioProps = {
@@ -14,6 +17,7 @@ type UserBioProps = {
 export function UserOverview({ user }: UserBioProps): ReactElement {
   const messages = useMessages();
   const settings = useSettings();
+  const isLoggedInUser = useSelector(IsLoggedInUser(user.id));
   const Format = messages.Format.FullDate(settings.settings);
   const isSupporter = useMemo(() => user.tags.includes('system_supporter'), [user.tags]);
 
@@ -66,6 +70,9 @@ export function UserOverview({ user }: UserBioProps): ReactElement {
           {languageTags && <Tag label="Languages">{languageTags}</Tag>}
           {user.last_login && <Tag label="Last login">{Format(user.last_login)}</Tag>}
           {user.last_activity && <Tag label="Last activity">{Format(user.last_activity) ?? 'No entry'}</Tag>}
+        </Tag>
+        <Tag label="Moderations" fullWidth disabled={isLoggedInUser}>
+          <ModerationsTab user={user} />
         </Tag>
       </div>
       <div className={classNames(styles.PremiumUser, { [styles.NoSupporter]: !isSupporter })}>

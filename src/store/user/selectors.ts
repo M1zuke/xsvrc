@@ -1,3 +1,4 @@
+import merge from 'lodash.merge';
 import { isLoaded } from '../../api/prepare';
 import {
   AuthenticatedUserInfo,
@@ -9,12 +10,13 @@ import {
   Moderation,
   NamedFavorite,
   NotificationContent,
+  SortedModerations,
   UserInfo,
 } from '../../api/types';
 import { isOffline } from '../../common/utils';
 import { AppState } from '../index';
 import { Loadable } from '../reducer';
-import { MappedModeration } from './actions';
+import { sortByDate } from './actions';
 
 export const selectAvatars = (state: AppState): Loadable<AvatarInfo[]> => state.user.avatars;
 export const selectUserInfo = (state: AppState): Loadable<AuthenticatedUserInfo> => state.user.userInfo;
@@ -118,18 +120,11 @@ export const GetFavoriteOfUser =
     return null;
   };
 
-export const GetSortedModerations = (state: AppState): MappedModeration[] => {
-  if (isLoaded(state.user.moderations)) {
-    return state.user.moderations;
-  }
-  return [];
-};
-
 export const GetModerationsByUserId =
   (id: Moderation['targetUserId']) =>
   (state: AppState): Moderation[] => {
     if (isLoaded(state.user.moderations)) {
-      return state.user.moderations.find((m) => m.targetUserId === id)?.moderations ?? [];
+      return state.user.moderations.filter((m) => m.targetUserId === id);
     }
     return [];
   };
@@ -150,3 +145,54 @@ export const GetFavoriteGroupNameByGroupTag =
     const favoriteGroups = GetFavoriteGroups(favoriteType)(state);
     return favoriteGroups.find((fg) => fg.name === tag)?.displayName ?? '';
   };
+
+type MappedAllModerationToUser = {
+  [userId: string]: {
+    [type: string]: Moderation;
+  };
+};
+
+export type MappedModeration = {
+  created: string;
+  moderations: Moderation[];
+  displayName: string;
+  targetUserId: string;
+};
+
+export const GetModerations = (state: AppState): Moderation[] => {
+  if (isLoaded(state.user.moderations)) {
+    return state.user.moderations;
+  }
+  return [];
+};
+
+export function mapModerations(moderations: Moderation[]): MappedModeration[] {
+  const mappedModeration: MappedAllModerationToUser = merge(
+    {},
+    ...moderations.map((m) => ({
+      [m.targetUserId]: { [m.type]: m },
+    })),
+  );
+
+  const asArray: SortedModerations = Object.assign(
+    {},
+    ...Object.keys(mappedModeration).map((id) => {
+      return {
+        [id]: Object.values(mappedModeration[id]),
+      };
+    }),
+  );
+
+  return Object.keys(asArray)
+    .map((id) => {
+      const entries = asArray[id].sort(sortByDate);
+      const getLatestTime = [...entries].shift();
+      return {
+        displayName: getLatestTime?.targetDisplayName || '',
+        created: getLatestTime?.created || '',
+        targetUserId: getLatestTime?.targetUserId || '',
+        moderations: entries,
+      } as MappedModeration;
+    })
+    .sort(sortByDate);
+}

@@ -15,11 +15,12 @@ import styles from './Modal.module.scss';
 type Props = PropsWithChildren<{
   onCancel?: () => void;
   backdrop?: 'faded' | 'transparent';
+  higherIndex?: boolean;
 }>;
 
 const ignored = (): void => undefined;
 
-export function Modal({ onCancel = ignored, backdrop = 'faded', children }: Props): ReactElement {
+export function Modal({ onCancel = ignored, backdrop = 'faded', children, higherIndex }: Props): ReactElement {
   const target = useMemo(() => document.createElement('div'), []);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -56,7 +57,11 @@ export function Modal({ onCancel = ignored, backdrop = 'faded', children }: Prop
   }, [escapeListener]);
 
   return ReactDOM.createPortal(
-    <div ref={ref} className={classNames(styles.modal, styles[backdrop])} onClick={clickHandler}>
+    <div
+      ref={ref}
+      className={classNames(styles.modal, styles[backdrop], { [styles.HigherIndex]: higherIndex })}
+      onClick={clickHandler}
+    >
       {children}
     </div>,
     target,

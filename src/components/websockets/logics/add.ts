@@ -20,7 +20,7 @@ export async function handleUserAddNotification(
       comparison: {
         isFriend: {
           from: oldUserInfo?.isFriend ?? false,
-          to: true,
+          to: userInfo.isFriend,
         },
       },
     }),

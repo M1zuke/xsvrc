@@ -9,6 +9,7 @@ type TagProps = {
   translucent?: boolean;
   fullWidth?: boolean;
   childrenClassName?: string;
+  disabled?: boolean;
 };
 
 export function Tag({
@@ -18,9 +19,10 @@ export function Tag({
   translucent,
   fullWidth,
   childrenClassName,
+  disabled,
 }: PropsWithChildren<TagProps>): ReactElement {
   return (
-    <div className={classNames(styles.Tag, { [styles.FullWidth]: fullWidth })}>
+    <div className={classNames(styles.Tag, { [styles.FullWidth]: fullWidth, [styles.Disabled]: disabled })}>
       <div className={styles.Label}>{label}:</div>
       {typeof children === 'undefined' && (
         <div className={classNames(styles.Checked, { [styles.IsChecked]: checked })}>

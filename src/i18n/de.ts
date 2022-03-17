@@ -53,6 +53,10 @@ export const messages = {
     Title: 'XSVRC - Verwalte dein VRC',
   },
   Views: {
+    Moderations: {
+      ConfirmBlockTitle: (username: string) => `Benutzer ${username} blocken?`,
+      ConfirmBodyMessage: (username: string): string => `Möchtest du wirklich den Benutzer "${username}" blocken?`,
+    },
     UserCard: {
       ConfirmMessages: {
         ConfirmRemoveFavorite: {
@@ -140,6 +144,7 @@ export const messages = {
       Tabs: {
         Overview: 'Übersicht',
         Instance: (amount: number): string => `Instanz (${amount})`,
+        History: 'Verlauf',
         JSON: 'JSON',
       },
       NotFound: 'Benutzer nicht gefunden',

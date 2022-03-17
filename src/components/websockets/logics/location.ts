@@ -1,5 +1,6 @@
 import { FriendLocationUpdate } from '../../../api/types';
 import { AppState } from '../../../store';
+import { addHistory } from '../../../store/history/actions';
 import { addUserEvent } from '../../../store/user-events/action';
 import { setWorldInfo } from '../../../store/worlds/actions';
 import { AppDispatch } from '../../../thunk';
@@ -13,18 +14,19 @@ export async function handleUserLocationNotification(
   const oldUserInfo = await getOldUser(getState, dispatch, websocketNotification.content.userId);
   const userInfo = await fetchNewUserInfo(websocketNotification.content.userId, getState, dispatch).finally();
 
-  const userLocation = oldUserInfo?.location || 'private';
+  const userLocation = oldUserInfo?.location ?? '';
 
-  if (userLocation !== websocketNotification.content.location) {
+  if (userLocation !== userInfo.location) {
+    dispatch(addHistory(userInfo.id, userLocation, userInfo.location));
     dispatch(
       addUserEvent({
-        userId: websocketNotification.content.userId,
+        userId: userInfo.id,
         eventType: websocketNotification.type,
         displayName: userInfo.displayName,
         comparison: {
           location: {
             from: userLocation,
-            to: websocketNotification.content.location,
+            to: userInfo.location,
           },
         },
       }),

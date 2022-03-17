@@ -5,7 +5,7 @@ import { useApi } from '../../../api/use-api';
 import { Button } from '../../../components/button/Button';
 import { Content } from '../../../components/content/Content';
 import { Pagination } from '../../../components/pagination/Pagination';
-import { GetSortedModerations } from '../../../store/user/selectors';
+import { GetModerations, mapModerations } from '../../../store/user/selectors';
 import { TitleBox } from '../home/TitleBox';
 import { ModerationItem } from './moderation-item/ModerationItem';
 import styles from './Moderations.module.scss';
@@ -15,7 +15,7 @@ const PageSize = 50;
 type FilterTypes = Moderation['type'] | 'all';
 
 export function Moderations(): ReactElement {
-  const allModerations = useSelector(GetSortedModerations);
+  const allModerations = useSelector(GetModerations);
   const { getAllModerations } = useApi();
   const [typeFilter, setTypeFilter] = useState<FilterTypes>('all');
 
@@ -26,7 +26,6 @@ export function Moderations(): ReactElement {
           key={`rendered-filter-button-${type}`}
           onClick={() => setTypeFilter(type as FilterTypes)}
           active={type === typeFilter}
-          disabled={true}
         >
           {type}
         </Button>
@@ -34,13 +33,14 @@ export function Moderations(): ReactElement {
     });
   }, [typeFilter]);
 
-  const renderedModerations = useMemo(
-    () =>
-      allModerations.map((moderation) => (
-        <ModerationItem key={`moderation-item-${moderation.targetUserId}`} moderation={moderation} />
-      )),
-    [allModerations],
-  );
+  const renderedModerations = useMemo(() => {
+    const filteredModerations =
+      typeFilter === 'all' ? allModerations : allModerations.filter((m) => m.type === typeFilter);
+    const mappedModerations = mapModerations(filteredModerations);
+    return mappedModerations.map((moderation) => (
+      <ModerationItem key={`moderation-item-${moderation.targetUserId}`} moderation={moderation} />
+    ));
+  }, [allModerations, typeFilter]);
 
   const gridStyle = useCallback(
     (data) => ({

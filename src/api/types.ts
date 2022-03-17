@@ -25,13 +25,13 @@ export type UserInfo = ShortUserInfo & {
   last_login: string;
   allowAvatarCopying: boolean;
   friendKey: string;
-  location: Location | ''; // can be empty for some reason
+  location: Location; // can be empty for some reason
   worldId: string;
   instanceId: string;
   date_joined: string;
 };
 
-type Location = string;
+type Location = '' | 'offline' | 'private' | string;
 
 export type State = 'online' | 'active' | 'offline';
 export type Status = 'active' | 'join me' | 'ask me' | 'busy' | 'offline';
@@ -354,7 +354,7 @@ export const HardModerationTypes = ['mute', 'block', 'hideAvatar'] as const;
 export type HardModerationType = typeof HardModerationTypes[number];
 
 export const ModerationTypes = ['unmute', 'unblock', 'showAvatar'] as const;
-type ModerationType = typeof ModerationTypes[number] & HardModerationType;
+export type ModerationType = typeof ModerationTypes[number] | HardModerationType;
 
 export type Moderation = {
   created: string; // date-time

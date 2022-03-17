@@ -4,10 +4,10 @@ import {
   FavoriteGroup,
   FavoriteType,
   MappedFavoritesToType,
+  Moderation,
   NotificationContent,
 } from '../../api/types';
 import { Loadable } from '../reducer';
-import { MappedModeration } from './actions';
 
 export type FavoriteGroupByType = Record<FavoriteType, FavoriteGroup[]>;
 
@@ -20,7 +20,7 @@ export type UserState = {
   userInfo: Loadable<AuthenticatedUserInfo>;
   notifications: Loadable<NotificationContent[]>;
   favorites: Favorites;
-  moderations: Loadable<MappedModeration[]>;
+  moderations: Loadable<Moderation[]>;
   avatars: Loadable<AvatarInfo[]>;
 };
 

@@ -6,11 +6,10 @@ import {
   UserInfo,
   WebSocketNotification,
 } from '../../api/types';
-import { handleUserActiveOrUpdateNotification } from '../../components/websockets/logics/active-update-online';
+import { handleUserActiveOrUpdateNotification } from '../../components/websockets/logics/active-update-online-offline';
 import { handleUserAddNotification } from '../../components/websockets/logics/add';
 import { handleUserDeleteNotification } from '../../components/websockets/logics/delete';
 import { handleUserLocationNotification } from '../../components/websockets/logics/location';
-import { handleUserOfflineNotification } from '../../components/websockets/logics/offline';
 import { handleUserLocationUpdate } from '../../components/websockets/logics/user-location';
 import { handleUserUpdate } from '../../components/websockets/logics/user-update';
 import { CharacterFilter, CharacterFilters } from '../../container/views/friends/Friends';
@@ -132,19 +131,17 @@ export function setFriendFilter(filter: Partial<FriendFilter>): SetFriendFilter 
 
 export function updateFriend(websocketNotification: WebSocketNotification): AppThunkAction {
   return async function (dispatch, getState) {
-    console.log(websocketNotification.content);
     if (isFriendNotification(websocketNotification)) {
       switch (websocketNotification.type) {
         case 'friend-active':
         case 'friend-update':
         case 'friend-online':
+        case 'friend-offline':
           return handleUserActiveOrUpdateNotification(websocketNotification, getState, dispatch);
         case 'friend-add':
           return handleUserAddNotification(websocketNotification, getState, dispatch);
         case 'friend-delete':
           return handleUserDeleteNotification(websocketNotification, getState, dispatch);
-        case 'friend-offline':
-          return handleUserOfflineNotification(websocketNotification, getState, dispatch);
         case 'friend-location':
           return handleUserLocationNotification(websocketNotification, getState, dispatch);
       }

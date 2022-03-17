@@ -3,7 +3,6 @@
 @import '../../common/_colors';
 
 .WorldInstance {
-  padding: 0;
   display: grid;
   grid-template-columns: autoSize() auto;
   grid-template-rows: autoSize() auto;
@@ -107,7 +106,7 @@
   .UserList {
     grid-row: span 2;
     height: 100%;
-    background-color: $color2;
+    background-color: $color0;
   }
 
   .InstanceActions {

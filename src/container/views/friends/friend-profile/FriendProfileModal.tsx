@@ -8,13 +8,14 @@ import { LoadableContent } from '../../../../components/loadable-content/Loadabl
 import { Modal } from '../../../../components/modal/Modal';
 import { RenderJSON } from '../../../../components/render-json/RenderJSON';
 import { ScrollableContent } from '../../../../components/scrollable-content/ScrollableContent';
-import { Tabs } from '../../../../components/tabs/Tabs';
+import { Tabs, TabsConfig } from '../../../../components/tabs/Tabs';
 import { UserCard } from '../../../../components/user-card/UserCard';
 import { WorldInstance } from '../../../../components/world-instance/WorldInstance';
 import { useMessages } from '../../../../i18n';
 import { selectFriendInfoById, selectFriendInfoByLocation } from '../../../../store/friends/selectors';
 import { Dialog, DialogWithProps } from '../../../dialog/Dialog';
 import styles from './FriendsProfileModal.module.scss';
+import { HistoryTab } from './history/HistoryTab';
 import { UserOverview } from './UserOverview';
 
 type FriendProfileProps = {
@@ -27,16 +28,29 @@ export function FriendProfileModal({ userId, onCanceled }: DialogWithProps<Frien
   const samePeopleInInstance = useSelector(selectFriendInfoByLocation(cachedUser));
   const { getUser } = useApi();
 
-  const tabTitles = useMemo(() => {
-    if (samePeopleInInstance.length === 0) {
-      return [FriendsProfile.Tabs.Overview, FriendsProfile.Tabs.JSON];
-    }
-    return [
-      FriendsProfile.Tabs.Overview,
-      FriendsProfile.Tabs.Instance(samePeopleInInstance.length),
-      FriendsProfile.Tabs.JSON,
-    ];
-  }, [FriendsProfile.Tabs, samePeopleInInstance.length]);
+  const tabConfig: TabsConfig<'overview' | 'instance' | 'history' | 'json'>[] = useMemo(
+    () => [
+      {
+        label: FriendsProfile.Tabs.Overview,
+        key: 'overview',
+      },
+      {
+        label: FriendsProfile.Tabs.Instance(samePeopleInInstance.length),
+        key: 'instance',
+        disabled: samePeopleInInstance.length === 0,
+      },
+      {
+        label: FriendsProfile.Tabs.History,
+        key: 'history',
+        disabled: true,
+      },
+      {
+        label: FriendsProfile.Tabs.JSON,
+        key: 'json',
+      },
+    ],
+    [FriendsProfile.Tabs, samePeopleInInstance.length],
+  );
 
   useEffect(() => {
     getUser(userId).finally();
@@ -48,19 +62,28 @@ export function FriendProfileModal({ userId, onCanceled }: DialogWithProps<Frien
         <Button onClick={onCanceled} className={styles.CloseButton} icon>
           <Close />
         </Button>
-        <LoadableContent data={cachedUser} columns={3} rows={3}>
+        <LoadableContent data={cachedUser}>
           {(user) => (
             <>
               <UserCard user={user} />
               <Content translucent>
-                <Tabs title={tabTitles}>
-                  <ScrollableContent innerClassName={styles.ScrollableContent} translucent>
-                    <UserOverview user={user} />
-                  </ScrollableContent>
-                  {samePeopleInInstance.length !== 0 && <WorldInstance user={user} />}
-                  <ScrollableContent innerClassName={styles.Content} translucent>
-                    <RenderJSON json={user} />
-                  </ScrollableContent>
+                <Tabs config={tabConfig}>
+                  {(key) => (
+                    <>
+                      {key === 'overview' && (
+                        <ScrollableContent innerClassName={styles.ScrollableContent} translucent>
+                          <UserOverview user={user} />
+                        </ScrollableContent>
+                      )}
+                      {key === 'instance' && <WorldInstance user={user} />}
+                      {key === 'history' && <HistoryTab user={user} />}
+                      {key === 'json' && (
+                        <ScrollableContent innerClassName={styles.Content} translucent>
+                          <RenderJSON json={user} />
+                        </ScrollableContent>
+                      )}
+                    </>
+                  )}
                 </Tabs>
               </Content>
             </>

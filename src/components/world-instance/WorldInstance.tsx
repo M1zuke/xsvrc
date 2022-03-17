@@ -74,7 +74,7 @@ export function WorldInstanceInner({ user, worldInfo, instanceInfo }: WorldInsta
   }, [getUser, instanceInfo]);
 
   return (
-    <Content className={styles.WorldInstance}>
+    <Content className={styles.WorldInstance} translucent>
       {toasts}
       <div className={styles.WorldImage} style={worldImage}>
         <div className={styles.LeftWorldInfo}>
@@ -128,11 +128,11 @@ export function WorldInstance({ user }: WorldInstanceProps): ReactElement {
   }, [getWorld, user.location, worldInfo]);
 
   if (isActive(user)) {
-    return <ScrollableContent>Logged in through Website</ScrollableContent>;
+    return <ScrollableContent translucent>Logged in through Website</ScrollableContent>;
   }
 
   if (worldInfo === 'private' || worldInfo === 'offline') {
-    return <ScrollableContent>{worldInfo}</ScrollableContent>;
+    return <ScrollableContent translucent>{worldInfo}</ScrollableContent>;
   }
 
   if (isLoaded(worldInfo) && isLoaded(instanceInfo)) {

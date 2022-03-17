@@ -16,7 +16,7 @@
 
   .NavigationCenter {
     display: grid;
-    grid-template-rows: repeat(4, autoSize());
+    grid-template-rows: repeat(5, autoSize());
     grid-gap: $tinySpacing;
     align-items: end;
   }

@@ -11,6 +11,19 @@
   border-radius: $standardBorderRadius;
   padding: $smallSpacing;
 
+  &.Disabled {
+    position: relative;
+    &:after {
+      position: absolute;
+      content: '';
+      top: 30px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: transparentize($color0, 0.2);
+    }
+  }
+
   .Label {
     font-weight: bold;
   }

@@ -2,6 +2,7 @@ import {
   Face,
   Home,
   List,
+  MonetizationOn,
   Notifications,
   PeopleAlt,
   Person,
@@ -104,6 +105,15 @@ export function Navigation(): ReactElement {
           icon
         >
           <Notifications />
+        </Button>
+        <Button
+          aria-label="navigate to transactions"
+          active={isActiveRoute(routes.transactions.path)}
+          onClick={() => navigateTo(routes.transactions.path)}
+          icon
+          disabled
+        >
+          <MonetizationOn />
         </Button>
         <Button
           aria-label="navigate to avatars"

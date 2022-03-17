@@ -26,7 +26,7 @@ export function ConfirmDialog({
   }, [onCanceled, onConfirmed]);
 
   return (
-    <Modal onCancel={onCanceled}>
+    <Modal onCancel={onCanceled} higherIndex>
       <Dialog className={styles.Component}>
         <DialogHeader onCancel={onCanceled}>{title}</DialogHeader>
         <DialogContent>{body}</DialogContent>

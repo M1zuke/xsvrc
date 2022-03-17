@@ -1,7 +1,7 @@
-import { setModerations } from '../store/user/actions';
+import { addModeration, deleteModeration, setModerations } from '../store/user/actions';
 import { AppThunkAction } from '../thunk';
 import { api, prepare } from './prepare';
-import { Moderation } from './types';
+import { Moderation, ModerationType, UserInfo } from './types';
 
 export function getAllModerations(): AppThunkAction {
   return async function (dispatch, getState) {
@@ -17,5 +17,39 @@ export function getAllModerations(): AppThunkAction {
     if (result.type === 'entity') {
       dispatch(setModerations(result.result));
     }
+  };
+}
+
+export function moderateUser(userId: UserInfo['id'], type: ModerationType): AppThunkAction {
+  return async function (dispatch, getState) {
+    const result = await prepare<Moderation>(getState, dispatch, {
+      url: api('auth/user/playermoderations'),
+      method: 'POST',
+      body: {
+        moderated: userId,
+        type,
+      },
+    });
+    if (result.type === 'entity') {
+      if (type === 'showAvatar' || type === 'hideAvatar') {
+        await unModerateUser(userId, 'hideAvatar');
+        await unModerateUser(userId, 'showAvatar');
+        dispatch(deleteModeration(userId, 'hideAvatar'));
+        dispatch(deleteModeration(userId, 'showAvatar'));
+      }
+      dispatch(addModeration(result.result));
+    }
+  };
+}
+export function unModerateUser(userId: UserInfo['id'], type: ModerationType): AppThunkAction {
+  return async function (dispatch, getState) {
+    await prepare(getState, dispatch, {
+      url: api('auth/user/unplayermoderate'),
+      method: 'PUT',
+      body: {
+        moderated: userId,
+        type,
+      },
+    });
   };
 }

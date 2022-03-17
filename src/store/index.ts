@@ -1,5 +1,6 @@
 import { VRCApiInfo } from './api-info/state';
 import { FriendInfoState } from './friends/state';
+import { HistoryState } from './history/state';
 import { PersistedState } from './persisted/state';
 import { Loadable } from './reducer';
 import { UserEventState } from './user-events/state';
@@ -15,4 +16,5 @@ export interface AppState {
   friends: FriendInfoState;
   userEvents: UserEventState;
   worlds: WorldsState;
+  history: HistoryState;
 }

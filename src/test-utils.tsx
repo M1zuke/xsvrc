@@ -10,6 +10,7 @@ import { AppState } from './store';
 import { AppAction, AppActions, AppActionsType } from './store/actions';
 import { INITIAL_API_INFO_STATE } from './store/api-info/state';
 import { INITIAL_FRIEND_INFO_STATE } from './store/friends/state';
+import { INITIAL_HISTORY_STATE } from './store/history/state';
 import { INITIAL_PERSISTED_STATE } from './store/persisted/state';
 import { createAppStore } from './store/store';
 import { INITIAL_USER_EVENT_STATE } from './store/user-events/state';
@@ -41,6 +42,7 @@ export const INITIAL_TEST_APP_STATE: AppState = {
   friends: INITIAL_FRIEND_INFO_STATE,
   userEvents: INITIAL_USER_EVENT_STATE,
   worlds: INITIAL_WORLD_STATE,
+  history: INITIAL_HISTORY_STATE,
 };
 
 export function extendInitialState(state: DeepPartial<AppState>): AppState {

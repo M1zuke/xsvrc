@@ -1,6 +1,7 @@
 import { isLoaded } from '../../../api/prepare';
 import { UserLocationUpdate } from '../../../api/types';
 import { AppState } from '../../../store';
+import { addHistory } from '../../../store/history/actions';
 import { addUserEvent } from '../../../store/user-events/action';
 import { setUserInfo } from '../../../store/user/actions';
 import { setWorldInfo } from '../../../store/worlds/actions';
@@ -12,7 +13,8 @@ export function handleUserLocationUpdate(
   dispatch: AppDispatch,
 ): void {
   const userInfo = getState().user.userInfo;
-  if (isLoaded(userInfo)) {
+  if (isLoaded(userInfo) && userInfo.location !== websocketNotification.content.location) {
+    dispatch(addHistory(userInfo.id, userInfo.location, websocketNotification.content.location));
     dispatch(
       addUserEvent({
         userId: websocketNotification.content.userId,

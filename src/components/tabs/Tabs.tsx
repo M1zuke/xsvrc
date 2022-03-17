@@ -1,35 +1,52 @@
-import React, { PropsWithChildren, ReactElement, useCallback, useMemo, useState } from 'react';
+import React, { ReactElement, ReactNode, useEffect, useMemo, useState } from 'react';
 import { Button } from '../button/Button';
 import styles from './Tabs.module.scss';
 
-type TabsProps = {
-  title: string[];
+export type TabsConfig<T extends string> = {
+  label: string;
+  key: T;
+  disabled?: boolean;
 };
 
-export function Tabs({ title, children }: PropsWithChildren<TabsProps>): ReactElement {
-  const childrenAsArray = useMemo(() => React.Children.toArray(children), [children]);
-  const [tabIndex, setIndex] = useState(0);
+type TabsProps<T extends string> = {
+  config: TabsConfig<T>[];
+  children: (key: T) => ReactNode;
+};
 
-  const isActive = useCallback((i: number) => tabIndex === i, [tabIndex]);
+export function Tabs<T extends string>({ config, children }: TabsProps<T>): ReactElement {
+  const [key, setKey] = useState(config[0]?.key ?? '');
 
   const tabs = useMemo(
     () =>
-      title.map((title, index) => {
+      config.map((c, index) => {
         return (
-          <Button active={isActive(index)} key={`${title}-${index}`} onClick={() => setIndex(index)}>
-            {title}
+          <Button
+            active={c.key === key}
+            key={`${c.label}-${index}`}
+            onClick={() => setKey(c.key)}
+            disabled={c.disabled}
+          >
+            {c.label}
           </Button>
         );
       }),
-    [isActive, title],
+    [config, key],
   );
+
+  useEffect(() => {
+    const configForKey = config.find((c) => c.key === key);
+    if (configForKey?.disabled) {
+      const nonDisabledConfig = config.find((c) => !c.disabled);
+      setKey(nonDisabledConfig?.key ?? ('' as T));
+    }
+  }, [config, key]);
 
   return (
     <div className={styles.Component}>
       <div className={styles.Tabs}>
         <div className={styles.TabsInner}>{tabs}</div>
       </div>
-      <div className={styles.Content}>{childrenAsArray[tabIndex]}</div>
+      <div className={styles.Content}>{children(key)}</div>
     </div>
   );
 }

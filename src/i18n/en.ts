@@ -13,7 +13,6 @@ const Format = {
   FullDate:
     (settings: SettingsState) =>
     (value?: number | string): string => {
-      console.log(value);
       if (value) {
         const date = new Date(value);
 
@@ -53,6 +52,10 @@ export const messages = {
     Title: 'XSVRC - Manage your VRC',
   },
   Views: {
+    Moderations: {
+      ConfirmBlockTitle: (username: string) => `Block user ${username}?`,
+      ConfirmBodyMessage: (username: string): string => `Do you really wanna block the user "${username}"?`,
+    },
     UserCard: {
       ConfirmMessages: {
         ConfirmRemoveFavorite: {
@@ -140,6 +143,7 @@ export const messages = {
       Tabs: {
         Overview: 'Overview',
         Instance: (amount: number): string => `Instance (${amount})`,
+        History: 'History',
         JSON: 'JSON',
       },
       NotFound: 'User not Found',

@@ -26,6 +26,7 @@
     background-color: $color2;
     height: 100%;
     overflow: hidden;
+    border-radius: 0 $standardBorderRadius $standardBorderRadius $standardBorderRadius;
     display: grid;
   }
 }

@@ -26,6 +26,7 @@
     grid-template-columns: repeat(2, autoSize());
 
     .TargetName {
+      cursor: pointer;
       background-color: $colorBlue;
       font-weight: bold;
       padding: $smallSpacing;

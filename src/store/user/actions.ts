@@ -1,5 +1,3 @@
-import merge from 'lodash.merge';
-import { isLoaded } from '../../api/prepare';
 import {
   AuthenticatedUserInfo,
   AvatarInfo,
@@ -7,14 +5,18 @@ import {
   FavoriteGroup,
   MappedFavoritesToType,
   Moderation,
+  ModerationType,
   NamedFavorite,
   NotificationContent,
-  SortedModerations,
+  UserInfo,
 } from '../../api/types';
 import { Loadable } from '../reducer';
+import { MappedModeration } from './selectors';
 import {
   AddFavorite,
+  AddModeration,
   AddNotification,
+  DeleteModeration,
   RemoveAvatar,
   RemoveFavorite,
   RemoveNotification,
@@ -76,59 +78,24 @@ export function removeFavorite(favorite: NamedFavorite | Favorite): RemoveFavori
   };
 }
 
-type MappedAllModerationToUser = {
-  [userId: string]: {
-    [type: string]: Moderation;
-  };
-};
-
-export type MappedModeration = {
-  created: string;
-  moderations: Moderation[];
-  displayName: string;
-  targetUserId: string;
-};
-
 export function setModerations(moderations: Loadable<Moderation[]>): SetModerations {
-  if (isLoaded(moderations)) {
-    const mappedModeration: MappedAllModerationToUser = merge(
-      {},
-      ...moderations.map((m) => ({
-        [m.targetUserId]: { [m.type]: m },
-      })),
-    );
-
-    const asArray: SortedModerations = Object.assign(
-      {},
-      ...Object.keys(mappedModeration).map((id) => {
-        return {
-          [id]: Object.values(mappedModeration[id]),
-        };
-      }),
-    );
-
-    const sortedByDate: MappedModeration[] = Object.keys(asArray)
-      .map((id) => {
-        const entries = asArray[id].sort(sortByDate);
-        const getLatestTime = [...entries].shift();
-        return {
-          displayName: getLatestTime?.targetDisplayName || '',
-          created: getLatestTime?.created || '',
-          targetUserId: getLatestTime?.targetUserId || '',
-          moderations: entries,
-        } as MappedModeration;
-      })
-      .sort(sortByDate);
-
-    return {
-      type: 'user/set-moderations',
-      moderations: sortedByDate,
-    };
-  }
-
   return {
     type: 'user/set-moderations',
     moderations,
+  };
+}
+
+export function addModeration(moderation: Moderation): AddModeration {
+  return {
+    type: 'user/add-moderation',
+    moderation,
+  };
+}
+export function deleteModeration(userId: UserInfo['id'], moderationType: ModerationType): DeleteModeration {
+  return {
+    type: 'user/delete-moderation',
+    userId,
+    moderationType,
   };
 }
 
@@ -147,7 +114,7 @@ function sortByName(a: FavoriteGroup, b: FavoriteGroup): number {
   return a.name.localeCompare(b.name);
 }
 
-function sortByDate(a: Moderation | MappedModeration, b: Moderation | MappedModeration): number {
+export function sortByDate(a: Moderation | MappedModeration, b: Moderation | MappedModeration): number {
   return +new Date(b.created) - +new Date(a.created);
 }
 
@@ -164,6 +131,7 @@ export function updateAvatarInfo(avatarInfo: AvatarInfo): UpdateAvatar {
     avatarInfo,
   };
 }
+
 export function removeAvatarInfo(avatarId: AvatarInfo['id']): RemoveAvatar {
   return {
     type: 'user/remove-avatar',
