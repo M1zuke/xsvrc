@@ -1,0 +1,65 @@
+@import '../../../../../../common/_spacing';
+@import '../../../../../../common/_colors';
+
+.ModerationBlock {
+  padding: $smallSpacing;
+  background-color: $color0;
+  border-radius: $standardBorderRadius;
+  display: grid;
+  grid-column-gap: $smallSpacing;
+  align-items: center;
+  justify-content: space-between;
+
+  &.Span2 {
+    grid-column: span 2;
+
+    .ModerationTitle {
+      grid-column: span 3;
+    }
+  }
+
+  .Icon {
+    padding: $tinySpacing;
+    cursor: pointer;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-size: 45px;
+    border-radius: $standardBorderRadius;
+
+    &.Active {
+      color: $colorBlue;
+    }
+
+    &:not(.Active) {
+      color: transparentize($textColor, 0.8);
+    }
+
+    &:hover {
+      background-color: $color1;
+
+      &:not(.Active) {
+        color: transparentize($textColor, 0.3);
+      }
+    }
+  }
+
+  .ModerationTitle {
+    text-align: center;
+    font-size: 14px;
+    grid-column: span 2;
+  }
+
+  &.OneIcon {
+    justify-content: center;
+    justify-items: center;
+
+    .Icon {
+      align-items: center;
+    }
+
+    .ModerationTitle {
+      grid-column: span 1;
+    }
+  }
+}

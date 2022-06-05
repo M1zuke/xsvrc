@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { BoundThunkAction } from '../thunk';
 import { useAppDispatch } from '../thunk/dispatch';
 import { deleteAvatar, getAllAvatars, getAvatar, updateAvatar } from './avatars-api';
 import { addToFavorites, removeFromFavorites } from './favorites-api';
@@ -12,6 +13,8 @@ import { getAllModerations, moderateUser, unModerateUser } from './moderations';
 import { handleNotification, NotificationsAnswerPossibility } from './notifications-api';
 import { getTransactions } from './transactions';
 import { AvatarInfo, Favorite, ModerationType, NamedFavorite, NotificationContent, UserInfo } from './types';
+import { changeUsername } from './user-api';
+import { usernameExits } from './utils-api';
 
 export type API = {
   info(): Promise<void>;
@@ -34,6 +37,8 @@ export type API = {
   moderateUser(userId: UserInfo['id'], type: ModerationType): Promise<void>;
   unModerateUser(userId: UserInfo['id'], type: ModerationType): Promise<void>;
   getTransactions(): Promise<void>;
+  usernameExits: BoundThunkAction<typeof usernameExits>;
+  changeUsername: BoundThunkAction<typeof changeUsername>;
 };
 
 export function useApi(): API {
@@ -41,65 +46,71 @@ export function useApi(): API {
 
   return useMemo<API>(
     () => ({
-      info: (): Promise<void> => {
-        return dispatch(info());
+      info: async () => {
+        await dispatch(info());
       },
-      login: (username?: string, password?: string) => {
-        return dispatch(login(username, password));
+      login: async (username?: string, password?: string) => {
+        await dispatch(login(username, password));
       },
-      logout: () => {
-        return dispatch(logout());
+      logout: async () => {
+        await dispatch(logout());
       },
-      getWorld: (location) => {
-        return dispatch(getWorld(location));
+      getWorld: async (location) => {
+        await dispatch(getWorld(location));
       },
-      getInstance: (location) => {
-        return dispatch(getInstance(location));
+      getInstance: async (location) => {
+        await dispatch(getInstance(location));
       },
-      getUser: (userId) => {
-        return dispatch(getUser(userId));
+      getUser: async (userId) => {
+        await dispatch(getUser(userId));
       },
-      getAllFriends: () => {
-        return dispatch(getAllFriends());
+      getAllFriends: async () => {
+        await dispatch(getAllFriends());
       },
-      unfriendUser: (id) => {
-        return dispatch(sendUnfriendRequest(id));
+      unfriendUser: async (id) => {
+        await dispatch(sendUnfriendRequest(id));
       },
-      addToFavorites: (user, group) => {
-        return dispatch(addToFavorites(user, group));
+      addToFavorites: async (user, group) => {
+        await dispatch(addToFavorites(user, group));
       },
-      removeFromFavorites: (favorite) => {
-        return dispatch(removeFromFavorites(favorite));
+      removeFromFavorites: async (favorite) => {
+        await dispatch(removeFromFavorites(favorite));
       },
-      getAllModerations: () => {
-        return dispatch(getAllModerations());
+      getAllModerations: async () => {
+        await dispatch(getAllModerations());
       },
-      selfInvite: (location) => {
-        return dispatch(selfInvite(location));
+      selfInvite: async (location) => {
+        await dispatch(selfInvite(location));
       },
-      getAllAvatars: () => {
-        return dispatch(getAllAvatars());
+      getAllAvatars: async () => {
+        await dispatch(getAllAvatars());
       },
-      updateAvatar: (avatarInfo, changeVersion) => {
-        return dispatch(updateAvatar(avatarInfo, changeVersion));
+      updateAvatar: async (avatarInfo, changeVersion) => {
+        await dispatch(updateAvatar(avatarInfo, changeVersion));
       },
-      getAvatar: (avatarInfo) => {
-        return dispatch(getAvatar(avatarInfo));
+      getAvatar: async (avatarInfo) => {
+        await dispatch(getAvatar(avatarInfo));
       },
-      deleteAvatar: (avatarId: AvatarInfo['id']) => {
-        return dispatch(deleteAvatar(avatarId));
+      deleteAvatar: async (avatarId: AvatarInfo['id']) => {
+        await dispatch(deleteAvatar(avatarId));
       },
-      handleNotification: (notificationId, method) => {
-        return dispatch(handleNotification(notificationId, method));
+      handleNotification: async (notificationId, method) => {
+        await dispatch(handleNotification(notificationId, method));
       },
-      moderateUser: (userId, type) => {
-        return dispatch(moderateUser(userId, type));
+      moderateUser: async (userId, type) => {
+        await dispatch(moderateUser(userId, type));
       },
-      unModerateUser: (userId, type) => {
-        return dispatch(unModerateUser(userId, type));
+      unModerateUser: async (userId, type) => {
+        await dispatch(unModerateUser(userId, type));
       },
-      getTransactions: () => {
-        return dispatch(getTransactions());
+      getTransactions: async () => {
+        await dispatch(getTransactions());
+      },
+      usernameExits: async (userId, displayName) => {
+        return dispatch(usernameExits(userId, displayName));
+      },
+      changeUsername: async (userId, displayName, password) => {
+        return dispatch(changeUsername(userId, displayName, password));
       },
     }),
     [dispatch],

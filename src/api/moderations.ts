@@ -1,9 +1,9 @@
 import { addModeration, deleteModeration, setModerations } from '../store/user/actions';
-import { AppThunkAction } from '../thunk';
+import { AsyncAppAction } from '../thunk';
 import { api, prepare } from './prepare';
 import { Moderation, ModerationType, UserInfo } from './types';
 
-export function getAllModerations(): AppThunkAction {
+export function getAllModerations(): AsyncAppAction {
   return async function (dispatch, getState) {
     const state = getState();
 
@@ -20,7 +20,7 @@ export function getAllModerations(): AppThunkAction {
   };
 }
 
-export function moderateUser(userId: UserInfo['id'], type: ModerationType): AppThunkAction {
+export function moderateUser(userId: UserInfo['id'], type: ModerationType): AsyncAppAction {
   return async function (dispatch, getState) {
     const result = await prepare<Moderation>(getState, dispatch, {
       url: api('auth/user/playermoderations'),
@@ -41,7 +41,7 @@ export function moderateUser(userId: UserInfo['id'], type: ModerationType): AppT
     }
   };
 }
-export function unModerateUser(userId: UserInfo['id'], type: ModerationType): AppThunkAction {
+export function unModerateUser(userId: UserInfo['id'], type: ModerationType): AsyncAppAction {
   return async function (dispatch, getState) {
     await prepare(getState, dispatch, {
       url: api('auth/user/unplayermoderate'),

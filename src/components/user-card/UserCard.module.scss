@@ -67,12 +67,16 @@
     .UserInteractions {
       display: grid;
       grid-gap: $smallSpacing;
-      grid-template-columns: repeat(2, autoSize());
+      grid-template-columns: repeat(3, autoSize());
       justify-content: end;
       align-items: center;
 
       .DeleteUser {
         background-color: $colorRed;
+      }
+
+      .EditUser {
+        background-color: $colorDarkGreen;
       }
 
       .FavoriteUser {

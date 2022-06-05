@@ -10,15 +10,13 @@
 
   &.Translucent {
     background-color: transparent;
+  }
 
-    .ScrollableContent {
-      &::-webkit-scrollbar-thumb {
-        background: $color1;
-      }
+  &.NoPadding {
+    padding: 0;
 
-      &::-webkit-scrollbar-thumb:hover {
-        background: $color2;
-      }
+    > .ScrollableContent {
+      padding: 0;
     }
   }
 

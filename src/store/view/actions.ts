@@ -2,7 +2,7 @@ import { messages as de } from '../../i18n/de';
 import { messages as en } from '../../i18n/en';
 import { Localization } from '../persisted/state';
 import { ModalConfig } from './state';
-import { SetI18N, SetModal, UpdateAvailable } from './types';
+import { SetBlocked, SetI18N, SetModal, UpdateAvailable } from './types';
 
 export function updateAvailable(): UpdateAvailable {
   return {
@@ -22,5 +22,11 @@ export function setModal(modal: ModalConfig): SetModal {
   return {
     type: 'view/set-modal',
     modal,
+  };
+}
+export function setBlocked(blocked: boolean): SetBlocked {
+  return {
+    type: 'view/set-blocked',
+    blocked,
   };
 }

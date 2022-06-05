@@ -1,11 +1,10 @@
-import classNames from 'classnames';
 import React, { ReactElement, useMemo } from 'react';
-import { SwitchCell } from './SwitchCell';
 import styles from './Table.module.scss';
+import { TableRow } from './TableRow';
 
 export type CellTypes = string | number;
 
-export type CellOptions<T extends CellTypes = CellTypes> = TextCellOptions | DropDownOption<T>;
+export type CellOptions<T extends CellTypes = CellTypes> = TextCellOptions | DropDownOption<T> | CustomCellOption;
 export type TextCellOptions = {
   type?: 'text';
   className?: string;
@@ -13,6 +12,12 @@ export type TextCellOptions = {
   editable?: boolean;
   onChange?: (value: string) => void;
   disabled?: boolean;
+};
+
+export type CustomCellOption = {
+  type: 'custom';
+  className?: string;
+  value: ReactElement;
 };
 
 export type DropDownOption<T extends CellTypes> = {
@@ -28,15 +33,26 @@ export type DropDownOptionItem<T extends CellTypes> = {
   label: string;
 };
 
-export type RowOption = {
+type RowGroupOption = {
+  type: 'group';
   id: string;
+  row: RowOption;
+  subRows: RowOption[];
+};
+
+export type RowOption = {
+  type: 'row';
+  id: string;
+  onClick?: () => void;
   values: CellOptions[];
 };
 
+export type RowConfig = RowGroupOption | RowOption;
+
 export type TableConfig = {
-  columns: { amount?: number; className?: string }[];
+  columns: { amount?: number; className?: string; width?: string }[];
   header?: RowOption;
-  rows: RowOption[];
+  rows: RowConfig[];
 };
 
 type TableProps = {
@@ -44,38 +60,30 @@ type TableProps = {
 };
 
 export function Table({ config }: TableProps): ReactElement {
-  const columnClassNames = useMemo(() => {
-    return config.columns.flatMap((column) => {
-      return new Array(column.amount ?? 1).fill('').map(() => column.className);
+  const tableStyle = useMemo(() => {
+    const columnWidths = config.columns.map((columnConfig) => {
+      const columnConfigWidth = columnConfig.width;
+      if (columnConfigWidth === 'autoSize') {
+        return `repeat(${columnConfig.amount},minmax(min-content, max-content))`;
+      }
+      return `repeat(${columnConfig.amount}, 1fr)`;
     });
+
+    return {
+      gridTemplateColumns: columnWidths.join(' '),
+    };
   }, [config.columns]);
-
-  const cells = useMemo(() => {
-    return (config.header ? [config?.header, ...config.rows] : config.rows).flatMap((row, rowIndex) => {
-      return row.values.map((cell, cellIndex) => {
-        const newOptions: CellOptions = {
-          ...cell,
-          className: classNames(
-            columnClassNames[cellIndex],
-            { [styles.Header]: rowIndex === 0 && config.header },
-            cell.className,
-          ),
-        };
-        return <SwitchCell key={`Table-${rowIndex}-${cellIndex}`} options={newOptions} />;
-      });
-    });
-  }, [columnClassNames, config.header, config.rows]);
-
-  const tableStyle = useMemo(
-    () => ({
-      gridTemplateColumns: `repeat(${columnClassNames.length}, minmax(min-content, auto)`,
-    }),
-    [columnClassNames.length],
-  );
 
   return (
     <div className={styles.TableComponent} style={tableStyle}>
-      {cells}
+      {config.header && (
+        <div className={styles.Header}>
+          <TableRow row={config.header} />
+        </div>
+      )}
+      {config.rows.map((row) => (
+        <TableRow key={`row-${row.id}`} row={row} />
+      ))}
     </div>
   );
 }

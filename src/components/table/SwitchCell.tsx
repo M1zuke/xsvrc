@@ -1,18 +1,38 @@
 import React, { ReactElement } from 'react';
+import { Cell } from './Cell';
 import { DropDownCell } from './fields/DropDownCell';
 import { TextCell } from './fields/TextCell';
 import { CellOptions } from './Table';
 
-type SwitchCellProps = {
-  options: CellOptions;
+export type TableHeaderProps<T> = T & {
+  header?: boolean;
 };
 
-export function SwitchCell({ options }: SwitchCellProps): ReactElement {
+type SwitchCellProps = {
+  header?: boolean;
+  collapseHandler?: () => void;
+  collapsed?: boolean;
+  allowCollapse?: boolean;
+  options: CellOptions;
+  onClick?: () => void;
+};
+
+export function SwitchCell({ options, ...props }: SwitchCellProps): ReactElement {
   switch (options.type) {
     case 'dropdown':
-      return <DropDownCell {...options} />;
+      return (
+        <Cell {...props}>
+          <DropDownCell {...options} />
+        </Cell>
+      );
+    case 'custom':
+      return <Cell {...props}>{options.value}</Cell>;
     default:
     case 'text':
-      return <TextCell {...options} />;
+      return (
+        <Cell {...props}>
+          <TextCell {...options} />
+        </Cell>
+      );
   }
 }

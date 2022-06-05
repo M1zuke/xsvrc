@@ -7,14 +7,19 @@ type ScrollableContentProps = {
   innerClassName?: string;
   style?: CSSProperties;
   translucent?: boolean;
+  noPadding?: boolean;
 };
 
 export const ScrollableContent = React.forwardRef<HTMLDivElement, PropsWithChildren<ScrollableContentProps>>(
   function ScrollableContent(
-    { children, className, style, innerClassName, translucent }: PropsWithChildren<ScrollableContentProps>,
+    { children, className, style, innerClassName, translucent, noPadding }: PropsWithChildren<ScrollableContentProps>,
     ref,
   ): ReactElement {
-    const classes = classNames(styles.Component, { [styles.Translucent]: translucent }, className);
+    const classes = classNames(
+      styles.Component,
+      { [styles.Translucent]: translucent, [styles.NoPadding]: noPadding },
+      className,
+    );
     const innerClasses = classNames(styles.ScrollableContent, innerClassName);
 
     return (

@@ -1,11 +1,11 @@
 import { setFriendInfo, setNonFriendInfo } from '../store/friends/actions';
 import { setUserInfo } from '../store/user/actions';
 import { isLoggedIn, selectUserInfo } from '../store/user/selectors';
-import { AppThunkAction } from '../thunk';
+import { AsyncAppAction } from '../thunk';
 import { api, isLoaded, prepare } from './prepare';
 import { UserInfo } from './types';
 
-export function getUser(id: string): AppThunkAction {
+export function getUser(id: string): AsyncAppAction {
   return async function (dispatch, getState) {
     const state = getState();
     if (!isLoggedIn(state)) {

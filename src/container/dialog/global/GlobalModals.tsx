@@ -14,7 +14,7 @@ export function GlobalModals(): ReactElement {
   return (
     <>
       {modal && modal.type === 'friend-profile' && (
-        <FriendProfileModal userId={modal.userId} onCanceled={resetModal} onConfirmed={resetModal} />
+        <FriendProfileModal userId={modal.userId} onCanceled={resetModal} onConfirmed={resetModal} edit={modal.edit} />
       )}
     </>
   );

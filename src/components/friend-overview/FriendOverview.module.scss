@@ -72,6 +72,7 @@ $trustedRankBorder: $tinySpacing;
   }
 
   .SameInstanceIcon {
+    position: absolute;
     color: $colorRed;
     bottom: 28px;
     left: $tinySpacing;
@@ -86,8 +87,7 @@ $trustedRankBorder: $tinySpacing;
   }
 
   .OnlineThroughWebsite,
-  .PrivateIcon,
-  .SameInstanceIcon {
+  .PrivateIcon {
     background-color: $color2;
     padding: $tinySpacing;
     border-radius: $standardBorderRadius;
@@ -96,35 +96,6 @@ $trustedRankBorder: $tinySpacing;
     justify-content: center;
     align-items: center;
     z-index: 3;
-  }
-
-  .Status {
-    position: absolute;
-    top: $smallSpacing;
-    right: $smallSpacing;
-    background-color: $color2;
-    padding: $tinySpacing;
-    width: 23px;
-    height: 23px;
-    box-shadow: black 0 0 2px;
-    border-radius: 50%;
-    z-index: 2;
-
-    &.Active:not(.Private) {
-      background-color: lawngreen;
-    }
-
-    &.AskMe {
-      background-color: orange;
-    }
-
-    &.Busy {
-      background-color: red;
-    }
-
-    &.JoinMe {
-      background-color: #25aac5;
-    }
   }
 
   .DisplayName {
@@ -141,12 +112,10 @@ $trustedRankBorder: $tinySpacing;
     z-index: 2;
   }
 
-  &.Small {
-    height: 36px;
-    width: 36px;
-
-    div {
-      display: none;
-    }
+  .Status {
+    position: absolute;
+    top: $smallSpacing;
+    right: $smallSpacing;
+    z-index: 2;
   }
 }

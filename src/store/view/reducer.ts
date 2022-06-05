@@ -12,6 +12,9 @@ export function reducer(state: ViewState = INITIAL_VIEW_STATE, action: ViewActio
     case 'view/set-modal': {
       return { ...state, modal: action.modal };
     }
+    case 'view/set-blocked': {
+      return { ...state, blocked: action.blocked };
+    }
   }
   return state;
 }

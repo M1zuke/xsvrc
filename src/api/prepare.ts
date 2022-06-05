@@ -2,6 +2,7 @@ import { electronFetch, ElectronResult, ErrorType, RequestConfig } from '../comm
 import { AppState } from '../store';
 import { resetStoredCookies, setStoredCookies } from '../store/persisted/actions';
 import { isErrorType, Loadable } from '../store/reducer';
+import { setBlocked } from '../store/view/actions';
 import { AppDispatch } from '../thunk';
 
 export type FetchResult<T> = Omit<ElectronResult<T>, 'cookies'>;
@@ -44,7 +45,11 @@ export async function prepare<T>(
       config = ensureApiKey(config, apiKey.clientApiKey);
     }
 
+    if (config.blockable) {
+      dispatch(setBlocked(true));
+    }
     const result = await electronFetch<T>({ ...config, storedCookies: storedCookies });
+    dispatch(setBlocked(false));
 
     if (result.type === 'entity') {
       if (result.cookies.length !== 0) {

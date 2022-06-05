@@ -2,19 +2,21 @@ import React, { ReactElement, ReactNode, useEffect, useMemo, useState } from 're
 import { Button } from '../button/Button';
 import styles from './Tabs.module.scss';
 
-export type TabsConfig<T extends string> = {
+export type TabsConfig<D extends object, T extends string> = {
   label: string;
   key: T;
   disabled?: boolean;
+  content: (data: D) => ReactNode;
 };
 
-type TabsProps<T extends string> = {
-  config: TabsConfig<T>[];
-  children: (key: T) => ReactNode;
+type TabsProps<D extends object, T extends string> = {
+  config: TabsConfig<D, T>[];
+  entryKey: T;
+  data: D;
 };
 
-export function Tabs<T extends string>({ config, children }: TabsProps<T>): ReactElement {
-  const [key, setKey] = useState(config[0]?.key ?? '');
+export function Tabs<T extends string, D extends object>({ config, entryKey, data }: TabsProps<D, T>): ReactElement {
+  const [key, setKey] = useState(entryKey);
 
   const tabs = useMemo(
     () =>
@@ -33,6 +35,8 @@ export function Tabs<T extends string>({ config, children }: TabsProps<T>): Reac
     [config, key],
   );
 
+  const content = useMemo(() => config.find((c) => c.key === key)?.content, [config, key]);
+
   useEffect(() => {
     const configForKey = config.find((c) => c.key === key);
     if (configForKey?.disabled) {
@@ -46,7 +50,7 @@ export function Tabs<T extends string>({ config, children }: TabsProps<T>): Reac
       <div className={styles.Tabs}>
         <div className={styles.TabsInner}>{tabs}</div>
       </div>
-      <div className={styles.Content}>{children(key)}</div>
+      <div className={styles.Content}>{content?.(data)}</div>
     </div>
   );
 }

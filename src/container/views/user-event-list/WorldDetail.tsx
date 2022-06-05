@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 import { isLoaded } from '../../../api/prepare';
 import { useApi } from '../../../api/use-api';
 import { Loading } from '../../../components/loading/Loading';
+import { PersonsInInstance } from '../../../components/persons-in-instance/PersonsInInstance';
 import { ToolTip } from '../../../components/tool-tip/ToolTip';
 import { useMessages } from '../../../i18n';
-import { selectFriendInfoByLocation } from '../../../store/friends/selectors';
 import { GetInstanceTypeInfo, selectInstanceByInstance, selectWorldByLocation } from '../../../store/worlds/selectors';
 import { PropsWithSubscription } from '../../subscription-service/SubscriptionService';
 import styles from './WorldDetail.module.scss';
@@ -26,7 +26,6 @@ export function WorldDetail({
 
   const worldInfo = useSelector(selectWorldByLocation(location));
   const instanceInfo = useSelector(selectInstanceByInstance(location));
-  const friendsInInstance = useSelector(selectFriendInfoByLocation(location));
   const instanceTypeInfo = useSelector(GetInstanceTypeInfo(location));
   const messages = useMessages();
 
@@ -69,13 +68,8 @@ export function WorldDetail({
   if (isLoaded(worldInfo) && typeof worldInfo !== 'string' && isLoaded(instanceInfo)) {
     return (
       <div className={styles.Component} style={backgroundImage}>
-        <ToolTip
-          toolTip={messages.Views.FriendsOverview.ToolTip.PeopleInSameInstance(friendsInInstance.length)}
-          className={styles.FriendsInInstance}
-        >
-          <Person />
-          {friendsInInstance.length}
-        </ToolTip>
+        <PersonsInInstance location={location} className={styles.FriendsInInstance} />
+
         <ToolTip
           toolTip={messages.Views.WorldDetail.PeopleInInstance(instanceInfo.n_users)}
           className={styles.PeopleInInstance}

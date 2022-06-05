@@ -23,10 +23,12 @@ export function TextCell({ value, className, editable, onChange, disabled }: Tex
 
   const makeEditable = useCallback(
     (event: MouseEvent<HTMLDivElement>) => {
-      event.stopPropagation();
+      if (editable) {
+        event.stopPropagation();
 
-      if (editable && !disabled) {
-        setIsEditable(true);
+        if (!disabled) {
+          setIsEditable(true);
+        }
       }
     },
     [disabled, editable],
@@ -34,25 +36,22 @@ export function TextCell({ value, className, editable, onChange, disabled }: Tex
 
   useEffect(() => {
     if (isEditable) {
-      setTimeout(
-        /* istanbul ignore next : I don't know how to test this */ () => {
-          ref.current?.focus();
-        },
-      );
+      setTimeout(() => {
+        ref.current?.focus();
+      });
     }
   }, [isEditable]);
 
   return (
-    <div className={styles.Cell} onClick={makeEditable}>
-      <div
-        ref={ref}
-        className={classNames({ [styles.Editable]: isEditable }, className)}
-        onInput={(e) => e.target}
-        onBlur={onBlur}
-        contentEditable={isEditable}
-        suppressContentEditableWarning={isEditable}
-        dangerouslySetInnerHTML={{ __html: (value ?? '').toString() }}
-      />
-    </div>
+    <div
+      onClick={!disabled ? makeEditable : undefined}
+      ref={ref}
+      className={classNames({ [styles.Editable]: editable }, className)}
+      onInput={(e) => e.target}
+      onBlur={onBlur}
+      contentEditable={isEditable}
+      suppressContentEditableWarning={isEditable}
+      dangerouslySetInnerHTML={{ __html: (value ?? '').toString() }}
+    />
   );
 }

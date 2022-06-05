@@ -11,4 +11,9 @@
   &:focus {
     outline: none;
   }
+
+  &.Disabled {
+    opacity: 0.5;
+    cursor: no-drop;
+  }
 }

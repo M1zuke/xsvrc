@@ -12,8 +12,7 @@ import { handleUserDeleteNotification } from '../../components/websockets/logics
 import { handleUserLocationNotification } from '../../components/websockets/logics/location';
 import { handleUserLocationUpdate } from '../../components/websockets/logics/user-location';
 import { handleUserUpdate } from '../../components/websockets/logics/user-update';
-import { CharacterFilter, CharacterFilters } from '../../container/views/friends/Friends';
-import { AppThunkAction } from '../../thunk';
+import { AsyncAppAction } from '../../thunk';
 import { AppState } from '../index';
 import { Loadable } from '../reducer';
 import { addNotification } from '../user/actions';
@@ -32,19 +31,13 @@ export function compare<T extends keyof UserInfo, V = UserInfo[T]>(a: V, b: V): 
   return 0;
 }
 
-function sortFunction(a: UserInfo, b: UserInfo): number {
-  return compare(a.displayName, b.displayName);
-}
+// function sortFunction(a: UserInfo, b: UserInfo): number {
+//   return compare(a.displayName, b.displayName);
+// }
 
 function sortFriendInfo(friendInfo: UserInfo[]): UserInfo[] {
-  const specialCharacterFriendInfo = friendInfo.filter(
-    (o) => !CharacterFilters.includes(o.displayName[0].toUpperCase() as CharacterFilter),
-  );
-  const cleanFriendInfo = friendInfo.filter((o) =>
-    CharacterFilters.includes(o.displayName[0].toUpperCase() as CharacterFilter),
-  );
-
-  return [...specialCharacterFriendInfo.sort(sortFunction), ...cleanFriendInfo.sort(sortFunction)];
+  return friendInfo;
+  // return [...specialCharacterFriendInfo.sort(sortFunction), ...cleanFriendInfo.sort(sortFunction)];
 }
 
 export function resetFriends(): ResetFriends {
@@ -129,7 +122,7 @@ export function setFriendFilter(filter: Partial<FriendFilter>): SetFriendFilter 
   };
 }
 
-export function updateFriend(websocketNotification: WebSocketNotification): AppThunkAction {
+export function updateFriend(websocketNotification: WebSocketNotification): AsyncAppAction {
   return async function (dispatch, getState) {
     if (isFriendNotification(websocketNotification)) {
       switch (websocketNotification.type) {

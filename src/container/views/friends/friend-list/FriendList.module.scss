@@ -1,0 +1,22 @@
+@import '../../../../common/_colors';
+@import '../../../../common/_mixins';
+@import '../../../../common/_spacing';
+
+.StatusWrapper {
+  display: grid;
+  grid-template-columns: repeat(2, autoSize());
+  grid-gap: $smallSpacing;
+
+  .PrivateIcon {
+    background-color: $color1;
+    padding: $tinySpacing;
+    border-radius: $standardBorderRadius;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .DarkerColor {
+    background-color: $color0;
+  }
+}

@@ -1,7 +1,7 @@
 import { mergeWith } from 'lodash';
 import { AppState } from '../store';
 import { addFavorite, removeFavorite, setFavoriteGroups, setFavorites } from '../store/user/actions';
-import { AppDispatch, AppThunkAction } from '../thunk';
+import { AppDispatch, AsyncAppAction } from '../thunk';
 import { api, isLoaded, prepare } from './prepare';
 import {
   AddFavorite,
@@ -16,7 +16,7 @@ import {
 
 const limit = 100;
 
-export function getAllFavorites(favorites: Favorite[] = [], offset = 0): AppThunkAction {
+export function getAllFavorites(favorites: Favorite[] = [], offset = 0): AsyncAppAction {
   return async function (dispatch, getState) {
     const state = getState();
 
@@ -73,7 +73,7 @@ function customizer<T>(objValue: T[], srcValue: T[]): T[] | undefined {
   }
 }
 
-export function addToFavorites(user: UserInfo, favGroup: string): AppThunkAction {
+export function addToFavorites(user: UserInfo, favGroup: string): AsyncAppAction {
   return async function (dispatch, getState) {
     const state = getState();
 
@@ -97,7 +97,7 @@ export function addToFavorites(user: UserInfo, favGroup: string): AppThunkAction
   };
 }
 
-export function removeFromFavorites(favorite: Favorite | NamedFavorite): AppThunkAction {
+export function removeFromFavorites(favorite: Favorite | NamedFavorite): AsyncAppAction {
   return async function (dispatch, getState) {
     const response = await prepare(getState, dispatch, {
       url: api(`favorites/${favorite.id}`),
@@ -112,7 +112,7 @@ export function removeFromFavorites(favorite: Favorite | NamedFavorite): AppThun
   };
 }
 
-export function getAllFavoriteGroups(favorites: FavoriteGroup[] = [], offset = 0): AppThunkAction {
+export function getAllFavoriteGroups(favorites: FavoriteGroup[] = [], offset = 0): AsyncAppAction {
   return async function (dispatch, getState) {
     const state = getState();
 

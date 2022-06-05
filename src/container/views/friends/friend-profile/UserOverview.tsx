@@ -66,7 +66,6 @@ export function UserOverview({ user }: UserBioProps): ReactElement {
           <Tag label="Is Supporter" checked={user.tags.includes('system_supporter')} />
           <Tag label="Avatar Upload" checked={user.tags.includes('system_avatar_access')} />
           <Tag label="World Upload" checked={user.tags.includes('system_world_access')} />
-          <Tag label="Legend" checked={user.tags.includes('system_legend')} />
           {languageTags && <Tag label="Languages">{languageTags}</Tag>}
           {user.last_login && <Tag label="Last login">{Format(user.last_login)}</Tag>}
           {user.last_activity && <Tag label="Last activity">{Format(user.last_activity) ?? 'No entry'}</Tag>}

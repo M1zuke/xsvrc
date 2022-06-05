@@ -1,0 +1,33 @@
+@import '../../../../../common/_mixins';
+@import '../../../../../common/_colors';
+@import '../../../../../common/_spacing';
+
+.Component {
+  display: grid;
+  grid-template-columns: repeat(2, autoSize());
+  justify-content: center;
+  align-items: center;
+  grid-gap: $smallSpacing;
+
+  .Label {
+    font-weight: bold;
+  }
+
+  .Help {
+    grid-column: span 2;
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: $smallSpacing;
+    padding: $innerSpacing;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: $colorRed;
+    border: 2px solid $colorRed;
+
+    &.Available {
+      color: $colorDarkGreen;
+      border: 2px solid $colorDarkGreen;
+    }
+  }
+}

@@ -1,10 +1,11 @@
-import React, { ReactElement, useCallback, useMemo, useState } from 'react';
+import { ViewComfy, ViewList } from '@mui/icons-material';
+import classNames from 'classnames';
+import React, { ReactElement, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { isLoaded } from '../../../api/prepare';
 import { isOnline } from '../../../common/utils';
 import { Button } from '../../../components/button/Button';
 import { Checkbox } from '../../../components/checkbox/Checkbox';
-import { Content } from '../../../components/content/Content';
 import { FriendOverview } from '../../../components/friend-overview/FriendOverview';
 import { TextInput } from '../../../components/input/TextInput';
 import { ScrollableContent } from '../../../components/scrollable-content/ScrollableContent';
@@ -14,54 +15,23 @@ import { selectFriendFilter, selectFriendInfo } from '../../../store/friends/sel
 import { FriendFilter } from '../../../store/friends/state';
 import { useAppDispatch } from '../../../thunk/dispatch';
 import { TitleBox } from '../home/TitleBox';
+import { FriendList } from './friend-list/FriendList';
 import styles from './Friends.module.scss';
-
-export const CharacterFilters = [
-  'ALL',
-  '#',
-  'A',
-  'B',
-  'C',
-  'D',
-  'E',
-  'F',
-  'G',
-  'H',
-  'I',
-  'J',
-  'K',
-  'L',
-  'M',
-  'N',
-  'O',
-  'P',
-  'Q',
-  'R',
-  'S',
-  'T',
-  'U',
-  'V',
-  'W',
-  'X',
-  'Y',
-  'Z',
-] as const;
-export type CharacterFilter = typeof CharacterFilters[number];
 
 type FriendFilterUpdate = { [P in keyof FriendFilter]: (value: FriendFilter[P]) => void };
 
 export function Friends(): ReactElement {
   const messages = useMessages();
   const friends = useSelector(selectFriendInfo);
-  const { characterFilter, showOffline, showPrivate } = useSelector(selectFriendFilter);
+  const { asList, showOffline, showPrivate } = useSelector(selectFriendFilter);
   const dispatch = useAppDispatch();
   const [userNameFilter, setUserNameFilter] = useState('');
 
   const handleFilterUpdate: FriendFilterUpdate = useMemo(
     () => ({
-      characterFilter: (value) => dispatch(setFriendFilter({ characterFilter: value })),
       showPrivate: (value) => dispatch(setFriendFilter({ showPrivate: value })),
       showOffline: (value) => dispatch(setFriendFilter({ showOffline: value })),
+      asList: (value) => dispatch(setFriendFilter({ asList: value })),
     }),
     [dispatch],
   );
@@ -80,48 +50,8 @@ export function Friends(): ReactElement {
       return friendInfo.filter((ui) => ui.displayName.toLowerCase().includes(userNameFilter.toLowerCase()));
     }
 
-    if (characterFilter === 'ALL') {
-      return friendInfo;
-    }
-    if (characterFilter === '#') {
-      return friendInfo.filter((o) => !CharacterFilters.includes(o.displayName[0].toUpperCase() as CharacterFilter));
-    }
-    return friendInfo.filter((fi) => fi.displayName[0].toUpperCase() === characterFilter);
-  }, [characterFilter, friendInfo, userNameFilter]);
-
-  const disableFilterButton = useCallback(
-    (key: CharacterFilter) => {
-      if (key === 'ALL') {
-        return false;
-      }
-
-      if (key === '#') {
-        return (
-          friendInfo.filter((o) => !CharacterFilters.includes(o.displayName[0].toUpperCase() as CharacterFilter))
-            .length === 0
-        );
-      }
-
-      return friendInfo.filter((o) => o.displayName[0].toLowerCase() === key.toLowerCase()).length === 0;
-    },
-    [friendInfo],
-  );
-
-  const filterButtons = useMemo(
-    () =>
-      CharacterFilters.map((key) => (
-        <Button
-          key={`select-filter-button-${key}`}
-          aria-label={`select-filter-button-${key}`}
-          onClick={() => handleFilterUpdate['characterFilter'](key)}
-          active={characterFilter === key}
-          disabled={disableFilterButton(key)}
-        >
-          {key}
-        </Button>
-      )),
-    [characterFilter, disableFilterButton, handleFilterUpdate],
-  );
+    return friendInfo;
+  }, [friendInfo, userNameFilter]);
 
   const [filteredFriendsCount, friendsCount] = useMemo(
     () => [filteredFriendsInfo.length, isLoaded(friends) ? Object.values(friends).length : 0],
@@ -129,10 +59,14 @@ export function Friends(): ReactElement {
   );
 
   const friendOverviews = useMemo(() => {
+    if (asList) {
+      return <FriendList friendInfo={filteredFriendsInfo} />;
+    }
+
     return filteredFriendsInfo.map((friendInfo) => (
-      <FriendOverview friendId={friendInfo.id} key={`Friends-Overview-${friendInfo.id}`} />
+      <FriendOverview asList={asList} friendId={friendInfo.id} key={`Friends-Overview-${friendInfo.id}`} />
     ));
-  }, [filteredFriendsInfo]);
+  }, [asList, filteredFriendsInfo]);
 
   return (
     <div className={styles.Component}>
@@ -160,13 +94,16 @@ export function Friends(): ReactElement {
             onChange={handleFilterUpdate['showPrivate']}
             value={showPrivate}
           />
+          <Button onClick={() => handleFilterUpdate['asList'](false)} icon active={!asList}>
+            <ViewComfy />
+          </Button>
+          <Button onClick={() => handleFilterUpdate['asList'](true)} icon active={asList}>
+            <ViewList />
+          </Button>
         </div>
       </TitleBox>
-      <Content className={styles.FilterButtons}>
-        <div className={styles.NormalFilter}>{filterButtons}</div>
-      </Content>
-      <ScrollableContent>
-        <div className={styles.FriendsList}>{friendOverviews}</div>
+      <ScrollableContent translucent={asList} noPadding={asList}>
+        <div className={classNames(styles.FriendsList, { [styles.AsList]: asList })}>{friendOverviews}</div>
       </ScrollableContent>
     </div>
   );

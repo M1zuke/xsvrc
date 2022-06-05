@@ -1,4 +1,4 @@
-import { Delete, Star } from '@mui/icons-material';
+import { Delete, Edit, Star } from '@mui/icons-material';
 import classNames from 'classnames';
 import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -12,20 +12,24 @@ import { DialogWithProps } from '../../container/dialog/Dialog';
 import { useMessages } from '../../i18n';
 import { IsLoggedInUser } from '../../store/friends/selectors';
 import { GetFavoriteOfUser } from '../../store/user/selectors';
+import { setModal } from '../../store/view/actions';
+import { useAppDispatch } from '../../thunk/dispatch';
 import { Button } from '../button/Button';
 import { Content } from '../content/Content';
 import styles from './UserCard.module.scss';
 
 type UserCardProps = {
   user: UserInfo;
+  edit?: boolean;
 };
 
-export function UserCard({ user }: UserCardProps): ReactElement {
+export function UserCard({ user, edit }: UserCardProps): ReactElement {
   const { UserCard } = useMessages().Views;
   const [showConfirmDialog, setShowConfirmDialog] = useState<DialogWithProps<ConfirmDialogProps> | null>(null);
   const [showAssignToFavoriteDialog, setShowAssignToFavoriteDialog] = useState(false);
   const { unfriendUser, addToFavorites, removeFromFavorites } = useApi();
   const history = useHistory();
+  const dispatch = useAppDispatch();
   const isLoggedInUser = useSelector(IsLoggedInUser(user.id));
   const isFavorite = useSelector(GetFavoriteOfUser(user.id));
 
@@ -96,6 +100,14 @@ export function UserCard({ user }: UserCardProps): ReactElement {
     [UserCard.ConfirmMessages.ConfirmRemoveFavorite, isFavorite, removeFromFavorites, user.displayName],
   );
 
+  const toggleEditMode = useCallback(() => {
+    if (edit) {
+      dispatch(setModal({ type: 'friend-profile', userId: user.id }));
+    } else {
+      dispatch(setModal({ type: 'friend-profile', userId: user.id, edit: true }));
+    }
+  }, [dispatch, edit, user.id]);
+
   return (
     <>
       {showConfirmDialog && (
@@ -126,6 +138,10 @@ export function UserCard({ user }: UserCardProps): ReactElement {
             </div>
           </div>
           <div className={styles.UserInteractions}>
+            <Button onClick={toggleEditMode} className={styles.EditUser} icon disabled={!isLoggedInUser}>
+              <Edit />
+              {isFavorite?.groupName}
+            </Button>
             <Button
               onClick={() => handleFavoriteUserButtonCLick()}
               className={classNames(styles.FavoriteUser, {

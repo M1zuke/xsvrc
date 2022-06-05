@@ -5,12 +5,40 @@
   position: relative;
   display: grid;
   grid-gap: $tinySpacing;
+}
 
-  .Header {
+.Header {
+  display: contents;
+  * {
     top: 0;
     left: 0;
     position: sticky;
     font-weight: bold;
     text-transform: uppercase;
+    z-index: 2;
+  }
+}
+
+.Group {
+  display: contents;
+}
+
+.SubTable {
+  display: contents;
+
+  &.Collapsed {
+    > :not(:first-child) {
+      display: none;
+    }
+  }
+}
+
+.ContentRow {
+  display: contents;
+
+  &:hover {
+    > div {
+      background-color: $color4;
+    }
   }
 }

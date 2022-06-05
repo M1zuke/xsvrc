@@ -158,11 +158,12 @@ export const messages = {
       },
     },
     FriendsOverview: {
-      ToolTip: {
-        LoggedTroughWebsite: 'Eingeloggt über die Webseite',
-        PeopleInSameInstance: (value: number): string =>
-          value === 1 ? '1 Freund in dieser Instanz' : `${value} Freunde in dieser Instanz`,
-      },
+      LoggedTroughWebsite: 'Logged in through Website',
+    },
+    SameInstance: {
+      LoggedTroughWebsite: 'Logged in through Website',
+      PeopleInSameInstance: (value: number): string =>
+        value === 1 ? '1 friend in this instance' : `${value} friends in this instance`,
     },
   },
 };

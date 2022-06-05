@@ -94,5 +94,20 @@ export const IsLoggedInUser =
     return isLoaded(state.user.userInfo) ? state.user.userInfo.id === id : false;
   };
 
-export const GetFriends = (state: AppState): UserInfo[] =>
-  isLoaded(state.friends.friendInfo) ? Object.values(state.friends.friendInfo) : [];
+export type FriendsAddedWhenSorting = {
+  [k: string]: number;
+};
+
+export const getPosition = (state: AppState): FriendsAddedWhenSorting => {
+  const userInfo = state.user.userInfo;
+  if (isLoaded(userInfo) && isLoaded(state.friends.friendInfo)) {
+    return Object.assign(
+      {},
+      ...Object.values(state.friends.friendInfo).map((ui) => ({
+        [ui.id]: userInfo.friends.findIndex((fid) => fid === ui.id) + 1,
+      })),
+    );
+  }
+
+  return {};
+};

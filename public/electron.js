@@ -69,6 +69,10 @@ function createWindow() {
     };
 
     mainWindow = new BrowserWindow(options);
+    const maximized = store.get('maximized');
+    if (maximized) {
+      mainWindow.maximize();
+    }
 
     mainWindow
       .loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
@@ -197,6 +201,7 @@ app.whenReady().then(() => {
 
 app.on('before-quit', () => {
   store.set('winBounds', mainWindow.getBounds());
+  store.set('maximized', mainWindow.isMaximized());
 });
 
 app.on('window-all-closed', () => {

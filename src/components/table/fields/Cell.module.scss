@@ -4,6 +4,9 @@
 .Cell {
   padding: $innerSpacing;
   background-color: $color2;
+  display: grid;
+  align-items: center;
+  transition: background-color 100ms linear;
 
   .Editable {
     border-bottom: 2px solid $color3;
@@ -11,5 +14,18 @@
     &:focus {
       outline: none;
     }
+  }
+
+  &.Collapsed {
+    display: none;
+  }
+
+  &.CollapsableHandler {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: $smallSpacing;
+  }
+
+  &.Clickable {
+    cursor: pointer;
   }
 }

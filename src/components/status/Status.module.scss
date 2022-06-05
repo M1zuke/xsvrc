@@ -1,0 +1,27 @@
+@import '../../common/_colors';
+@import '../../common/_spacing';
+
+.Status {
+  background-color: $color3;
+  padding: $tinySpacing;
+  width: 23px;
+  height: 23px;
+  box-shadow: black 0 0 2px;
+  border-radius: 50%;
+
+  &.Active:not(.Private) {
+    background-color: lawngreen;
+  }
+
+  &.AskMe {
+    background-color: orange;
+  }
+
+  &.Busy {
+    background-color: red;
+  }
+
+  &.JoinMe {
+    background-color: #25aac5;
+  }
+}

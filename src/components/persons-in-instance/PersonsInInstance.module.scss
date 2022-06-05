@@ -1,0 +1,15 @@
+@import '../../common/_mixins';
+@import '../../common/_colors';
+@import '../../common/_spacing';
+
+.SameInstanceIcon {
+  background-color: $color2;
+  padding: $tinySpacing;
+  border-radius: $standardBorderRadius;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  color: $colorRed;
+  grid-template-columns: repeat(2, autoSize());
+}

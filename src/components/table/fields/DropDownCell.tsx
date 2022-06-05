@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react';
 import { DropDown } from '../../drop-down/DropDown';
+import { TableHeaderProps } from '../SwitchCell';
 import { CellTypes, DropDownOption } from '../Table';
-import styles from './Cell.module.scss';
 
-export function DropDownCell<T extends CellTypes>(props: DropDownOption<T>): ReactElement {
-  return (
-    <div className={styles.Cell}>
-      <DropDown {...props} />
-    </div>
-  );
+export function DropDownCell<T extends CellTypes>({
+  header,
+  ...props
+}: TableHeaderProps<DropDownOption<T>>): ReactElement {
+  return <DropDown {...props} />;
 }

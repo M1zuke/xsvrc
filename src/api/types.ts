@@ -353,7 +353,7 @@ export type AddFavorite = Omit<Favorite, 'id'>;
 export const HardModerationTypes = ['mute', 'block', 'hideAvatar'] as const;
 export type HardModerationType = typeof HardModerationTypes[number];
 
-export const ModerationTypes = ['unmute', 'unblock', 'showAvatar'] as const;
+export const ModerationTypes = ['unmute', 'unblock', 'showAvatar', 'interactOn', 'interactOff'] as const;
 export type ModerationType = typeof ModerationTypes[number] | HardModerationType;
 
 export type Moderation = {
@@ -395,4 +395,8 @@ export type AvatarInfo = {
   unityPackages: UnityPackages[];
   updated_at: string; // date-time
   version: number;
+};
+
+export type UserExistsResponse = {
+  userExists: boolean;
 };

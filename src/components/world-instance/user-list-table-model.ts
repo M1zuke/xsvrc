@@ -18,6 +18,7 @@ export function useUserListTableModel(location: string, instanceInfo: InstanceIn
       columns: [{ amount: 3 }],
       rows: users.map((user) => {
         return {
+          type: 'row',
           id: user.id,
           values: [
             { value: messages.lastPlatform[user.last_platform] },
@@ -28,6 +29,7 @@ export function useUserListTableModel(location: string, instanceInfo: InstanceIn
       }),
       header: {
         id: 'header',
+        type: 'row',
         values: [{ value: '' }, { value: 'Username' }, { value: 'Status' }],
       },
     };

@@ -14,6 +14,7 @@ export interface RequestConfig {
   body?: unknown;
   params?: RequestParams[];
   storedCookies?: StoredCookie[];
+  blockable?: boolean;
 }
 
 export type IWindow = Window & {

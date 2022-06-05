@@ -1,5 +1,4 @@
 import { UserInfo } from '../../api/types';
-import { CharacterFilter } from '../../container/views/friends/Friends';
 import { Loadable } from '../reducer';
 
 export type FriendEntries = Record<UserInfo['id'], UserInfo>;
@@ -7,7 +6,7 @@ export type FriendEntries = Record<UserInfo['id'], UserInfo>;
 export type FriendFilter = {
   showPrivate: boolean;
   showOffline: boolean;
-  characterFilter: CharacterFilter;
+  asList: boolean;
 };
 
 export type FriendInfoState = {
@@ -20,7 +19,7 @@ export const INITIAL_FRIEND_INFO_STATE: FriendInfoState = {
   filter: {
     showPrivate: true,
     showOffline: false,
-    characterFilter: 'ALL',
+    asList: false,
   },
   friendInfo: null,
   nonFriendInfo: null,

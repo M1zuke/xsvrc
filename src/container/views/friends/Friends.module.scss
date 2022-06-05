@@ -4,7 +4,7 @@
 
 .Component {
   display: grid;
-  grid-template-rows: repeat(2, autoSize()) auto;
+  grid-template-rows: autoSize() auto;
   grid-gap: $innerSpacing;
   height: 100%;
   overflow: hidden;
@@ -39,7 +39,7 @@
 
     .SpecialFilter {
       display: grid;
-      grid-template-columns: repeat(3, autoSize());
+      grid-template-columns: repeat(5, autoSize());
       grid-gap: $innerSpacing;
       justify-content: flex-end;
     }
@@ -65,6 +65,11 @@
     display: grid;
     grid-gap: $innerSpacing;
     grid-template-columns: repeat(10, 1fr);
+
+    &.AsList {
+      grid-template-columns: 1fr;
+      height: 100%;
+    }
   }
 }
 

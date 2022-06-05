@@ -1,6 +1,6 @@
 import { isErrorType } from '../store/reducer';
 import { setUserInfo } from '../store/user/actions';
-import { AppThunkAction } from '../thunk';
+import { AsyncAppAction } from '../thunk';
 import { getAllFavoriteGroups, getAllFavorites } from './favorites-api';
 import { getAllFriends } from './friends-api';
 import { logout } from './logout';
@@ -9,7 +9,7 @@ import { getAllNotifications } from './notifications-api';
 import { api, prepare } from './prepare';
 import { AuthenticatedUserInfo } from './types';
 
-export function login(username?: string, password?: string): AppThunkAction {
+export function login(username?: string, password?: string): AsyncAppAction {
   return async function (dispatch, getState) {
     const state = getState();
     if (state.user.userInfo === null || isErrorType(state.user.userInfo)) {

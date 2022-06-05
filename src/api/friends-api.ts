@@ -3,13 +3,13 @@ import { setFriendInfo } from '../store/friends/actions';
 import { resetStoredCookies } from '../store/persisted/actions';
 import { removeFavorite, setUserInfo } from '../store/user/actions';
 import { GetFavoriteOfUser } from '../store/user/selectors';
-import { AppDispatch, AppThunkAction } from '../thunk';
+import { AppDispatch, AsyncAppAction } from '../thunk';
 import { api, isLoaded, prepare } from './prepare';
 import { UserInfo } from './types';
 
 const limit = 100;
 
-export function getFriends(offline?: boolean, friendsInfo: UserInfo[] = [], offset = 0): AppThunkAction<UserInfo[]> {
+export function getFriends(offline?: boolean, friendsInfo: UserInfo[] = [], offset = 0): AsyncAppAction<UserInfo[]> {
   return async function (dispatch, getState) {
     const state = getState();
 
@@ -39,7 +39,7 @@ export function getFriends(offline?: boolean, friendsInfo: UserInfo[] = [], offs
   };
 }
 
-export function getAllFriends(): AppThunkAction {
+export function getAllFriends(): AsyncAppAction {
   return async function (dispatch, getState) {
     const state = getState();
     if (state.friends.friendInfo === null) {
@@ -59,7 +59,7 @@ export function getAllFriends(): AppThunkAction {
   };
 }
 
-export function sendFriendRequest(id: string): AppThunkAction {
+export function sendFriendRequest(id: string): AsyncAppAction {
   return async function (dispatch, getState) {
     const response = await prepare(getState, dispatch, {
       url: api(`user/${id}/friendRequest`),
@@ -74,7 +74,7 @@ export function sendFriendRequest(id: string): AppThunkAction {
   };
 }
 
-export function sendUnfriendRequest(id: string): AppThunkAction {
+export function sendUnfriendRequest(id: string): AsyncAppAction {
   return async function (dispatch, getState) {
     const response = await prepare(getState, dispatch, {
       url: api(`auth/user/friends/${id}`),
